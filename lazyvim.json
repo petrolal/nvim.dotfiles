@@ -19,6 +19,7 @@
     "lazyvim.plugins.extras.lang.kotlin",
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.python",
+    "lazyvim.plugins.extras.lang.ruby",
     "lazyvim.plugins.extras.lang.sql",
     "lazyvim.plugins.extras.lang.terraform",
     "lazyvim.plugins.extras.lang.toml",
@@ -32,6 +33,7 @@
     "lazyvim.plugins.extras.ui.treesitter-context",
     "lazyvim.plugins.extras.util.dot",
     "lazyvim.plugins.extras.util.mini-hipatterns",
+    "lazyvim.plugins.extras.util.project",
     "lazyvim.plugins.extras.vscode"
   ],
   "install_version": 8,
