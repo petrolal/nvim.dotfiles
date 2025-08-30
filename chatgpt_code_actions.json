@@ -1,0 +1,26 @@
+{
+  "code_review": {
+    "command": "Please review this code for bugs, optimizations, and best practices:",
+    "description": "Code Review"
+  },
+  "explain_code": {
+    "command": "Explain this code in detail, line by line:",
+    "description": "Explain Code"
+  },
+  "optimize_code": {
+    "command": "Optimize this code for performance and readability:",
+    "description": "Optimize Code"
+  },
+  "document_code": {
+    "command": "Generate comprehensive documentation for this code:",
+    "description": "Document Code"
+  },
+  "debug_code": {
+    "command": "Help debug this code. Identify potential issues:",
+    "description": "Debug Code"
+  },
+  "translate_code": {
+    "command": "Translate this code to {language}:",
+    "description": "Translate Code"
+  }
+}
