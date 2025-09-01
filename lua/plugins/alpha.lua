@@ -41,6 +41,7 @@ return {
       dashboard.section.header.opts.hl = "AlphaHeader"
       dashboard.section.buttons.opts.hl = "AlphaButtons"
       dashboard.section.footer.opts.hl = "AlphaFooter"
+
       dashboard.opts.layout[1].val = 8
       return dashboard
     end,
@@ -59,19 +60,51 @@ return {
 
       require("alpha").setup(dashboard.opts)
 
+      -- Função para pegar o commit hash (opcional)
+      local function get_git_commit()
+        local handle = io.popen("git rev-parse --short HEAD 2>/dev/null")
+        if handle then
+          local result = handle:read("*a")
+          handle:close()
+          return result:gsub("%s+", "") or "unknown"
+        end
+        return "unknown"
+      end
+
+      local function get_git_version()
+        local handle = io.popen("git describe --tags --abbrev=0 2>/dev/null")
+        if handle then
+          local result = handle:read("*a")
+          handle:close()
+          result = result:gsub("%s+", "")
+          return result ~= "" and result or "v0.0.0"
+        end
+        return "v0.0.0"
+      end
+
+      -- Footer com versão do Git e Neovim
+      dashboard.section.footer.val = {
+        "Tourasvim "
+          .. get_git_version()
+          .. " • Neovim "
+          .. vim.version().major
+          .. "."
+          .. vim.version().minor
+          .. " • "
+          .. get_git_commit():sub(1, 7)
+          .. " • "
+          .. os.date("%d/%m/%y"),
+      }
+
+      dashboard.section.footer.opts = {
+        position = "center", -- ✅ Centralizar footer
+        hl = "AlphaFooter",
+      }
+
       vim.api.nvim_create_autocmd("User", {
         once = true,
         pattern = "LazyVimStarted",
         callback = function()
-          local stats = require("lazy").stats()
-          local ms = (math.floor(stats.startuptime * 100 + 0.5) / 100)
-          dashboard.section.footer.val = "⚡ Neovim loaded "
-            .. stats.loaded
-            .. "/"
-            .. stats.count
-            .. " plugins in "
-            .. ms
-            .. "ms"
           pcall(vim.cmd.AlphaRedraw)
         end,
       })
