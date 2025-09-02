@@ -13,6 +13,7 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
   end
 end
 vim.opt.rtp:prepend(lazypath)
+vim.g.python3_host_prog = vim.fn.exepath("python3")
 
 require("lazy").setup({
   spec = {
@@ -33,12 +34,6 @@ require("lazy").setup({
   install = {
     colorscheme = {
       "tokyonight",
-      "github_dark_default",
-      "habamax",
-      "catppuccin-mocha",
-      "nord",
-      "onedark",
-      "catppuccin",
     },
   },
   checker = {
