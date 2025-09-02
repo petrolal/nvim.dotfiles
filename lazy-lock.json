@@ -14,6 +14,7 @@
   "gitsigns.nvim": { "branch": "main", "commit": "6e3c66548035e50db7bd8e360a29aec6620c3641" },
   "grug-far.nvim": { "branch": "main", "commit": "385d1949dc21d0c39e7a74b4f4a25da18817bc86" },
   "harpoon": { "branch": "harpoon2", "commit": "ed1f853847ffd04b2b61c314865665e1dadf22c7" },
+  "image.nvim": { "branch": "master", "commit": "a8d6829ce8472a79df140bc494e75f1847f8861e" },
   "inc-rename.nvim": { "branch": "main", "commit": "8ae25b35ae16ca4bd5de3d3c472eec3b574018d4" },
   "jupyter-kernel.nvim": { "branch": "main", "commit": "5772fa8932f2c73736a777082656f1bfe0287076" },
   "kulala.nvim": { "branch": "main", "commit": "3e81123652a72a2717f9916d6f2b52c2ae6f7e96" },
