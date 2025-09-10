@@ -30,6 +30,8 @@
   "mini.pairs": { "branch": "main", "commit": "3738ea30ff33e0cbf2983dc67319a5468d25b0a9" },
   "molten-nvim": { "branch": "main", "commit": "4e1c9997cb53b9d3236c5d6462d80119250ed5b7" },
   "neoconf.nvim": { "branch": "main", "commit": "630a6f1ab2ae5b1add5425ba6e780e3f7f900bd8" },
+  "neotest": { "branch": "master", "commit": "2cf3544fb55cdd428a9a1b7154aea9c9823426e8" },
+  "neotest-python": { "branch": "master", "commit": "ed9b4d794b89044cc32e5476e637936331473c6e" },
   "noice.nvim": { "branch": "main", "commit": "0427460c2d7f673ad60eb02b35f5e9926cf67c59" },
   "none-ls.nvim": { "branch": "main", "commit": "df778107fd2f0503f5606363ce13437132056d54" },
   "nui.nvim": { "branch": "main", "commit": "de740991c12411b663994b2860f1a4fd0937c130" },
