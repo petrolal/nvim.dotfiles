@@ -16,25 +16,7 @@ return {
       wk.add({
         { "<leader>a", group = "Code With AI" },
         { "<leader>ac", "<cmd>ChatGPT<CR>", desc = "Abrir Chat", mode = "n", silent = true },
-        { "<leader>ae", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explicar Código", mode = "n", silent = true },
-        { "<leader>at", "<cmd>ChatGPTRun add_tests<CR>", desc = "Gerar Testes", mode = "n", silent = true },
-        { "<leader>ao", "<cmd>ChatGPTRun optimize_code<CR>", desc = "Otimizar Código", mode = "n", silent = true },
-        { "<leader>ad", "<cmd>ChatGPTRun docstring<CR>", desc = "Gerar Docstring", mode = "n", silent = true },
-        { "<leader>af", "<cmd>ChatGPTRun fix_bugs<CR>", desc = "Corrigir Bugs", mode = "n", silent = true },
-        { "<leader>ae", "<cmd>ChatGPTRun explain_code<CR>", desc = "Explicar Código", mode = "v", silent = true },
-        { "<leader>at", "<cmd>ChatGPTRun add_tests<CR>", desc = "Gerar Testes", mode = "v", silent = true },
-        { "<leader>ao", "<cmd>ChatGPTRun optimize_code<CR>", desc = "Otimizar Código", mode = "v", silent = true },
-        { "<leader>ad", "<cmd>ChatGPTRun docstring<CR>", desc = "Gerar Docstring", mode = "v", silent = true },
-        { "<leader>af", "<cmd>ChatGPTRun fix_bugs<CR>", desc = "Corrigir Bugs", mode = "v", silent = true },
-        {
-          "<leader>ae",
-          "<cmd>ChatGPTEditWithInstruction<CR>",
-          desc = "Editar com Prompt",
-          mode = { "n", "v" },
-          silent = true,
-        },
       })
     end,
   },
 }
-
