@@ -25,6 +25,7 @@ return {
         dashboard.button("r", "  Recent files", [[<cmd> lua LazyVim.pick("oldfiles")() <cr>]]),
         dashboard.button("g", "  Find text", [[<cmd> lua LazyVim.pick("live_grep")() <cr>]]),
         dashboard.button("c", "  Config", "<cmd> lua LazyVim.pick.config_files()() <cr>"),
+        dashboard.button("R", "󰣀  Remote Projects", "<cmd>Distant<cr>"),
         dashboard.button("s", "  Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
         dashboard.button("x", "  Lazy Extras", "<cmd> LazyExtras <cr>"),
         dashboard.button("l", "󰒲  Lazy", "<cmd> Lazy <cr>"),
@@ -104,4 +105,3 @@ return {
     end,
   },
 }
-

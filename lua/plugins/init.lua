@@ -7,6 +7,7 @@ return {
   { import = "plugins.lsp.python" },
   { import = "plugins.tools.lazygit" },
   { import = "plugins.tools.mason" },
+  { import = "plugins.tools.distant" },
   { import = "plugins.tools.lazydocker" },
   { import = "plugins.ui.dashboard" },
   { import = "plugins.ui.theme" },
