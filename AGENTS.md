@@ -1,21 +1,22 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`init.lua` bootstraps LazyVim by delegating to `lua/config/lazy.lua`. Core runtime tweaks live under `lua/config` (`options.lua`, `keymaps.lua`, `autocmds.lua`) and should stay minimal so overrides remain discoverable. Plugin specs are grouped in `lua/plugins`, one topic per file (`core.lua`, `lsp.lua`, `languages.lua`, etc.) to keep diffs focused; follow that pattern when adding new integrations. Lockfile updates belong in `lazy-lock.json`, while formatting rules sit in `stylua.toml`.
+`init.lua` bootstraps LazyVim and hands off plugin loading to `lua/config/lazy.lua`. Runtime tweaks stay in `lua/config`, where `options.lua`, `keymaps.lua`, and `autocmds.lua` should remain focused so downstream overrides are easy to locate. Plugin specs live in topical files under `lua/plugins` (for example `lua/plugins/core.lua`, `lua/plugins/lsp.lua`), keeping each integration self-contained. Lock state is recorded in `lazy-lock.json`, while root-level `stylua.toml` governs formatting. Use the `remotes/` snapshots for reference only—do not edit them directly.
 
 ## Build, Test, and Development Commands
-- `nvim --headless "+Lazy sync" +qa` installs or updates plugins after dependency changes.
-- `nvim --headless "+Lazy check" +qa` validates plugin specs and reports missing dependencies.
-- `stylua lua` applies consistent formatting across all Lua modules before committing.
+- `nvim --headless "+Lazy sync" +qa` installs new plugins and aligns versions with `lazy-lock.json`.
+- `nvim --headless "+Lazy check" +qa` validates specs and reports missing dependencies.
+- `stylua lua` formats all Lua sources according to the shared style.
+Run the first two commands after modifying plugin specs or lockfiles, and rerun `stylua` before staging changes.
 
 ## Coding Style & Naming Conventions
-Use two-space indentation and keep lines under 120 characters per `stylua.toml`. Module names and filenames stay lowercase with words separated by underscores (`chatGPT.lua` mirrors upstream naming). Prefer descriptive, table-based plugin specs and keep option overrides close to the plugin definition they affect. Run `stylua` locally or configure an editor-on-save hook to maintain style parity.
+Indent with two spaces, wrap lines under 120 characters, and prefer table-based plugin declarations. File and module names stay lowercase with underscores (`lua/plugins/languages.lua`). Place option overrides adjacent to the plugin they affect and document non-obvious defaults with brief comments only when necessary.
 
 ## Testing Guidelines
-Automated tests are not present, so rely on headless health checks. After significant changes, run `nvim --headless "+Lazy sync | Lazy check" +qa` to ensure the config loads cleanly. For keymap or UI adjustments, open Neovim normally and exercise the affected workflows; capture any errors surfaced in `:messages` when filing reviews.
+Automated tests are not available, so rely on Lazy health checks. After material changes, execute `nvim --headless "+Lazy sync | Lazy check" +qa` to confirm the configuration loads cleanly. For keymaps or UI tweaks, open Neovim interactively and verify the affected workflows, noting any messages surfaced in `:messages`.
 
 ## Commit & Pull Request Guidelines
-Follow the existing `<type>: <summary>` convention (`fix:`, `feature:`, `hotfix:`) observed in Git history. Each PR should explain the motivation, outline configuration impacts, and link related issues or screenshots when behavior changes. Include a quick verification note (e.g., commands run) and keep diffs scoped to the relevant module to simplify review.
+Use the `<type>: <summary>` convention (`fix:`, `feature:`, `hotfix:`) observed in the log. Pull requests should describe motivation, summarize configuration impacts, list headless commands run, and attach screenshots when behavior changes. Keep diffs scoped to the touched module and explain any lockfile updates.
 
 ## Agent Workflow Tips
-Check out a fresh branch for every change and keep `lazy-lock.json` adjustments intentional—document why plugin version bumps are required. When touching shared modules like `lua/plugins/core.lua`, call out interplay with other plugin specs to avoid regressions. EOF
+Start from a fresh branch per task, and avoid touching `lazy-lock.json` unless intentionally updating plugin versions. Cross-check related specs when editing shared modules like `lua/plugins/core.lua` to prevent regressions. Capture reproduction steps and command output in PR descriptions to accelerate reviews.

@@ -24,6 +24,8 @@ return {
         dashboard.button("n", "  New file", [[<cmd> ene <BAR> startinsert <cr>]]),
         dashboard.button("r", "  Recent files", [[<cmd> lua LazyVim.pick("oldfiles")() <cr>]]),
         dashboard.button("g", "  Find text", [[<cmd> lua LazyVim.pick("live_grep")() <cr>]]),
+        dashboard.button("R", "󰒋  Remotes: abrir menu", ":RemoteMenu<CR>"),
+        dashboard.button("A", "  Remotes: adicionar", ":RemoteAdd<CR>"),
         dashboard.button("c", "  Config", "<cmd> lua LazyVim.pick.config_files()() <cr>"),
         dashboard.button("R", "󰣀  Remote Projects", "<cmd>Distant<cr>"),
         dashboard.button("s", "  Restore Session", [[<cmd> lua require("persistence").load() <cr>]]),
