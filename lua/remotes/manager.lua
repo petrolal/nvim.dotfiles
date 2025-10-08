@@ -4,6 +4,9 @@
 local M = {}
 local launch_distant -- forward declare
 
+local Path = require("plenary.path")
+local DB = vim.fn.stdpath("data") .. "/distant_remotes.json"
+
 -------------------------------------------------------
 -- util
 -------------------------------------------------------
@@ -27,6 +30,63 @@ local function notify(msg, lvl, rep)
 end
 
 local STATE = { pass = {} }
+
+local function load_hosts()
+  local p = Path:new(DB)
+  if not p:exists() then
+    return {}
+  end
+  local ok, data = pcall(function()
+    return vim.json.decode(p:read())
+  end)
+  return ok and type(data) == "table" and data or {}
+end
+
+local function save_hosts(list)
+  Path:new(DB):write(vim.json.encode(list), "w")
+end
+
+local function sanitize_target(target)
+  return (target or ""):gsub("^ssh://", "")
+end
+
+local function select_remote(prompt, cb)
+  local list = load_hosts()
+  if #list == 0 then
+    notify("Nenhum remote cadastrado.", vim.log.levels.WARN)
+    return
+  end
+
+  local entries = {}
+  for idx, item in ipairs(list) do
+    entries[idx] = {
+      label = item.label or item.target or ("remote %d"):format(idx),
+      target = item.target or "",
+      __index = idx,
+    }
+  end
+
+  vim.ui.select(entries, {
+    prompt = prompt,
+    kind = "remotes",
+    format_item = function(entry)
+      local label = entry.label ~= "" and entry.label or entry.target or "(sem destino)"
+      local target = entry.target ~= "" and entry.target or "(sem destino)"
+      return label .. "  →  " .. target
+    end,
+  }, function(choice)
+    if not choice then
+      return
+    end
+    local idx = choice.__index
+    local entry = list[idx]
+    if not entry then
+      notify("Entrada inválida selecionada.", vim.log.levels.ERROR)
+      return
+    end
+    cb(entry, list, idx)
+  end)
+end
 
 -------------------------------------------------------
 -- spinner
@@ -409,23 +469,6 @@ function M.setup()
     end)
   end, { nargs = 1 })
 
-  local Path = require("plenary.path")
-  local DB = vim.fn.stdpath("data") .. "/distant_remotes.json"
-
-  local function load_hosts()
-    local p = Path:new(DB)
-    if not p:exists() then
-      return {}
-    end
-    local ok, data = pcall(function()
-      return vim.json.decode(p:read())
-    end)
-    return ok and type(data) == "table" and data or {}
-  end
-  local function save_hosts(list)
-    Path:new(DB):write(vim.json.encode(list), "w")
-  end
-
   vim.api.nvim_create_user_command("RemoteAdd", function()
     local list = load_hosts()
     vim.ui.input({ prompt = "Label: " }, function(label)
@@ -527,6 +570,132 @@ function M.setup()
       })
       :find()
   end, {})
+
+  if not M._keymaps then
+    local map = function(lhs, rhs, desc)
+      vim.keymap.set("n", lhs, rhs, { desc = desc, silent = true })
+    end
+    map("<leader>rc", M.connect_prompt, "Remotos: conectar")
+    map("<leader>rd", M.disconnect_active, "Remotos: desconectar")
+    map("<leader>rn", M.browse_remote, "Remotos: navegar")
+    map("<leader>re", M.edit_remote, "Remotos: editar entrada")
+    map("<leader>rx", M.remove_remote, "Remotos: excluir entrada")
+
+    local ok_wk, wk = pcall(require, "which-key")
+    if ok_wk then
+      wk.add({
+        { "<leader>r", group = "Remotos" },
+        { "<leader>rc", desc = "Conectar remoto" },
+        { "<leader>rd", desc = "Desconectar remoto" },
+        { "<leader>rn", desc = "Explorar diretório remoto" },
+        { "<leader>re", desc = "Editar remotes" },
+        { "<leader>rx", desc = "Excluir remote" },
+      })
+    end
+
+    M._keymaps = true
+  end
+end
+
+function M.connect_prompt()
+  select_remote("Conectar a remote", function(entry)
+    local target = entry.target or ""
+    if target == "" then
+      notify("Remote sem destino configurado.", vim.log.levels.ERROR)
+      return
+    end
+    ensure_remote_and_then(sanitize_target(target), function()
+      launch_distant(target)
+    end)
+  end)
+end
+
+function M.disconnect_active()
+  local ok, distant = pcall(require, "distant")
+  if not ok then
+    notify("distant.nvim não disponível.", vim.log.levels.ERROR)
+    return
+  end
+  if not distant:is_initialized() then
+    notify("Nenhum manager Distant ativo.", vim.log.levels.WARN)
+    return
+  end
+
+  local client_id = distant:active_client_id()
+  if not client_id then
+    notify("Nenhuma conexão Distant ativa.", vim.log.levels.INFO)
+    return
+  end
+
+  local manager = distant:manager()
+  if not manager then
+    notify("Manager Distant indisponível.", vim.log.levels.ERROR)
+    return
+  end
+
+  manager:kill({ connection = client_id }, function(err)
+    if err then
+      notify("Falha ao encerrar conexão: " .. err, vim.log.levels.ERROR)
+      return
+    end
+    notify("Conexão Distant encerrada.")
+  end)
+end
+
+function M.browse_remote()
+  local ok, distant = pcall(require, "distant")
+  if not ok then
+    notify("distant.nvim não disponível.", vim.log.levels.ERROR)
+    return
+  end
+  if not distant:is_initialized() or not distant:active_client_id() then
+    notify("Conecte-se a um remoto antes de navegar.", vim.log.levels.WARN)
+    return
+  end
+  if vim.fn.exists(":DistantOpen") ~= 2 then
+    notify("Comando :DistantOpen indisponível.", vim.log.levels.ERROR)
+    return
+  end
+
+  vim.ui.input({ prompt = "Diretório remoto (padrão: .)", default = "." }, function(path)
+    if path == nil then
+      return
+    end
+    local target = path ~= "" and path or "."
+    vim.cmd({ cmd = "DistantOpen", args = { target } })
+  end)
+end
+
+function M.edit_remote()
+  select_remote("Editar remote", function(entry, list, idx)
+    vim.ui.input({ prompt = "Novo label: ", default = entry.label }, function(new_label)
+      if not new_label or new_label == "" then
+        return
+      end
+      vim.ui.input({ prompt = "Novo destino: ", default = entry.target }, function(new_target)
+        if not new_target or new_target == "" then
+          return
+        end
+        local old_key = sanitize_target(entry.target)
+        entry.label = new_label
+        entry.target = new_target
+        save_hosts(list)
+        if old_key ~= sanitize_target(new_target) then
+          STATE.pass[old_key] = nil
+        end
+        notify("Remote atualizado: " .. new_label)
+      end)
+    end)
+  end)
+end
+
+function M.remove_remote()
+  select_remote("Excluir remote", function(entry, list, idx)
+    table.remove(list, idx)
+    save_hosts(list)
+    STATE.pass[sanitize_target(entry.target)] = nil
+    notify("Remote removido: " .. (entry.label or entry.target or "sem nome"))
+  end)
 end
 
 M.local_distant_path = local_distant_path

@@ -42,3 +42,12 @@ LazyVim-based Neovim setup branded TurasVim. Prioritizes remote development help
 - Não edite binários em `remotes/` salvo atualização planejada.
 - Preserve descrições/labels em português (atalhos Dashboard, keymaps).
 - Ao tocar specs compartilhados (ex. `lua/plugins/lsp`), cruze com extras listados em `lazyvim.json` para evitar conflitos.
+
+## Keybindings
+- `<leader>a` agrupa ações de IA (Which-Key: “Code With AI”); `<leader>ac` abre `:ChatGPT`.
+- `<leader>fp` busca arquivos de plugins; `<leader>sr` / `<leader>sa` chamam `:RemoteMenu` e `:RemoteAdd` respectivamente.
+- `<leader>r*` gerencia Distant: `rc` conecta via seletor, `rd` encerra a sessão ativa, `rn` abre prompt de diretório remoto, `re` renomeia/edita e `rx` remove entradas salvas.
+- `<leader>lg` abre LazyGit e substitui o binding padrão `<leader>gg`.
+- `<leader>lo` alterna um terminal flutuante com LazyDocker; dentro do terminal `<Esc>` volta ao modo normal.
+- `<leader>ci` aplica imports faltantes quando Pyright está anexado ao buffer atual.
+- Dashboard Alpha replica atalhos principais (ex.: `R` menu de remotos, `A` adicionar remotos, `a` ChatGPT) para acesso rápido na tela inicial.
