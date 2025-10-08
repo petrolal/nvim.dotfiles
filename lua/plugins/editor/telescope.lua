@@ -1,6 +1,16 @@
 return {
   {
     "nvim-telescope/telescope.nvim",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      {
+        "chipsenkbeil/distant.nvim",
+        branch = "v0.3",
+        config = function()
+          require("distant"):setup({})
+        end,
+      },
+    }, -- add
     keys = function(_, keys)
       keys = keys or {}
       table.insert(keys, 1, {
@@ -11,6 +21,21 @@ return {
           })
         end,
         desc = "Find Plugin File",
+      })
+      -- atalho para o menu de remotes
+      table.insert(keys, {
+        "<leader>sr",
+        function()
+          vim.cmd("RemoteMenu")
+        end,
+        desc = "Remotes (menu)",
+      })
+      table.insert(keys, {
+        "<leader>sa",
+        function()
+          vim.cmd("RemoteAdd")
+        end,
+        desc = "Remotes (adicionar)",
       })
       return keys
     end,
@@ -23,6 +48,10 @@ return {
       opts.defaults.sorting_strategy = "ascending"
       opts.defaults.winblend = 0
       return opts
+    end,
+    config = function(_, opts)
+      require("telescope").setup(opts)
+      require("remotes.manager").setup() -- integra aqui
     end,
   },
 }
