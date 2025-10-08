@@ -380,7 +380,18 @@ launch_distant = function(tgt)
     return
   end
   pcall(function()
-    require("distant").setup({ manager = { log_level = "trace" } })
+    local distant = require("distant")
+    local bin = local_distant_path()
+    distant:setup({
+      manager = {
+        log_level = "info",
+        launch = {
+          enabled = true,
+          binary = bin,
+        },
+      },
+      client = bin and { bin = bin } or nil,
+    })
   end)
   local ok2 = pcall(vim.cmd, "DistantLaunch " .. vim.fn.fnameescape(tgt))
   if not ok2 then
@@ -517,5 +528,7 @@ function M.setup()
       :find()
   end, {})
 end
+
+M.local_distant_path = local_distant_path
 
 return M

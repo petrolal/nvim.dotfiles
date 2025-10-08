@@ -51,7 +51,24 @@ return {
     end,
     config = function(_, opts)
       require("telescope").setup(opts)
-      require("remotes.manager").setup() -- integra aqui
+
+      local manager = require("remotes.manager")
+      local ok, distant = pcall(require, "distant")
+      if ok then
+        local bin = manager.local_distant_path()
+        distant:setup({
+          manager = {
+            log_level = "info",
+            launch = {
+              enabled = true,
+              binary = bin,
+            },
+          },
+          client = bin and { bin = bin } or nil,
+        })
+      end
+
+      manager.setup() -- integra aqui
     end,
   },
 }
