@@ -51,3 +51,10 @@ LazyVim-based Neovim setup branded TurasVim. Prioritizes remote development help
 - `<leader>lo` alterna um terminal flutuante com LazyDocker; dentro do terminal `<Esc>` volta ao modo normal.
 - `<leader>ci` aplica imports faltantes quando Pyright está anexado ao buffer atual.
 - Dashboard Alpha replica atalhos principais (ex.: `R` menu de remotos, `A` adicionar remotos, `a` ChatGPT) para acesso rápido na tela inicial.
+
+## Dependencies
+- **Base tooling**: `git`, `curl` ou `wget`, utilitário de compressão (`tar`/`unzip`), `rg` (ripgrep), `fd`.
+- **Providers**: `python3`/`pip3`, `node`/`npm`, `cargo`, `make`, `gcc` para compilação de plugins/LSP.
+- **Remotos & UX**: `ssh`, `scp`, `sshpass`, binário `distant` (exposto via `stdpath("config")/remotes/bin`), `lazygit`, `lazydocker`.
+- **Formatação/LSP**: `stylua` global ou via Mason; Mason garante `shellcheck`, `shfmt`, `flake8`, `pyright`, `ruff`, `debugpy` sob demanda.
+- Todos os itens acima já existem na máquina atual (`command -v` confirmou); ferramentas Mason são instaladas dentro de `~/.local/share/nvim/mason` quando acionadas.
