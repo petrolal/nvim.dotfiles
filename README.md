@@ -1,4 +1,4 @@
-# TurasVim
+# P3TROL4LVim
 
 My Touretted Neovim template based on **💤 LazyVim**.
 
