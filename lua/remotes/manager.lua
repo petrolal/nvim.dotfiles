@@ -491,7 +491,7 @@ function M.setup()
     local entries = {}
     for _, it in ipairs(list) do
       entries[#entries + 1] = {
-        display = it.label .. "  →  " .. it.target,
+        display = "󰒋  " .. it.label .. "  →  " .. it.target,
         ordinal = it.label .. " " .. it.target,
         value = it,
       }
