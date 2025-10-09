@@ -2,9 +2,9 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/petrolal/nvim.dotfiles.git"
-MIN_NEOVIM_VERSION="0.11.2"
+MIN_NEOVIM_VERSION="0.11.4"
 NEOVIM_VERSION="${NEOVIM_VERSION:-$MIN_NEOVIM_VERSION}"
-NEOVIM_URL="https://github.com/neovim/neovim/releases/download/v${NEOVIM_VERSION}/nvim-linux64.tar.gz"
+NEOVIM_URL="https://github.com/neovim/neovim/releases/download/v${NEOVIM_VERSION}/nvim-linux-x86_64.tar.gz"
 INSTALL_PREFIX="/usr/local"
 
 log() {
@@ -101,10 +101,10 @@ install_neovim() {
     die "Falha ao extrair o pacote Neovim baixado."
   fi
 
-  sudo rm -rf "${INSTALL_PREFIX}/nvim-linux64"
-  sudo mv "$tmpdir/nvim-linux64" "${INSTALL_PREFIX}/nvim-linux64"
-  sudo ln -sf "${INSTALL_PREFIX}/nvim-linux64/bin/nvim" "${INSTALL_PREFIX}/bin/nvim"
-  log "Neovim instalado em ${INSTALL_PREFIX}/nvim-linux64"
+  sudo rm -rf "${INSTALL_PREFIX}/nvim-linux-x86_64"
+  sudo mv "$tmpdir/nvim-linux-x86_64" "${INSTALL_PREFIX}/nvim-linux-x86_64"
+  sudo ln -sf "${INSTALL_PREFIX}/nvim-linux-x86_64/bin/nvim" "${INSTALL_PREFIX}/bin/nvim"
+  log "Neovim instalado em ${INSTALL_PREFIX}/nvim-linux-x86_64"
 
   local cleanup_dir="$tmpdir"
   trap - EXIT
