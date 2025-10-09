@@ -2,7 +2,8 @@
 set -euo pipefail
 
 REPO_URL="https://github.com/petrolal/nvim.dotfiles.git"
-NEOVIM_VERSION="${NEOVIM_VERSION:-0.10.2}"
+MIN_NEOVIM_VERSION="0.11.2"
+NEOVIM_VERSION="${NEOVIM_VERSION:-$MIN_NEOVIM_VERSION}"
 NEOVIM_URL="https://github.com/neovim/neovim/releases/download/v${NEOVIM_VERSION}/nvim-linux64.tar.gz"
 INSTALL_PREFIX="/usr/local"
 
@@ -17,6 +18,12 @@ die() {
 
 require_cmd() {
   command -v "$1" >/dev/null 2>&1 || die "Programa obrigatório não encontrado: $1"
+}
+
+version_ge() {
+  local a="$1"
+  local b="$2"
+  [[ "$(printf '%s\n%s\n' "$a" "$b" | sort -V | head -n1)" == "$b" ]]
 }
 
 detect_pkg_mgr() {
@@ -85,15 +92,23 @@ install_neovim() {
 
   local tmpdir
   tmpdir="$(mktemp -d)"
-  trap 'rm -rf "$tmpdir"' EXIT
+  trap 'tmp="${tmpdir:-}"; [[ -n "$tmp" ]] && rm -rf "$tmp"' EXIT
   log "Baixando Neovim ${NEOVIM_VERSION}"
-  curl -L "$NEOVIM_URL" -o "$tmpdir/nvim.tar.gz"
-  tar -xzf "$tmpdir/nvim.tar.gz" -C "$tmpdir"
+  if ! curl -fSL --retry 3 --retry-delay 1 "$NEOVIM_URL" -o "$tmpdir/nvim.tar.gz"; then
+    die "Falha ao baixar Neovim em ${NEOVIM_URL}. Verifique a versão informada."
+  fi
+  if ! tar -xzf "$tmpdir/nvim.tar.gz" -C "$tmpdir"; then
+    die "Falha ao extrair o pacote Neovim baixado."
+  fi
 
   sudo rm -rf "${INSTALL_PREFIX}/nvim-linux64"
   sudo mv "$tmpdir/nvim-linux64" "${INSTALL_PREFIX}/nvim-linux64"
   sudo ln -sf "${INSTALL_PREFIX}/nvim-linux64/bin/nvim" "${INSTALL_PREFIX}/bin/nvim"
   log "Neovim instalado em ${INSTALL_PREFIX}/nvim-linux64"
+
+  local cleanup_dir="$tmpdir"
+  trap - EXIT
+  rm -rf "$cleanup_dir"
 }
 
 ensure_cargo() {
@@ -140,6 +155,9 @@ bootstrap_lazyvim() {
 main() {
   require_cmd curl
   require_cmd sudo
+  if ! version_ge "$NEOVIM_VERSION" "$MIN_NEOVIM_VERSION"; then
+    die "NEOVIM_VERSION deve ser >= ${MIN_NEOVIM_VERSION} (atual: ${NEOVIM_VERSION})."
+  fi
 
   local mgr
   mgr="$(detect_pkg_mgr)"
