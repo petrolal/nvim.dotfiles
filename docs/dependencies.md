@@ -28,12 +28,13 @@ This LazyVim-based config relies on a handful of system tools plus Mason-managed
   sudo apt install python3 python3-pip nodejs npm cargo
   # or equivalent pacman/dnf commands
   ```
-- Remote workflow:
+- Remote tooling:
   ```bash
-  sudo apt install openssh sshpass
-  sudo pacman -S openssh sshpass
-  sudo dnf install openssh-clients sshpass
+  sudo apt install openssh-client sshfs       # Debian/Ubuntu
+  sudo pacman -S openssh sshfs                # Arch
+  sudo dnf install openssh-clients fuse-sshfs # Fedora
   ```
+  Adicione `user_allow_other` em `/etc/fuse.conf` para liberar `-o allow_other` (necessita privilégios root).
 - Optional CLI integrations:
   ```bash
   sudo apt install lazygit lazydocker  # use yay/paru on Arch, brew on macOS
@@ -44,7 +45,6 @@ This LazyVim-based config relies on a handful of system tools plus Mason-managed
   ```bash
   cargo install stylua --locked
   ```
-- `distant`: bundled under `remotes/bin`. `init.lua` adds it to PATH; no global install required.
 
 ## Mason-Managed Tools
 Open Neovim and run:
