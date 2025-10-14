@@ -2,19 +2,25 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
-      colorscheme = "tokyonight",
+      colorscheme = "onedark",
     },
   },
 
   {
-    "folke/tokyonight.nvim",
+    "navarasu/onedark.nvim",
+    priority = 1000,
     opts = {
+      style = "cool",
       transparent = true,
-      styles = {
-        sidebars = "transparent",
-        floats = "transparent",
+      term_colors = true,
+      lualine = {
+        transparent = true,
       },
     },
+    config = function(_, opts)
+      local onedark = require("onedark")
+      onedark.setup(opts)
+      onedark.load()
+    end,
   },
 }
-

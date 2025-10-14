@@ -4,7 +4,7 @@ My Touretted Neovim template based on **💤 LazyVim**.
 
 ## Quick Install
 
-Run the bootstrap script (installs Neovim v0.10.2, required packages, and clones this config):
+Run the bootstrap script (installs Neovim v0.11.4, required packages, and clones this config):
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/petrolal/nvim.dotfiles/main/scripts/install.sh | bash
@@ -13,7 +13,7 @@ curl -fsSL https://raw.githubusercontent.com/petrolal/nvim.dotfiles/main/scripts
 Pass `NEOVIM_VERSION` to override the default release:
 
 ```bash
-curl -fsSL https://raw.githubusercontent.com/petrolal/nvim.dotfiles/main/scripts/install.sh | NEOVIM_VERSION=0.9.5 bash
+curl -fsSL https://raw.githubusercontent.com/petrolal/nvim.dotfiles/main/scripts/install.sh | NEOVIM_VERSION=0.10.2 bash
 ```
 
 ## Requirements & Manual Setup

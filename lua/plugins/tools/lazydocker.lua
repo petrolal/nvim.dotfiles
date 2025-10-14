@@ -14,7 +14,7 @@ return {
     keys = function()
       return {
         {
-          "<leader>lo",
+          "<leader>Ld",
           function()
             local Terminal = require("toggleterm.terminal").Terminal
             lazydocker_term = lazydocker_term
@@ -29,7 +29,7 @@ return {
               })
             lazydocker_term:toggle()
           end,
-          desc = "Abrir LazyDocker",
+          desc = "LazyDocker",
         },
       }
     end,

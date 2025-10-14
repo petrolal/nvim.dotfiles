@@ -11,6 +11,10 @@ return {
         "pyright",
         "ruff",
         "debugpy",
+        "jdtls",
+        "java-debug-adapter",
+        "java-test",
+        "google-java-format",
       })
     end,
   },
@@ -18,7 +22,10 @@ return {
     "mason-org/mason-lspconfig.nvim",
     opts = function(_, opts)
       opts.ensure_installed = opts.ensure_installed or {}
-      vim.list_extend(opts.ensure_installed, { "pyright" })
+      vim.list_extend(opts.ensure_installed, {
+        "pyright",
+        "jdtls",
+      })
     end,
   },
 }

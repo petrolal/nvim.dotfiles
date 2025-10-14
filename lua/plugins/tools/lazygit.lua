@@ -13,8 +13,16 @@ return {
     keys = function()
       return {
         { "<leader>gg", false },
-        { "<leader>lg", "<cmd>LazyGit<cr>", desc = "Abrir LazyGit" },
+        { "<leader>Lg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
       }
+    end,
+  },
+  {
+    "folke/which-key.nvim",
+    optional = true,
+    opts = function(_, opts)
+      opts.spec = opts.spec or {}
+      table.insert(opts.spec, { "<leader>L", group = "Lazy Tools" })
     end,
   },
 }

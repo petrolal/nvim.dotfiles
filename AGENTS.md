@@ -1,22 +1,31 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-`init.lua` bootstraps LazyVim and hands off plugin loading to `lua/config/lazy.lua`. Runtime tweaks stay in `lua/config`, where `options.lua`, `keymaps.lua`, and `autocmds.lua` should remain focused so downstream overrides are easy to locate. Plugin specs live in topical files under `lua/plugins` (for example `lua/plugins/core.lua`, `lua/plugins/lsp.lua`), keeping each integration self-contained. Lock state is recorded in `lazy-lock.json`, while root-level `stylua.toml` governs formatting. Use the `remotes/` snapshots for reference only—do not edit them directly.
+- `init.lua` bootstraps LazyVim and loads local modules.
+- `lua/config` holds runtime behavior (`options.lua`, `keymaps.lua`, `autocmds.lua`, plus module-specific toggles under `options/`).
+- `lua/plugins` is split by domain (`ai`, `editor`, `lang`, `lsp`, `tools`, `ui`); keep new specs inside the closest matching folder.
+- `docs/dependencies.md` lists required system packages; update it whenever bootstrap prerequisites change.
+- `scripts/install.sh` provisions Neovim and dependencies; treat it as the source of truth for bootstrap logic.
 
 ## Build, Test, and Development Commands
-- `nvim --headless "+Lazy sync" +qa` installs new plugins and aligns versions with `lazy-lock.json`.
-- `nvim --headless "+Lazy check" +qa` validates specs and reports missing dependencies.
-- `stylua lua` formats all Lua sources according to the shared style.
-Run the first two commands after modifying plugin specs or lockfiles, and rerun `stylua` before staging changes.
+- `bash scripts/install.sh` installs the pinned Neovim release and clones the config for fresh environments.
+- `nvim --headless "+Lazy sync | Lazy check" +qa` refreshes plugins and validates spec syntax without launching the UI.
+- `nvim --headless "+MasonUpdate" +qa` ensures external LSP/DAP tools stay current after plugin changes.
+- `stylua lua` formats all Lua modules using the repo settings; run before every commit that touches Lua.
 
 ## Coding Style & Naming Conventions
-Indent with two spaces, wrap lines under 120 characters, and prefer table-based plugin declarations. File and module names stay lowercase with underscores (`lua/plugins/languages.lua`). Place option overrides adjacent to the plugin they affect and document non-obvious defaults with brief comments only when necessary.
+- Follow `stylua.toml`: two-space indentation, 120-character line width, spaces over tabs.
+- Organize new Lua files under `lua/<area>/<topic>.lua`; prefer lowercase snake_case for filenames and local identifiers.
+- Keep module tables returned from plugin specs ordered: metadata, dependencies, opts, then keys/commands for clarity.
+- Document non-obvious logic with concise English comments; avoid duplicating LazyVim defaults unless overridden.
 
 ## Testing Guidelines
-Automated tests are not available, so rely on Lazy health checks. After material changes, execute `nvim --headless "+Lazy sync | Lazy check" +qa` to confirm the configuration loads cleanly. For keymaps or UI tweaks, open Neovim interactively and verify the affected workflows, noting any messages surfaced in `:messages`.
+- After significant changes, run `nvim --headless "+Lazy sync | Lazy check" +qa` to catch plugin regressions early.
+- Launch Neovim and execute `:checkhealth` to verify runtime dependencies; attach outputs to bugfix PRs when relevant.
+- For Mason-managed tooling, run `:MasonInstall`/`:MasonUpdate` interactively to validate new language support paths.
 
 ## Commit & Pull Request Guidelines
-Use the `<type>: <summary>` convention (`fix:`, `feature:`, `hotfix:`) observed in the log. Pull requests should describe motivation, summarize configuration impacts, list headless commands run, and attach screenshots when behavior changes. Keep diffs scoped to the touched module and explain any lockfile updates.
-
-## Agent Workflow Tips
-Start from a fresh branch per task, and avoid touching `lazy-lock.json` unless intentionally updating plugin versions. Cross-check related specs when editing shared modules like `lua/plugins/core.lua` to prevent regressions. Capture reproduction steps and command output in PR descriptions to accelerate reviews.
+- Follow the conventional `<type>: <summary>` format used in history (`feature:`, `fix:`, `docs:`); keep summaries imperative and under 60 characters.
+- Scope commits narrowly (one feature or fix), and mention user-facing changes in the body when needed.
+- PRs should describe motivation, highlight affected plugins or configs, and link related issues; include reproduction steps or screenshots for UX tweaks.
+- Before requesting review, confirm stylua formatting and successful headless Lazy checks; note any skipped verifications explicitly.
