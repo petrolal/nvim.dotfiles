@@ -30,7 +30,7 @@ Configuradas em `lua/plugins/tools/mason.lua`:
 - **Python**: intérprete detectado via `$VIRTUAL_ENV`, `.venv/`, `python3` ou `python` presentes no `PATH` (`lua/plugins/lsp/python.lua:28`–`86`).
 
 ## Integrações Adicionais
-- **ChatGPT.nvim**: defina `OPENAI_API_KEY` no ambiente para habilitar o modelo `gpt-4o-mini` (`lua/plugins/ai/chatgpt.lua:10`–`18`).
+- **Codex (ChatGPT.nvim)**: requer o CLI `codex` instalado e autenticado; variáveis `CODEX_MODEL`, `CODEX_ARGS`, `CODEX_BIN`, `CODEX_MAX_TOKENS` são opcionais (`lua/plugins/ai/codex.lua`).
 - **Remote SSHFS**: requer `sshfs`, chaves (padrão `~/.ssh/id_ed25519`) e montagem com `allow_other` (`lua/plugins/editor/remote-sshfs.lua:12`–`46`).
 - **LazyGit/LazyDocker**: dependem dos executáveis `lazygit` e `lazydocker` no `PATH` (`lua/plugins/tools/lazygit.lua:3`–`16`, `lua/plugins/tools/lazydocker.lua:10`–`31`).
 

@@ -8,7 +8,7 @@ Esta referência lista os atalhos adicionais definidos pela configuração local
 - Integrações com o `which-key` exibem grupos de ajuda como `AI`, `Java` ou `Maven` ao pressionar `<leader>`.
 
 ## AI
-- `<leader>ac` (normal) — Abre a janela do ChatGPT (`ChatGPT.nvim`). Disponível após carregar o plugin; exibido no `which-key` no grupo **Code With AI** (`<leader>a`).
+- `<leader>ac` (normal) — Abre a janela do Codex (wrapper do `ChatGPT.nvim`). Disponível após carregar o plugin; exibido no `which-key` no grupo **Code With AI** (`<leader>a`).
 
 ## Ferramentas de Edição
 - `<leader>fp` (normal) — `Telescope` para localizar arquivos dentro da árvore de plugins gerenciada pelo Lazy (`lua/plugins/editor/telescope.lua`). Útil para inspeção rápida das specs instaladas.
@@ -26,8 +26,8 @@ Esses mapeamentos são registrados durante o `on_attach` do `jdtls` e aparecem n
 - `<leader>jm` (visual) — Extrai método a partir da seleção.
 - `<leader>jR` — Renomeia arquivo usando o suporte do `jdtls`.
 
-### Maven (qualquer buffer com projeto Maven detectado)
-As teclas ficam agrupadas em `<leader>m` pelo `which-key` assim que o evento `LazyVimVeryLazy` ocorre.
+### Maven (buffers dentro de projetos Maven)
+Os atalhos só são registrados quando o buffer atual pertence a um projeto com `pom.xml`/`mvnw` detectado; o `which-key` exibe o grupo `<leader>m` nesses casos.
 - `<leader>mc` — `mvn clean`.
 - `<leader>mb` — `mvn package`.
 - `<leader>mt` — `mvn test`.

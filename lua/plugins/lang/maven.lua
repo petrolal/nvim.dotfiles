@@ -1,9 +1,12 @@
 local is_windows = vim.fn.has("win32") == 1
 local root_markers = { "pom.xml", "mvnw", "mvnw.cmd", ".mvn" }
 
-local function find_project_root()
-  local buf = vim.api.nvim_get_current_buf()
-  local path = vim.api.nvim_buf_get_name(buf)
+local function find_project_root(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if not vim.api.nvim_buf_is_valid(bufnr) then
+    return nil
+  end
+  local path = vim.api.nvim_buf_get_name(bufnr)
   local start_dir = (path ~= "" and vim.fs.dirname(path)) or vim.loop.cwd()
   if not start_dir then
     return nil
@@ -172,10 +175,26 @@ local maven_mappings = {
   { "<leader>mE", run_custom, "Maven: comando personalizado" },
 }
 
-local function register_keymaps()
-  for _, map in ipairs(maven_mappings) do
-    vim.keymap.set("n", map[1], map[2], { desc = map[3] })
+local function apply_buffer_keymaps(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if vim.b[bufnr].maven_keymaps_applied then
+    return
   end
+  for _, map in ipairs(maven_mappings) do
+    vim.keymap.set("n", map[1], map[2], { buffer = bufnr, desc = map[3] })
+  end
+  vim.b[bufnr].maven_keymaps_applied = true
+end
+
+local function remove_buffer_keymaps(bufnr)
+  bufnr = bufnr or vim.api.nvim_get_current_buf()
+  if not vim.b[bufnr].maven_keymaps_applied then
+    return
+  end
+  for _, map in ipairs(maven_mappings) do
+    pcall(vim.keymap.del, "n", map[1], { buffer = bufnr })
+  end
+  vim.b[bufnr].maven_keymaps_applied = false
 end
 
 return {
@@ -183,14 +202,41 @@ return {
     "LazyVim/LazyVim",
     optional = true,
     init = function()
+      local function maybe_apply(event)
+        local buf = event.buf or vim.api.nvim_get_current_buf()
+        if find_project_root(buf) then
+          apply_buffer_keymaps(buf)
+        else
+          remove_buffer_keymaps(buf)
+        end
+      end
+
       local util_ok, util = pcall(require, "lazyvim.util")
       if util_ok and util.on_very_lazy then
-        util.on_very_lazy(register_keymaps)
+        util.on_very_lazy(function()
+          vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged" }, {
+            callback = maybe_apply,
+          })
+          vim.api.nvim_create_autocmd({ "BufDelete" }, {
+            callback = function(event)
+              vim.b[event.buf].maven_keymaps_applied = nil
+            end,
+          })
+        end)
       else
         vim.api.nvim_create_autocmd("User", {
           pattern = "LazyVimVeryLazy",
           once = true,
-          callback = register_keymaps,
+          callback = function()
+            vim.api.nvim_create_autocmd({ "BufEnter", "DirChanged" }, {
+              callback = maybe_apply,
+            })
+            vim.api.nvim_create_autocmd({ "BufDelete" }, {
+              callback = function(event)
+                vim.b[event.buf].maven_keymaps_applied = nil
+              end,
+            })
+          end,
         })
       end
     end,

@@ -1,5 +1,5 @@
 return {
-  { import = "plugins.ai.chatgpt" },
+  { import = "plugins.ai.codex" },
   { import = "plugins.editor.completion" },
   { import = "plugins.editor.telescope" },
   { import = "plugins.editor.remote-sshfs" },

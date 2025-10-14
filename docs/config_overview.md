@@ -20,7 +20,7 @@ Este documento resume a configuração Neovim deste repositório para ajudar na 
 
 ## Plugins em Foco
 ### AI
-- `jackMort/ChatGPT.nvim` (`lua/plugins/ai/chatgpt.lua`): usa `gpt-4o-mini`, leitura da chave via `OPENAI_API_KEY` e atalhos which-key em `<leader>a`.
+- `jackMort/ChatGPT.nvim` (`lua/plugins/ai/codex.lua`): preserva o layout do chat, mas aciona o CLI `codex` local (`<leader>a` mostra o grupo, `<leader>ac` abre a janela).
 
 ### Ferramentas de Edição
 - `remote-sshfs.nvim` monta conexões em `~/remotes`, carrega extensão Telescope e oferece atalhos `<leader>rm`/`<leader>ru` para conectar/desmontar.

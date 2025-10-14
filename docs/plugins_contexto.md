@@ -8,10 +8,10 @@ Este guia descreve como os principais plugins e ajustes personalizados desta con
 - As opções adicionais de runtime ficam em `lua/config/options/`, atualmente focadas em autodetectar tipos Terraform/HCL (`terraform_discover.lua`).
 
 ## AI
-- **ChatGPT.nvim** (`lua/plugins/ai/chatgpt.lua`)
-  - Lê a chave via `OPENAI_API_KEY` (`api_key_cmd = "echo $OPENAI_API_KEY"`).
-  - Ajusta o modelo para `gpt-4o-mini` com limite de 800 tokens por resposta.
-  - Integração com `which-key` cria o grupo `<leader>a` e o atalho `<leader>ac` para abrir o chat em modo normal.
+- **Codex (ChatGPT.nvim)** (`lua/plugins/ai/codex.lua`)
+  - Mantém a UI original do ChatGPT.nvim, mas redireciona as requisições para o CLI `codex` (`--model` padrão `o1-mini`).
+  - Permite sobrecarga via `CODEX_MODEL`, `CODEX_ARGS`, `CODEX_BIN`, `CODEX_MAX_TOKENS`.
+  - Grava o histórico USER/ASSISTANT no prompt enviado ao `codex` e mostra o resultado em `<leader>ac`.
 
 ## Ferramentas de Edição
 - **nvim-cmp** (`lua/plugins/editor/completion.lua`)
@@ -36,7 +36,7 @@ Este guia descreve como os principais plugins e ajustes personalizados desta con
 - **Maven** (`lua/plugins/lang/maven.lua`)
   - Executa `mvn`/`./mvnw` via `vim.system`, trabalhando no diretório raiz detectado (busca `pom.xml`, `.mvn`, wrappers).
   - Notifica início e término; abre o quickfix automaticamente com o log se o comando falhar.
-  - Oferece seletores interativos para metas do ciclo de vida, perfis, comandos customizados e execução `spring-boot:run`, com atalhos agrupados em `<leader>m`.
+  - Oferece seletores interativos para metas do ciclo de vida, perfis, comandos customizados e execução `spring-boot:run`; os atalhos `<leader>m…` só aparecem em buffers pertencentes a projetos Maven.
 
 ## LSP
 - **clangd** (`lua/plugins/lsp/clangd.lua`)
