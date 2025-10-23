@@ -13,15 +13,15 @@
     "lazyvim.plugins.extras.editor.snacks_picker",
     "lazyvim.plugins.extras.editor.telescope",
     "lazyvim.plugins.extras.lang.ansible",
+    "lazyvim.plugins.extras.lang.cmake",
     "lazyvim.plugins.extras.lang.docker",
     "lazyvim.plugins.extras.lang.git",
+    "lazyvim.plugins.extras.lang.go",
     "lazyvim.plugins.extras.lang.helm",
-    "lazyvim.plugins.extras.lang.java",
     "lazyvim.plugins.extras.lang.json",
     "lazyvim.plugins.extras.lang.kotlin",
     "lazyvim.plugins.extras.lang.markdown",
     "lazyvim.plugins.extras.lang.python",
-    "lazyvim.plugins.extras.lang.scala",
     "lazyvim.plugins.extras.lang.sql",
     "lazyvim.plugins.extras.lang.terraform",
     "lazyvim.plugins.extras.lang.toml",
@@ -35,7 +35,8 @@
     "lazyvim.plugins.extras.util.dot",
     "lazyvim.plugins.extras.util.mini-hipatterns",
     "lazyvim.plugins.extras.util.project",
-    "lazyvim.plugins.extras.util.rest"
+    "lazyvim.plugins.extras.util.rest",
+    "lazyvim.plugins.extras.vscode"
   ],
   "install_version": 8,
   "news": {
