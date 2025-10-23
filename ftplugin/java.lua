@@ -1,6 +1,6 @@
 local map = vim.keymap.set
 
-local java = require("java").setup({
+local java = require("java").setup({
   spring_boot_tools = { enabled = true },
   debug = { enabled = true },
   test = { enabled = true },
