@@ -1,11 +1,8 @@
 return {
-  { import = "plugins.ai.codex" },
   { import = "plugins.editor.completion" },
   { import = "plugins.editor.telescope" },
   { import = "plugins.editor.remote-sshfs" },
   { import = "plugins.lang.json" },
-  { import = "plugins.lang.java" },
-  { import = "plugins.lang.maven" },
   { import = "plugins.lsp.clangd" },
   { import = "plugins.lsp.python" },
   { import = "plugins.tools.lazygit" },
