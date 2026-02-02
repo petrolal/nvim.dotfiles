@@ -1,5 +1,7 @@
 local M = {}
 
+M.keymaps_registered = false
+
 function M.find_pom()
   local cwd = vim.fn.getcwd()
   local pom = vim.fn.findfile("pom.xml", cwd .. ";")
@@ -69,18 +71,18 @@ function M.setup()
   local wk = require("which-key")
   
   wk.add({
-    { "<leader>j", group = "Java", icon = "󰬷" },
-    { "<leader>jm", group = "Maven", icon = "" },
-    { "<leader>jmc", function() M.run_maven_cmd("mvn clean") end, desc = "Maven Clean", icon = "󰃢" },
-    { "<leader>jmC", function() M.run_maven_cmd("mvn compile") end, desc = "Maven Compile", icon = "" },
-    { "<leader>jmt", function() M.run_maven_cmd("mvn test") end, desc = "Maven Test", icon = "󰙨" },
-    { "<leader>jmp", function() M.run_maven_cmd("mvn package") end, desc = "Maven Package", icon = "󰏗" },
-    { "<leader>jmi", function() M.run_maven_cmd("mvn install") end, desc = "Maven Install", icon = "" },
-    { "<leader>jmI", function() M.run_maven_cmd("mvn clean install") end, desc = "Maven Clean Install", icon = "󰚰" },
-    { "<leader>jmv", function() M.run_maven_cmd("mvn verify") end, desc = "Maven Verify", icon = "󰄬" },
-    { "<leader>jmr", function() M.run_maven_cmd("mvn spring-boot:run") end, desc = "Spring Boot Run", icon = "" },
-    { "<leader>jmd", function() M.run_maven_cmd("mvn dependency:tree") end, desc = "Maven Dependency Tree", icon = "" },
-    { "<leader>jmm", M.run_maven_goal, desc = "Maven Goals", icon = "" },
+    { "<leader>j", group = "Java", icon = "󰬷 " },
+    { "<leader>jm", group = "Maven", icon = " " },
+    { "<leader>jmc", function() M.run_maven_cmd("mvn clean") end, desc = "Maven Clean", icon = "󰃢 " },
+    { "<leader>jmC", function() M.run_maven_cmd("mvn compile") end, desc = "Maven Compile", icon = " " },
+    { "<leader>jmt", function() M.run_maven_cmd("mvn test") end, desc = "Maven Test", icon = "󰙨 " },
+    { "<leader>jmp", function() M.run_maven_cmd("mvn package") end, desc = "Maven Package", icon = "󰏗 " },
+    { "<leader>jmi", function() M.run_maven_cmd("mvn install") end, desc = "Maven Install", icon = " " },
+    { "<leader>jmI", function() M.run_maven_cmd("mvn clean install") end, desc = "Maven Clean Install", icon = "󰚰 " },
+    { "<leader>jmv", function() M.run_maven_cmd("mvn verify") end, desc = "Maven Verify", icon = "󰄬 " },
+    { "<leader>jmr", function() M.run_maven_cmd("mvn spring-boot:run") end, desc = "Spring Boot Run", icon = " " },
+    { "<leader>jmd", function() M.run_maven_cmd("mvn dependency:tree") end, desc = "Maven Dependency Tree", icon = " " },
+    { "<leader>jmm", M.run_maven_goal, desc = "Maven Goals", icon = " " },
   })
 end
 
