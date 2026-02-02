@@ -17,16 +17,18 @@ return {
           "<leader>Ld",
           function()
             local Terminal = require("toggleterm.terminal").Terminal
+
             lazydocker_term = lazydocker_term
               or Terminal:new({
                 cmd = "lazydocker",
                 direction = "float",
                 hidden = true,
-                close_on_exit = false,
+                close_on_exit = true, -- ✅ fecha quando sair do lazydocker (q)
                 on_open = function(term)
                   vim.keymap.set("t", "<Esc>", [[<C-\><C-n>]], { buffer = term.bufnr, silent = true })
                 end,
               })
+
             lazydocker_term:toggle()
           end,
           desc = "LazyDocker",
