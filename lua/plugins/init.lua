@@ -1,7 +1,6 @@
 return {
   { import = "plugins.editor.completion" },
   { import = "plugins.editor.telescope" },
-  { import = "plugins.editor.remote-sshfs" },
   { import = "plugins.lang.json" },
   { import = "plugins.lsp.clangd" },
   { import = "plugins.lsp.python" },
@@ -10,4 +9,5 @@ return {
   { import = "plugins.tools.lazydocker" },
   { import = "plugins.ui.dashboard" },
   { import = "plugins.ui.theme" },
+  { import = "plugins.ai.copilot-lsp" },
 }

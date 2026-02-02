@@ -52,8 +52,10 @@ return {
 
       local ok, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
       if ok then
-        local capabilities = cmp_nvim_lsp.default_capabilities()
-        opts.capabilities = vim.tbl_deep_extend("force", opts.capabilities or {}, capabilities)
+        opts.servers = opts.servers or {}
+        opts.servers["*"] = {
+          capabilities = cmp_nvim_lsp.default_capabilities(),
+        }
       end
 
       opts.servers = opts.servers or {}
