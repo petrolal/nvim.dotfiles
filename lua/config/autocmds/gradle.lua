@@ -25,6 +25,16 @@ function M.run_gradle_cmd(cmd)
     return
   end
 
+  -- Verifica se gradlew existe e é executável
+  local gradlew = vim.fn.getcwd() .. "/gradlew"
+  local gradlew_exists = vim.fn.filereadable(gradlew) == 1
+  local gradlew_executable = vim.fn.executable(gradlew) == 1
+  
+  -- Se gradlew existe mas não é executável, torna executável
+  if gradlew_exists and not gradlew_executable then
+    vim.fn.system("chmod +x " .. gradlew)
+  end
+
   -- Cria split horizontal embaixo (como VSCode)
   vim.cmd("botright 15split")
   local win = vim.api.nvim_get_current_win()
