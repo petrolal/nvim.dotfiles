@@ -5,6 +5,15 @@ M.keymaps_registered = false
 function M.find_pom()
   local cwd = vim.fn.getcwd()
   local pom = vim.fn.findfile("pom.xml", cwd .. ";")
+  
+  -- Se não encontrou, tenta a partir do arquivo atual (caso esteja editando)
+  if pom == "" then
+    local current_file = vim.fn.expand("%:p:h")
+    if current_file ~= "" then
+      pom = vim.fn.findfile("pom.xml", current_file .. ";")
+    end
+  end
+  
   return pom ~= ""
 end
 
@@ -84,6 +93,8 @@ function M.setup()
     { "<leader>jmd", function() M.run_maven_cmd("mvn dependency:tree") end, desc = "Maven Dependency Tree", icon = " " },
     { "<leader>jmm", M.run_maven_goal, desc = "Maven Goals", icon = " " },
   })
+  
+  M.keymaps_registered = true
 end
 
 return M
