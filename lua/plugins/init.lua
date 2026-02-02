@@ -10,4 +10,5 @@ return {
   { import = "plugins.ui.dashboard" },
   { import = "plugins.ui.theme" },
   { import = "plugins.ai.copilot-lsp" },
+  { import = "plugins.ai.copilot-cli" },
 }
