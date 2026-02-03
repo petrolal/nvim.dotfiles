@@ -56,26 +56,74 @@ function M.run_gradle_cmd(cmd)
   vim.cmd("startinsert")
 end
 
+function M.get_gradle_tasks()
+  local gradlew = vim.fn.getcwd() .. "/gradlew"
+  local gradlew_exists = vim.fn.filereadable(gradlew) == 1
+  
+  if gradlew_exists then
+    local gradlew_executable = vim.fn.executable(gradlew) == 1
+    if not gradlew_executable then
+      vim.fn.system("chmod +x " .. gradlew)
+    end
+  end
+
+  local cmd = gradlew_exists and "./gradlew tasks --all" or "gradle tasks --all"
+  local output = vim.fn.system(cmd)
+  
+  if vim.v.shell_error ~= 0 then
+    vim.notify("Failed to fetch Gradle tasks", vim.log.levels.ERROR)
+    return {}
+  end
+
+  local tasks = {}
+  local in_tasks_section = false
+  
+  for line in output:gmatch("[^\r\n]+") do
+    if line:match("^%-%-%-%-") or line:match("^All tasks") or line:match("^Build tasks") or line:match("^[A-Z][a-z]+ tasks") then
+      in_tasks_section = true
+    elseif line:match("^$") or line:match("^To see all tasks") then
+      in_tasks_section = false
+    elseif in_tasks_section then
+      local task = line:match("^(%S+)%s*%-")
+      if task and not task:match("^%-") and not task:match("^To") and not task:match("^Pattern") then
+        table.insert(tasks, task)
+      end
+    end
+  end
+
+  -- Remove duplicatas
+  local unique_tasks = {}
+  local seen = {}
+  for _, task in ipairs(tasks) do
+    if not seen[task] then
+      table.insert(unique_tasks, task)
+      seen[task] = true
+    end
+  end
+
+  -- Adiciona combinações úteis
+  if #unique_tasks > 0 then
+    table.insert(unique_tasks, 1, "clean build")
+    table.insert(unique_tasks, 1, "clean test")
+  end
+
+  return unique_tasks
+end
+
 function M.run_gradle_task()
   if not M.find_gradle() then
     vim.notify("No build.gradle or build.gradle.kts found in project", vim.log.levels.WARN)
     return
   end
 
-  local tasks = {
-    "clean",
-    "build",
-    "test",
-    "assemble",
-    "check",
-    "bootRun",
-    "bootJar",
-    "dependencies",
-    "tasks",
-    "clean build",
-    "clean test",
-    "clean bootRun",
-  }
+  vim.notify("Loading Gradle tasks...", vim.log.levels.INFO)
+  
+  local tasks = M.get_gradle_tasks()
+  
+  if #tasks == 0 then
+    vim.notify("No Gradle tasks found", vim.log.levels.WARN)
+    return
+  end
 
   vim.ui.select(tasks, {
     prompt = "Select Gradle Task:",

@@ -8,7 +8,7 @@ return {
   { import = "plugins.tools.mason" },
   { import = "plugins.tools.lazydocker" },
   { import = "plugins.ui.dashboard" },
-  { import = "plugins.ui.theme" },
+  { import = "plugins.ui.dankcolors" },
   { import = "plugins.ai.copilot-lsp" },
   { import = "plugins.ai.copilot-cli" },
 }
