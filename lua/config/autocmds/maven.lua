@@ -44,25 +44,95 @@ function M.run_maven_cmd(cmd)
   vim.cmd("startinsert")
 end
 
+function M.get_maven_goals()
+  local cwd = vim.fn.getcwd()
+  local pom_path = vim.fn.findfile("pom.xml", cwd .. ";")
+  
+  if pom_path == "" then
+    local current_file = vim.fn.expand("%:p:h")
+    if current_file ~= "" then
+      pom_path = vim.fn.findfile("pom.xml", current_file .. ";")
+    end
+  end
+
+  -- Goals básicos do Maven
+  local goals = {
+    "clean",
+    "validate",
+    "compile",
+    "test",
+    "package",
+    "verify",
+    "install",
+    "deploy",
+    "clean compile",
+    "clean test",
+    "clean package",
+    "clean install",
+    "clean verify",
+  }
+
+  -- Lê o pom.xml para detectar plugins
+  if pom_path ~= "" then
+    local pom_content = table.concat(vim.fn.readfile(pom_path), "\n")
+    
+    -- Detecta plugins conhecidos e adiciona goals específicos
+    local plugin_goals = {}
+    
+    if pom_content:match("spring%-boot%-maven%-plugin") then
+      table.insert(plugin_goals, "spring-boot:run")
+      table.insert(plugin_goals, "spring-boot:build-image")
+      table.insert(plugin_goals, "spring-boot:repackage")
+    end
+    
+    if pom_content:match("quarkus%-maven%-plugin") then
+      table.insert(plugin_goals, "quarkus:dev")
+      table.insert(plugin_goals, "quarkus:build")
+      table.insert(plugin_goals, "quarkus:test")
+    end
+    
+    if pom_content:match("maven%-surefire%-plugin") or pom_content:match("<test") then
+      table.insert(plugin_goals, "test-compile")
+      table.insert(plugin_goals, "surefire:test")
+    end
+    
+    if pom_content:match("maven%-failsafe%-plugin") then
+      table.insert(plugin_goals, "failsafe:integration-test")
+      table.insert(plugin_goals, "verify")
+    end
+    
+    if pom_content:match("exec%-maven%-plugin") then
+      table.insert(plugin_goals, "exec:java")
+      table.insert(plugin_goals, "exec:exec")
+    end
+    
+    -- Adiciona goals de dependências (sempre úteis)
+    table.insert(plugin_goals, "dependency:tree")
+    table.insert(plugin_goals, "dependency:analyze")
+    table.insert(plugin_goals, "dependency:resolve")
+    
+    -- Adiciona goals de help
+    table.insert(plugin_goals, "help:effective-pom")
+    table.insert(plugin_goals, "help:active-profiles")
+    
+    -- Merge com goals básicos
+    for _, goal in ipairs(plugin_goals) do
+      table.insert(goals, goal)
+    end
+  end
+
+  return goals
+end
+
 function M.run_maven_goal()
   if not M.find_pom() then
     vim.notify("No pom.xml found in project", vim.log.levels.WARN)
     return
   end
 
-  local goals = {
-    "clean",
-    "compile",
-    "test",
-    "package",
-    "install",
-    "verify",
-    "clean install",
-    "clean package",
-    "spring-boot:run",
-    "dependency:tree",
-    "clean test",
-  }
+  vim.notify("Loading Maven goals...", vim.log.levels.INFO)
+  
+  local goals = M.get_maven_goals()
 
   vim.ui.select(goals, {
     prompt = "Select Maven Goal:",
