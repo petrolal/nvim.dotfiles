@@ -86,15 +86,14 @@ function M.load()
   -- Force rounded borders globally (premium feel)
   vim.o.winborder = "rounded"
   
-  -- Smart background logic for transparency
+  -- Smart background logic for transparency (CRITICAL: Normal and NormalNC MUST match)
   local bg = M.opts.transparent and palette.none or palette.bg
-  local bg_inactive = M.opts.transparent and palette.none or palette.bg_inactive
   local bg_sidebar = M.opts.transparent and "#0D1620" or palette.bg_sidebar  -- Keep slight tint for depth
   local bg_float = M.opts.transparent and "#162230" or palette.bg_float      -- Subtle glass, never NONE
   
   -- Editor highlights (neutral, calm, ink-like)
   hi("Normal", { fg = palette.fg, bg = bg })
-  hi("NormalNC", { fg = palette.fg_dim, bg = bg_inactive })  -- Dimmed inactive windows (backdrop)
+  hi("NormalNC", { fg = palette.fg_dim, bg = bg })  -- MUST match Normal.bg to prevent float artifacts
   hi("Cursor", { fg = palette.bg, bg = palette.fg })
   hi("lCursor", { fg = palette.bg, bg = palette.fg })
   hi("CursorLine", { bg = palette.bg_cursorline })
@@ -296,8 +295,8 @@ function M.load()
   hi("LspCodeLens", { fg = palette.comment, italic = true })
   hi("LspInlayHint", { fg = palette.gray_dim, bg = palette.none, italic = true })
   
-  hi("LspInfoBorder", { link = "FloatBorder" })
-  hi("LspInfoTitle", { link = "FloatTitle" })
+  hi("LspInfoBorder", { fg = palette.border, bg = bg_float })
+  hi("LspInfoTitle", { fg = palette.orange, bg = bg_float, bold = true })
   
   -- LSP Diagnostics (calm authority, not screaming)
   hi("DiagnosticError", { fg = palette.error })
@@ -320,21 +319,21 @@ function M.load()
   hi("DiagnosticSignInfo", { fg = palette.info, bg = bg })
   hi("DiagnosticSignHint", { fg = palette.hint, bg = bg })
   
-  -- Telescope (premium glass UI, consistent)
-  hi("TelescopeNormal", { link = "NormalFloat" })
-  hi("TelescopePromptNormal", { link = "NormalFloat" })
-  hi("TelescopeResultsNormal", { link = "NormalFloat" })
-  hi("TelescopePreviewNormal", { link = "NormalFloat" })
+  -- Telescope (premium glass UI - direct values for consistency)
+  hi("TelescopeNormal", { fg = palette.fg, bg = bg_float })
+  hi("TelescopePromptNormal", { fg = palette.fg, bg = bg_float })
+  hi("TelescopeResultsNormal", { fg = palette.fg, bg = bg_float })
+  hi("TelescopePreviewNormal", { fg = palette.fg, bg = bg_float })
   
-  hi("TelescopeBorder", { link = "FloatBorder" })
-  hi("TelescopePromptBorder", { link = "FloatBorder" })
-  hi("TelescopeResultsBorder", { link = "FloatBorder" })
-  hi("TelescopePreviewBorder", { link = "FloatBorder" })
+  hi("TelescopeBorder", { fg = palette.border, bg = bg_float })
+  hi("TelescopePromptBorder", { fg = palette.border, bg = bg_float })
+  hi("TelescopeResultsBorder", { fg = palette.border, bg = bg_float })
+  hi("TelescopePreviewBorder", { fg = palette.border, bg = bg_float })
   
-  hi("TelescopeTitle", { link = "FloatTitle" })
-  hi("TelescopePromptTitle", { link = "FloatTitle" })
-  hi("TelescopeResultsTitle", { link = "FloatTitle" })
-  hi("TelescopePreviewTitle", { link = "FloatTitle" })
+  hi("TelescopeTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("TelescopePromptTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("TelescopeResultsTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("TelescopePreviewTitle", { fg = palette.orange, bg = bg_float, bold = true })
   
   hi("TelescopeSelection", { fg = palette.fg, bg = palette.bg_selection })
   hi("TelescopeSelectionCaret", { fg = palette.orange, bg = palette.bg_selection })
@@ -359,10 +358,10 @@ function M.load()
   hi("NeoTreeSymbolicLinkTarget", { fg = palette.cyan })
   hi("NeoTreeWinSeparator", { fg = palette.gray_dim, bg = bg })
   
-  hi("NeoTreeFloatNormal", { link = "NormalFloat" })
-  hi("NeoTreeFloatBorder", { link = "FloatBorder" })
-  hi("NeoTreeFloatTitle", { link = "FloatTitle" })
-  hi("NeoTreeTitleBar", { link = "FloatTitle" })
+  hi("NeoTreeFloatNormal", { fg = palette.fg, bg = bg_float })
+  hi("NeoTreeFloatBorder", { fg = palette.border, bg = bg_float })
+  hi("NeoTreeFloatTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("NeoTreeTitleBar", { fg = palette.orange, bg = bg_float, bold = true })
   
   hi("NvimTreeNormal", { fg = palette.fg, bg = bg_sidebar })
   hi("NvimTreeFolderIcon", { fg = palette.blue })
@@ -382,22 +381,22 @@ function M.load()
   hi("GitSignsDelete", { fg = palette.git_delete, bg = palette.none })
   hi("GitSignsCurrentLineBlame", { fg = palette.comment, italic = true })
   
-  -- WhichKey (explicit override for lightweight glass)
-  hi("WhichKeyFloat", { link = "NormalFloat" })     -- Glass background
-  hi("WhichKeyNormal", { link = "NormalFloat" })    -- Ensure consistency
-  hi("WhichKeyBorder", { link = "FloatBorder" })    -- Soft orange border
-  hi("WhichKeyTitle", { link = "FloatTitle" })
+  -- WhichKey (FORCE exact same background as floats - NO links, direct values)
+  hi("WhichKeyFloat", { fg = palette.fg, bg = bg_float })
+  hi("WhichKeyNormal", { fg = palette.fg, bg = bg_float })
+  hi("WhichKeyBorder", { fg = palette.border, bg = bg_float })  -- MUST match WhichKeyFloat.bg
+  hi("WhichKeyTitle", { fg = palette.orange, bg = bg_float, bold = true })
   hi("WhichKey", { fg = palette.orange, bold = true })
   hi("WhichKeyGroup", { fg = palette.blue_light })  -- Brighter for hierarchy
   hi("WhichKeyDesc", { fg = palette.fg })
   hi("WhichKeySeparator", { fg = palette.gray })
   hi("WhichKeyValue", { fg = palette.cyan_dim })
   
-  -- CMP (completion - consistent glass)
-  hi("CmpNormal", { link = "NormalFloat" })
-  hi("CmpBorder", { link = "FloatBorder" })
-  hi("CmpDocNormal", { link = "NormalFloat" })
-  hi("CmpDocBorder", { link = "FloatBorder" })
+  -- CMP (completion - direct values for perfect consistency)
+  hi("CmpNormal", { fg = palette.fg, bg = bg_float })
+  hi("CmpBorder", { fg = palette.border, bg = bg_float })
+  hi("CmpDocNormal", { fg = palette.fg, bg = bg_float })
+  hi("CmpDocBorder", { fg = palette.border, bg = bg_float })
   
   hi("CmpItemAbbrDeprecated", { fg = palette.gray, strikethrough = true })
   hi("CmpItemAbbrMatch", { fg = palette.orange, bold = true })
@@ -442,8 +441,8 @@ function M.load()
   hi("AlphaFooter", { fg = palette.comment, italic = true })
   hi("AlphaShortcut", { fg = palette.orange })
   
-  -- Notify (consistent glass)
-  hi("NotifyBackground", { link = "NormalFloat" })
+  -- Notify (direct values for glass consistency)
+  hi("NotifyBackground", { fg = palette.fg, bg = bg_float })
   hi("NotifyERRORBorder", { fg = palette.error, bg = bg_float })
   hi("NotifyWARNBorder", { fg = palette.warning, bg = bg_float })
   hi("NotifyINFOBorder", { fg = palette.info, bg = bg_float })
@@ -455,9 +454,9 @@ function M.load()
   hi("NotifyDEBUGTitle", { fg = palette.gray })
   hi("NotifyTRACETitle", { fg = palette.purple })
   
-  -- Lazy.nvim (consistent glass)
-  hi("LazyNormal", { link = "NormalFloat" })
-  hi("LazyBorder", { link = "FloatBorder" })
+  -- Lazy.nvim (direct values for glass consistency)
+  hi("LazyNormal", { fg = palette.fg, bg = bg_float })
+  hi("LazyBorder", { fg = palette.border, bg = bg_float })
   hi("LazyButton", { fg = palette.fg_dim, bg = palette.bg_visual })
   hi("LazyButtonActive", { fg = palette.fg, bg = palette.orange })
   hi("LazyH1", { fg = palette.fg, bg = palette.orange, bold = true })
@@ -466,9 +465,9 @@ function M.load()
   hi("LazyProgressDone", { fg = palette.orange })
   hi("LazyProgressTodo", { fg = palette.gray_dim })
   
-  -- Mason (consistent glass)
-  hi("MasonNormal", { link = "NormalFloat" })
-  hi("MasonBorder", { link = "FloatBorder" })
+  -- Mason (direct values for glass consistency)
+  hi("MasonNormal", { fg = palette.fg, bg = bg_float })
+  hi("MasonBorder", { fg = palette.border, bg = bg_float })
   hi("MasonHeader", { fg = palette.fg, bg = palette.orange, bold = true })
   hi("MasonHeaderSecondary", { fg = palette.fg, bg = palette.blue })
   hi("MasonHighlight", { fg = palette.orange })
@@ -477,12 +476,12 @@ function M.load()
   hi("MasonMuted", { fg = palette.gray })
   hi("MasonMutedBlock", { bg = palette.bg_visual })
   
-  -- Noice (consistent glass)
-  hi("NoiceCmdlinePopup", { link = "NormalFloat" })
-  hi("NoiceCmdlinePopupBorder", { link = "FloatBorder" })
-  hi("NoiceCmdlinePopupTitle", { link = "FloatTitle" })
-  hi("NoiceConfirm", { link = "NormalFloat" })
-  hi("NoiceConfirmBorder", { link = "FloatBorder" })
+  -- Noice (direct values for glass consistency)
+  hi("NoiceCmdlinePopup", { fg = palette.fg, bg = bg_float })
+  hi("NoiceCmdlinePopupBorder", { fg = palette.border, bg = bg_float })
+  hi("NoiceCmdlinePopupTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("NoiceConfirm", { fg = palette.fg, bg = bg_float })
+  hi("NoiceConfirmBorder", { fg = palette.border, bg = bg_float })
   hi("NoiceCmdlineIcon", { fg = palette.orange })
   hi("NoiceCmdlinePrompt", { fg = palette.orange })
   
@@ -516,9 +515,9 @@ function M.load()
   hi("NavicText", { fg = palette.fg_dim })
   hi("NavicSeparator", { fg = palette.gray })
   
-  -- Trouble (consistent glass)
-  hi("TroubleNormal", { link = "NormalFloat" })
-  hi("TroubleBorder", { link = "FloatBorder" })
+  -- Trouble (direct values for glass consistency)
+  hi("TroubleNormal", { fg = palette.fg, bg = bg_float })
+  hi("TroubleBorder", { fg = palette.border, bg = bg_float })
   hi("TroubleText", { fg = palette.fg })
   hi("TroubleCount", { fg = palette.orange })
   
@@ -594,12 +593,36 @@ function M.load()
   vim.g.terminal_color_15 = palette.fg_dim
 end
 
+-- Force WhichKey highlights after any colorscheme reload (prevents plugin overrides)
+local function force_whichkey_float()
+  -- Get current float background from the theme
+  local float_hl = vim.api.nvim_get_hl(0, { name = "NormalFloat" })
+  local bg_float = float_hl.bg
+  local border_hl = vim.api.nvim_get_hl(0, { name = "FloatBorder" })
+  local border_fg = border_hl.fg
+  
+  -- Force WhichKey to use exact same backgrounds
+  vim.api.nvim_set_hl(0, "WhichKeyFloat", { fg = palette.fg, bg = bg_float })
+  vim.api.nvim_set_hl(0, "WhichKeyNormal", { fg = palette.fg, bg = bg_float })
+  vim.api.nvim_set_hl(0, "WhichKeyBorder", { fg = border_fg, bg = bg_float })
+  vim.api.nvim_set_hl(0, "WhichKeyTitle", { fg = palette.orange, bg = bg_float, bold = true })
+end
+
+-- Apply WhichKey float fix on colorscheme changes
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "aws-theme",
+  callback = force_whichkey_float,
+  desc = "Force WhichKey float consistency"
+})
+
 -- Setup function to configure theme options
 function M.setup(opts)
   M.opts = vim.tbl_deep_extend("force", M.opts, opts or {})
   M.load()
+  force_whichkey_float()  -- Ensure WhichKey floats are consistent
 end
 
 M.load()
+force_whichkey_float()  -- Apply immediately on load
 
 return M
