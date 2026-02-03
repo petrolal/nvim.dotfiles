@@ -1,26 +1,33 @@
 local M = {}
 
--- AWS-Inspired Premium Professional Palette
--- Designed for visual excellence and 10+ hour coding sessions
+-- Theme options (configure transparency)
+M.opts = {
+  transparent = false,  -- Set to true for terminal transparency
+}
+
+-- AWS-Inspired Elite Professional Palette
+-- Micro-polished for maximum visual comfort and premium feel
 local palette = {
-  -- Background hierarchy (subtle, layered depth)
-  bg = "#111B26",
-  bg_sidebar = "#0D1620",
-  bg_float = "#162230",
+  -- Background hierarchy (ink-like, neutral, layered)
+  bg = "#121B25",
+  bg_sidebar = "#0E1721",
+  bg_float = "#141E28",         -- Glass effect: barely lighter, ultra-low saturation
+  bg_inactive = "#0F1820",      -- Dimmed for inactive windows (backdrop)
   bg_statusline = "#0A1419",
-  bg_cursorline = "#151F2B",
-  bg_visual = "#1A2C3D",
-  bg_selection = "#1D3042",
+  bg_cursorline = "#171F2D",
+  bg_visual = "#1C2F3E",
+  bg_selection = "#1C2F3E",
   
   -- Foreground (neutral, slightly warm)
   fg = "#D3DAE3",
   fg_dim = "#9FA8B3",
   fg_gutter = "#3A4A58",
   
-  -- Orange (softened, professional)
-  orange = "#E68A2E",
+  -- Orange (refined, softer)
+  orange = "#E48A2A",
   orange_dim = "#CC7625",
   orange_soft = "#D9955C",
+  orange_warm = "#D89548",
   
   -- Syntax colors (heavily desaturated)
   blue = "#5691B8",
@@ -31,8 +38,8 @@ local palette = {
   green = "#6DAA62",
   green_soft = "#7DB772",
   green_dim = "#5E9150",
-  red = "#C86464",
-  red_dim = "#B05454",
+  red = "#BE6060",
+  red_dim = "#A85454",
   purple = "#9D7AB8",
   magenta = "#B879A8",
   yellow = "#CFA15A",
@@ -41,19 +48,19 @@ local palette = {
   gray = "#66707B",
   gray_dim = "#3C4751",
   gray_light = "#7A8694",
-  comment = "#66707B",
+  comment = "#626C76",
   
   -- UI accents (refined)
-  border = "#E68A2E",
+  border = "#D97A1F",           -- Softer orange, guides without dominating
   border_dim = "#456C82",
   
   -- Git colors (muted, professional)
   git_add = "#6DAA62",
   git_change = "#6FA4C6",
-  git_delete = "#C86464",
+  git_delete = "#BE6060",
   
-  -- Diagnostic colors (calm, not alarming)
-  error = "#C86464",
+  -- Diagnostic colors (calm authority)
+  error = "#BE6060",
   warning = "#D9955C",
   info = "#5691B8",
   hint = "#5B9BA0",
@@ -79,29 +86,34 @@ function M.load()
   -- Force rounded borders globally (premium feel)
   vim.o.winborder = "rounded"
   
-  -- Editor highlights (neutral, calm)
-  hi("Normal", { fg = palette.fg, bg = palette.bg })
-  hi("NormalNC", { fg = palette.fg_dim, bg = palette.bg })
+  -- Smart background logic for transparency (CRITICAL: Normal and NormalNC MUST match)
+  local bg = M.opts.transparent and palette.none or palette.bg
+  local bg_sidebar = M.opts.transparent and "#0D1620" or palette.bg_sidebar  -- Keep slight tint for depth
+  local bg_float = M.opts.transparent and "#162230" or palette.bg_float      -- Subtle glass, never NONE
+  
+  -- Editor highlights (neutral, calm, ink-like)
+  hi("Normal", { fg = palette.fg, bg = bg })
+  hi("NormalNC", { fg = palette.fg_dim, bg = bg })  -- MUST match Normal.bg to prevent float artifacts
   hi("Cursor", { fg = palette.bg, bg = palette.fg })
   hi("lCursor", { fg = palette.bg, bg = palette.fg })
   hi("CursorLine", { bg = palette.bg_cursorline })
   hi("CursorLineNr", { fg = palette.orange, bg = palette.bg_cursorline })
-  hi("LineNr", { fg = palette.fg_gutter, bg = palette.none })
-  hi("SignColumn", { fg = palette.fg_gutter, bg = palette.none })
-  hi("EndOfBuffer", { fg = palette.gray_dim, bg = palette.none })
-  hi("VertSplit", { fg = palette.gray_dim, bg = palette.none })
-  hi("WinSeparator", { fg = palette.gray_dim, bg = palette.none })
+  hi("LineNr", { fg = palette.fg_gutter, bg = bg })
+  hi("SignColumn", { fg = palette.fg_gutter, bg = bg })
+  hi("EndOfBuffer", { fg = palette.gray_dim, bg = bg })
+  hi("VertSplit", { fg = palette.gray_dim, bg = bg })
+  hi("WinSeparator", { fg = palette.gray_dim, bg = bg })
   hi("Folded", { fg = palette.gray_light, bg = palette.bg_cursorline })
-  hi("FoldColumn", { fg = palette.gray_dim, bg = palette.none })
+  hi("FoldColumn", { fg = palette.gray_dim, bg = bg })
   hi("ColorColumn", { bg = palette.bg_cursorline })
   
-  -- Floating windows (glass panel effect, elevated)
-  hi("NormalFloat", { fg = palette.fg, bg = palette.bg_float })
-  hi("FloatBorder", { fg = palette.border, bg = palette.bg_float })
-  hi("FloatTitle", { fg = palette.orange, bg = palette.bg_float, bold = true })
-  hi("FloatFooter", { fg = palette.blue_light, bg = palette.bg_float })
+  -- Floating windows (elevated glass panels - CRITICAL: borders must match float bg)
+  hi("NormalFloat", { fg = palette.fg, bg = bg_float })
+  hi("FloatBorder", { fg = palette.border, bg = bg_float })  -- MUST match NormalFloat.bg
+  hi("FloatTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("FloatFooter", { fg = palette.blue_light, bg = bg_float })
   
-  -- Visual selection (soft, not harsh)
+  -- Visual selection (smooth, not harsh)
   hi("Visual", { bg = palette.bg_selection })
   hi("VisualNOS", { bg = palette.bg_visual })
   
@@ -113,9 +125,9 @@ function M.load()
   
   -- Statusline (premium JetBrains-style)
   hi("StatusLine", { fg = palette.fg, bg = palette.bg_statusline })
-  hi("StatusLineNC", { fg = palette.gray, bg = palette.bg_sidebar })
+  hi("StatusLineNC", { fg = palette.gray, bg = bg_sidebar })
   hi("ModeMsg", { fg = palette.orange })
-  hi("MsgArea", { fg = palette.fg, bg = palette.none })
+  hi("MsgArea", { fg = palette.fg, bg = bg })
   
   -- Tabline (minimal, clean)
   hi("TabLine", { fg = palette.gray, bg = palette.bg_statusline })
@@ -123,7 +135,7 @@ function M.load()
   hi("TabLineSel", { fg = palette.orange, bg = palette.bg_cursorline })
   
   -- Popup menu (consistent glass effect)
-  hi("Pmenu", { fg = palette.fg, bg = palette.bg_float })
+  hi("Pmenu", { fg = palette.fg, bg = bg_float })
   hi("PmenuSel", { fg = palette.fg, bg = palette.bg_selection })
   hi("PmenuSbar", { bg = palette.gray_dim })
   hi("PmenuThumb", { bg = palette.orange_dim })
@@ -143,13 +155,13 @@ function M.load()
   hi("Question", { fg = palette.blue })
   hi("NonText", { fg = palette.gray_dim })
   hi("Whitespace", { fg = palette.gray_dim })
-  hi("MatchParen", { fg = palette.orange, underline = true })
+  hi("MatchParen", { fg = palette.orange_warm, bg = palette.bg_cursorline })
   hi("WildMenu", { fg = palette.bg, bg = palette.orange })
   
   -- Diffs (muted, professional)
-  hi("DiffAdd", { fg = palette.git_add, bg = palette.none })
-  hi("DiffChange", { fg = palette.git_change, bg = palette.none })
-  hi("DiffDelete", { fg = palette.git_delete, bg = palette.none })
+  hi("DiffAdd", { fg = palette.git_add, bg = bg })
+  hi("DiffChange", { fg = palette.git_change, bg = bg })
+  hi("DiffDelete", { fg = palette.git_delete, bg = bg })
   hi("DiffText", { fg = palette.yellow, bg = palette.bg_visual })
   
   -- Spelling
@@ -283,10 +295,10 @@ function M.load()
   hi("LspCodeLens", { fg = palette.comment, italic = true })
   hi("LspInlayHint", { fg = palette.gray_dim, bg = palette.none, italic = true })
   
-  hi("LspInfoBorder", { link = "FloatBorder" })
-  hi("LspInfoTitle", { link = "FloatTitle" })
+  hi("LspInfoBorder", { fg = palette.border, bg = bg_float })
+  hi("LspInfoTitle", { fg = palette.orange, bg = bg_float, bold = true })
   
-  -- LSP Diagnostics (calm, professional, not screaming)
+  -- LSP Diagnostics (calm authority, not screaming)
   hi("DiagnosticError", { fg = palette.error })
   hi("DiagnosticWarn", { fg = palette.warning })
   hi("DiagnosticInfo", { fg = palette.info })
@@ -302,26 +314,26 @@ function M.load()
   hi("DiagnosticUnderlineInfo", { sp = palette.info, undercurl = true })
   hi("DiagnosticUnderlineHint", { sp = palette.hint, undercurl = true })
   
-  hi("DiagnosticSignError", { fg = palette.error, bg = palette.none })
-  hi("DiagnosticSignWarn", { fg = palette.warning, bg = palette.none })
-  hi("DiagnosticSignInfo", { fg = palette.info, bg = palette.none })
-  hi("DiagnosticSignHint", { fg = palette.hint, bg = palette.none })
+  hi("DiagnosticSignError", { fg = palette.error, bg = bg })
+  hi("DiagnosticSignWarn", { fg = palette.warning, bg = bg })
+  hi("DiagnosticSignInfo", { fg = palette.info, bg = bg })
+  hi("DiagnosticSignHint", { fg = palette.hint, bg = bg })
   
-  -- Telescope (premium glass UI, consistent)
-  hi("TelescopeNormal", { link = "NormalFloat" })
-  hi("TelescopePromptNormal", { link = "NormalFloat" })
-  hi("TelescopeResultsNormal", { link = "NormalFloat" })
-  hi("TelescopePreviewNormal", { link = "NormalFloat" })
+  -- Telescope (premium glass UI - direct values for consistency)
+  hi("TelescopeNormal", { fg = palette.fg, bg = bg_float })
+  hi("TelescopePromptNormal", { fg = palette.fg, bg = bg_float })
+  hi("TelescopeResultsNormal", { fg = palette.fg, bg = bg_float })
+  hi("TelescopePreviewNormal", { fg = palette.fg, bg = bg_float })
   
-  hi("TelescopeBorder", { link = "FloatBorder" })
-  hi("TelescopePromptBorder", { link = "FloatBorder" })
-  hi("TelescopeResultsBorder", { link = "FloatBorder" })
-  hi("TelescopePreviewBorder", { link = "FloatBorder" })
+  hi("TelescopeBorder", { fg = palette.border, bg = bg_float })
+  hi("TelescopePromptBorder", { fg = palette.border, bg = bg_float })
+  hi("TelescopeResultsBorder", { fg = palette.border, bg = bg_float })
+  hi("TelescopePreviewBorder", { fg = palette.border, bg = bg_float })
   
-  hi("TelescopeTitle", { link = "FloatTitle" })
-  hi("TelescopePromptTitle", { link = "FloatTitle" })
-  hi("TelescopeResultsTitle", { link = "FloatTitle" })
-  hi("TelescopePreviewTitle", { link = "FloatTitle" })
+  hi("TelescopeTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("TelescopePromptTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("TelescopeResultsTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("TelescopePreviewTitle", { fg = palette.orange, bg = bg_float, bold = true })
   
   hi("TelescopeSelection", { fg = palette.fg, bg = palette.bg_selection })
   hi("TelescopeSelectionCaret", { fg = palette.orange, bg = palette.bg_selection })
@@ -330,9 +342,9 @@ function M.load()
   hi("TelescopeMatching", { fg = palette.orange, bold = true })
   hi("TelescopePromptPrefix", { fg = palette.orange })
   
-  -- Neo-tree / NvimTree (sidebar with depth)
-  hi("NeoTreeNormal", { fg = palette.fg, bg = palette.bg_sidebar })
-  hi("NeoTreeNormalNC", { fg = palette.fg_dim, bg = palette.bg_sidebar })
+  -- Neo-tree / NvimTree (sidebar with depth - keep slight tint for layering)
+  hi("NeoTreeNormal", { fg = palette.fg, bg = bg_sidebar })
+  hi("NeoTreeNormalNC", { fg = palette.fg_dim, bg = bg_sidebar })
   hi("NeoTreeDirectoryIcon", { fg = palette.blue })
   hi("NeoTreeDirectoryName", { fg = palette.blue })
   hi("NeoTreeFileName", { fg = palette.fg })
@@ -344,14 +356,14 @@ function M.load()
   hi("NeoTreeGitUntracked", { fg = palette.gray })
   hi("NeoTreeIndentMarker", { fg = palette.gray_dim })
   hi("NeoTreeSymbolicLinkTarget", { fg = palette.cyan })
-  hi("NeoTreeWinSeparator", { fg = palette.gray_dim, bg = palette.none })
+  hi("NeoTreeWinSeparator", { fg = palette.gray_dim, bg = bg })
   
-  hi("NeoTreeFloatNormal", { link = "NormalFloat" })
-  hi("NeoTreeFloatBorder", { link = "FloatBorder" })
-  hi("NeoTreeFloatTitle", { link = "FloatTitle" })
-  hi("NeoTreeTitleBar", { link = "FloatTitle" })
+  hi("NeoTreeFloatNormal", { fg = palette.fg, bg = bg_float })
+  hi("NeoTreeFloatBorder", { fg = palette.border, bg = bg_float })
+  hi("NeoTreeFloatTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("NeoTreeTitleBar", { fg = palette.orange, bg = bg_float, bold = true })
   
-  hi("NvimTreeNormal", { fg = palette.fg, bg = palette.bg_sidebar })
+  hi("NvimTreeNormal", { fg = palette.fg, bg = bg_sidebar })
   hi("NvimTreeFolderIcon", { fg = palette.blue })
   hi("NvimTreeFolderName", { fg = palette.blue })
   hi("NvimTreeOpenedFolderName", { fg = palette.blue_light })
@@ -361,29 +373,30 @@ function M.load()
   hi("NvimTreeGitDirty", { fg = palette.git_change })
   hi("NvimTreeGitDeleted", { fg = palette.git_delete })
   hi("NvimTreeIndentMarker", { fg = palette.gray_dim })
-  hi("NvimTreeWinSeparator", { fg = palette.gray_dim, bg = palette.none })
+  hi("NvimTreeWinSeparator", { fg = palette.gray_dim, bg = bg })
   
   -- Git signs (muted, professional)
-  hi("GitSignsAdd", { fg = palette.git_add, bg = palette.none })
+  hi("GitSignsAdd", { fg = palette.git_add, bg = bg })
   hi("GitSignsChange", { fg = palette.git_change, bg = palette.none })
   hi("GitSignsDelete", { fg = palette.git_delete, bg = palette.none })
   hi("GitSignsCurrentLineBlame", { fg = palette.comment, italic = true })
   
-  -- Which-key (consistent glass)
-  hi("WhichKeyFloat", { link = "NormalFloat" })
-  hi("WhichKeyBorder", { link = "FloatBorder" })
-  hi("WhichKeyTitle", { link = "FloatTitle" })
+  -- WhichKey (FORCE exact same background as floats - NO links, direct values)
+  hi("WhichKeyFloat", { fg = palette.fg, bg = bg_float })
+  hi("WhichKeyNormal", { fg = palette.fg, bg = bg_float })
+  hi("WhichKeyBorder", { fg = palette.border, bg = bg_float })  -- MUST match WhichKeyFloat.bg
+  hi("WhichKeyTitle", { fg = palette.orange, bg = bg_float, bold = true })
   hi("WhichKey", { fg = palette.orange, bold = true })
-  hi("WhichKeyGroup", { fg = palette.blue })
+  hi("WhichKeyGroup", { fg = palette.blue_light })  -- Brighter for hierarchy
   hi("WhichKeyDesc", { fg = palette.fg })
   hi("WhichKeySeparator", { fg = palette.gray })
   hi("WhichKeyValue", { fg = palette.cyan_dim })
   
-  -- CMP (completion - consistent glass)
-  hi("CmpNormal", { link = "NormalFloat" })
-  hi("CmpBorder", { link = "FloatBorder" })
-  hi("CmpDocNormal", { link = "NormalFloat" })
-  hi("CmpDocBorder", { link = "FloatBorder" })
+  -- CMP (completion - direct values for perfect consistency)
+  hi("CmpNormal", { fg = palette.fg, bg = bg_float })
+  hi("CmpBorder", { fg = palette.border, bg = bg_float })
+  hi("CmpDocNormal", { fg = palette.fg, bg = bg_float })
+  hi("CmpDocBorder", { fg = palette.border, bg = bg_float })
   
   hi("CmpItemAbbrDeprecated", { fg = palette.gray, strikethrough = true })
   hi("CmpItemAbbrMatch", { fg = palette.orange, bold = true })
@@ -428,22 +441,22 @@ function M.load()
   hi("AlphaFooter", { fg = palette.comment, italic = true })
   hi("AlphaShortcut", { fg = palette.orange })
   
-  -- Notify (consistent glass)
-  hi("NotifyBackground", { link = "NormalFloat" })
-  hi("NotifyERRORBorder", { fg = palette.error, bg = palette.bg_float })
-  hi("NotifyWARNBorder", { fg = palette.warning, bg = palette.bg_float })
-  hi("NotifyINFOBorder", { fg = palette.info, bg = palette.bg_float })
-  hi("NotifyDEBUGBorder", { fg = palette.gray, bg = palette.bg_float })
-  hi("NotifyTRACEBorder", { fg = palette.purple, bg = palette.bg_float })
+  -- Notify (direct values for glass consistency)
+  hi("NotifyBackground", { fg = palette.fg, bg = bg_float })
+  hi("NotifyERRORBorder", { fg = palette.error, bg = bg_float })
+  hi("NotifyWARNBorder", { fg = palette.warning, bg = bg_float })
+  hi("NotifyINFOBorder", { fg = palette.info, bg = bg_float })
+  hi("NotifyDEBUGBorder", { fg = palette.gray, bg = bg_float })
+  hi("NotifyTRACEBorder", { fg = palette.purple, bg = bg_float })
   hi("NotifyERRORTitle", { fg = palette.error })
   hi("NotifyWARNTitle", { fg = palette.warning })
   hi("NotifyINFOTitle", { fg = palette.info })
   hi("NotifyDEBUGTitle", { fg = palette.gray })
   hi("NotifyTRACETitle", { fg = palette.purple })
   
-  -- Lazy.nvim (consistent glass)
-  hi("LazyNormal", { link = "NormalFloat" })
-  hi("LazyBorder", { link = "FloatBorder" })
+  -- Lazy.nvim (direct values for glass consistency)
+  hi("LazyNormal", { fg = palette.fg, bg = bg_float })
+  hi("LazyBorder", { fg = palette.border, bg = bg_float })
   hi("LazyButton", { fg = palette.fg_dim, bg = palette.bg_visual })
   hi("LazyButtonActive", { fg = palette.fg, bg = palette.orange })
   hi("LazyH1", { fg = palette.fg, bg = palette.orange, bold = true })
@@ -452,9 +465,9 @@ function M.load()
   hi("LazyProgressDone", { fg = palette.orange })
   hi("LazyProgressTodo", { fg = palette.gray_dim })
   
-  -- Mason (consistent glass)
-  hi("MasonNormal", { link = "NormalFloat" })
-  hi("MasonBorder", { link = "FloatBorder" })
+  -- Mason (direct values for glass consistency)
+  hi("MasonNormal", { fg = palette.fg, bg = bg_float })
+  hi("MasonBorder", { fg = palette.border, bg = bg_float })
   hi("MasonHeader", { fg = palette.fg, bg = palette.orange, bold = true })
   hi("MasonHeaderSecondary", { fg = palette.fg, bg = palette.blue })
   hi("MasonHighlight", { fg = palette.orange })
@@ -463,12 +476,12 @@ function M.load()
   hi("MasonMuted", { fg = palette.gray })
   hi("MasonMutedBlock", { bg = palette.bg_visual })
   
-  -- Noice (consistent glass)
-  hi("NoiceCmdlinePopup", { link = "NormalFloat" })
-  hi("NoiceCmdlinePopupBorder", { link = "FloatBorder" })
-  hi("NoiceCmdlinePopupTitle", { link = "FloatTitle" })
-  hi("NoiceConfirm", { link = "NormalFloat" })
-  hi("NoiceConfirmBorder", { link = "FloatBorder" })
+  -- Noice (direct values for glass consistency)
+  hi("NoiceCmdlinePopup", { fg = palette.fg, bg = bg_float })
+  hi("NoiceCmdlinePopupBorder", { fg = palette.border, bg = bg_float })
+  hi("NoiceCmdlinePopupTitle", { fg = palette.orange, bg = bg_float, bold = true })
+  hi("NoiceConfirm", { fg = palette.fg, bg = bg_float })
+  hi("NoiceConfirmBorder", { fg = palette.border, bg = bg_float })
   hi("NoiceCmdlineIcon", { fg = palette.orange })
   hi("NoiceCmdlinePrompt", { fg = palette.orange })
   
@@ -502,9 +515,9 @@ function M.load()
   hi("NavicText", { fg = palette.fg_dim })
   hi("NavicSeparator", { fg = palette.gray })
   
-  -- Trouble (consistent glass)
-  hi("TroubleNormal", { link = "NormalFloat" })
-  hi("TroubleBorder", { link = "FloatBorder" })
+  -- Trouble (direct values for glass consistency)
+  hi("TroubleNormal", { fg = palette.fg, bg = bg_float })
+  hi("TroubleBorder", { fg = palette.border, bg = bg_float })
   hi("TroubleText", { fg = palette.fg })
   hi("TroubleCount", { fg = palette.orange })
   
@@ -580,6 +593,36 @@ function M.load()
   vim.g.terminal_color_15 = palette.fg_dim
 end
 
+-- Force WhichKey highlights after any colorscheme reload (prevents plugin overrides)
+local function force_whichkey_float()
+  -- Get current float background from the theme
+  local float_hl = vim.api.nvim_get_hl(0, { name = "NormalFloat" })
+  local bg_float = float_hl.bg
+  local border_hl = vim.api.nvim_get_hl(0, { name = "FloatBorder" })
+  local border_fg = border_hl.fg
+  
+  -- Force WhichKey to use exact same backgrounds
+  vim.api.nvim_set_hl(0, "WhichKeyFloat", { fg = palette.fg, bg = bg_float })
+  vim.api.nvim_set_hl(0, "WhichKeyNormal", { fg = palette.fg, bg = bg_float })
+  vim.api.nvim_set_hl(0, "WhichKeyBorder", { fg = border_fg, bg = bg_float })
+  vim.api.nvim_set_hl(0, "WhichKeyTitle", { fg = palette.orange, bg = bg_float, bold = true })
+end
+
+-- Apply WhichKey float fix on colorscheme changes
+vim.api.nvim_create_autocmd("ColorScheme", {
+  pattern = "aws-theme",
+  callback = force_whichkey_float,
+  desc = "Force WhichKey float consistency"
+})
+
+-- Setup function to configure theme options
+function M.setup(opts)
+  M.opts = vim.tbl_deep_extend("force", M.opts, opts or {})
+  M.load()
+  force_whichkey_float()  -- Ensure WhichKey floats are consistent
+end
+
 M.load()
+force_whichkey_float()  -- Apply immediately on load
 
 return M
