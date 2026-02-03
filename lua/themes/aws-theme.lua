@@ -1,26 +1,27 @@
 local M = {}
 
--- AWS-Inspired Premium Professional Palette
--- Designed for visual excellence and 10+ hour coding sessions
+-- AWS-Inspired Elite Professional Palette
+-- Micro-polished for maximum visual comfort and premium feel
 local palette = {
-  -- Background hierarchy (subtle, layered depth)
-  bg = "#111B26",
-  bg_sidebar = "#0D1620",
-  bg_float = "#162230",
+  -- Background hierarchy (ink-like, neutral, layered)
+  bg = "#121B25",
+  bg_sidebar = "#0E1721",
+  bg_float = "#1A2738",
   bg_statusline = "#0A1419",
-  bg_cursorline = "#151F2B",
-  bg_visual = "#1A2C3D",
-  bg_selection = "#1D3042",
+  bg_cursorline = "#171F2D",
+  bg_visual = "#1C2F3E",
+  bg_selection = "#1C2F3E",
   
   -- Foreground (neutral, slightly warm)
   fg = "#D3DAE3",
   fg_dim = "#9FA8B3",
   fg_gutter = "#3A4A58",
   
-  -- Orange (softened, professional)
-  orange = "#E68A2E",
+  -- Orange (refined, softer)
+  orange = "#E48A2A",
   orange_dim = "#CC7625",
   orange_soft = "#D9955C",
+  orange_warm = "#D89548",
   
   -- Syntax colors (heavily desaturated)
   blue = "#5691B8",
@@ -31,8 +32,8 @@ local palette = {
   green = "#6DAA62",
   green_soft = "#7DB772",
   green_dim = "#5E9150",
-  red = "#C86464",
-  red_dim = "#B05454",
+  red = "#BE6060",
+  red_dim = "#A85454",
   purple = "#9D7AB8",
   magenta = "#B879A8",
   yellow = "#CFA15A",
@@ -41,19 +42,19 @@ local palette = {
   gray = "#66707B",
   gray_dim = "#3C4751",
   gray_light = "#7A8694",
-  comment = "#66707B",
+  comment = "#626C76",
   
   -- UI accents (refined)
-  border = "#E68A2E",
+  border = "#E48A2A",
   border_dim = "#456C82",
   
   -- Git colors (muted, professional)
   git_add = "#6DAA62",
   git_change = "#6FA4C6",
-  git_delete = "#C86464",
+  git_delete = "#BE6060",
   
-  -- Diagnostic colors (calm, not alarming)
-  error = "#C86464",
+  -- Diagnostic colors (calm authority)
+  error = "#BE6060",
   warning = "#D9955C",
   info = "#5691B8",
   hint = "#5B9BA0",
@@ -79,7 +80,7 @@ function M.load()
   -- Force rounded borders globally (premium feel)
   vim.o.winborder = "rounded"
   
-  -- Editor highlights (neutral, calm)
+  -- Editor highlights (neutral, calm, ink-like)
   hi("Normal", { fg = palette.fg, bg = palette.bg })
   hi("NormalNC", { fg = palette.fg_dim, bg = palette.bg })
   hi("Cursor", { fg = palette.bg, bg = palette.fg })
@@ -95,13 +96,13 @@ function M.load()
   hi("FoldColumn", { fg = palette.gray_dim, bg = palette.none })
   hi("ColorColumn", { bg = palette.bg_cursorline })
   
-  -- Floating windows (glass panel effect, elevated)
+  -- Floating windows (elevated glass panels)
   hi("NormalFloat", { fg = palette.fg, bg = palette.bg_float })
   hi("FloatBorder", { fg = palette.border, bg = palette.bg_float })
   hi("FloatTitle", { fg = palette.orange, bg = palette.bg_float, bold = true })
   hi("FloatFooter", { fg = palette.blue_light, bg = palette.bg_float })
   
-  -- Visual selection (soft, not harsh)
+  -- Visual selection (smooth, not harsh)
   hi("Visual", { bg = palette.bg_selection })
   hi("VisualNOS", { bg = palette.bg_visual })
   
@@ -143,7 +144,7 @@ function M.load()
   hi("Question", { fg = palette.blue })
   hi("NonText", { fg = palette.gray_dim })
   hi("Whitespace", { fg = palette.gray_dim })
-  hi("MatchParen", { fg = palette.orange, underline = true })
+  hi("MatchParen", { fg = palette.orange_warm, bg = palette.bg_cursorline })
   hi("WildMenu", { fg = palette.bg, bg = palette.orange })
   
   -- Diffs (muted, professional)
@@ -286,7 +287,7 @@ function M.load()
   hi("LspInfoBorder", { link = "FloatBorder" })
   hi("LspInfoTitle", { link = "FloatTitle" })
   
-  -- LSP Diagnostics (calm, professional, not screaming)
+  -- LSP Diagnostics (calm authority, not screaming)
   hi("DiagnosticError", { fg = palette.error })
   hi("DiagnosticWarn", { fg = palette.warning })
   hi("DiagnosticInfo", { fg = palette.info })
