@@ -1,0 +1,561 @@
+local M = {}
+
+-- AWS-Inspired Color Palette
+local palette = {
+  -- Core AWS colors
+  navy = "#071521",
+  navy_light = "#0E1F2D",
+  navy_lighter = "#152D42",
+  aws_orange = "#FF9900",
+  aws_orange_dim = "#CC7A00",
+  
+  -- Background variations
+  bg = "#05101C",
+  bg_float = "#08192B",
+  bg_sidebar = "#040D17",
+  bg_statusline = "#020A12",
+  bg_visual = "#152D42",
+  
+  -- Foreground
+  fg = "#F5F7FA",
+  fg_dim = "#C8D0D8",
+  fg_gutter = "#243848",
+  
+  -- Syntax colors
+  blue = "#5A93B8",
+  blue_light = "#6DA8C9",
+  cyan = "#5D969D",
+  cyan_dim = "#52868C",
+  green = "#6FB865",
+  green_soft = "#7CC674",
+  orange = "#FF9900",
+  orange_soft = "#FFB347",
+  red = "#E65C5C",
+  red_dim = "#CC5252",
+  purple = "#B57EC9",
+  magenta = "#D97EC8",
+  yellow = "#F0B83F",
+  
+  -- Grays
+  gray = "#546E7A",
+  gray_dim = "#344A56",
+  gray_darker = "#1F3240",
+  comment = "#5A7285",
+  
+  -- UI accents
+  border = "#FF9900",
+  border_alt = "#5A93B8",
+  cursorline = "#0D2133",
+  selection = "#152D42",
+  
+  -- Git colors
+  git_add = "#6FB865",
+  git_change = "#F0B83F",
+  git_delete = "#E65C5C",
+  
+  -- Diagnostic colors
+  error = "#E65C5C",
+  warning = "#FFB347",
+  info = "#5A93B8",
+  hint = "#5D969D",
+  
+  -- Special
+  none = "NONE",
+}
+
+-- Helper function to set highlights
+local function hi(group, opts)
+  vim.api.nvim_set_hl(0, group, opts)
+end
+
+-- Apply colorscheme
+function M.load()
+  if vim.g.colors_name then
+    vim.cmd("hi clear")
+  end
+  
+  vim.o.termguicolors = true
+  vim.g.colors_name = "aws-theme"
+  
+  -- Editor highlights
+  hi("Normal", { fg = palette.fg, bg = palette.bg })
+  hi("NormalFloat", { fg = palette.fg, bg = palette.bg_float })
+  hi("NormalNC", { fg = palette.fg, bg = palette.bg })
+  hi("Cursor", { fg = palette.bg, bg = palette.fg })
+  hi("CursorLine", { bg = palette.cursorline })
+  hi("CursorLineNr", { fg = palette.aws_orange, bold = true })
+  hi("LineNr", { fg = palette.fg_gutter })
+  hi("SignColumn", { fg = palette.fg_gutter, bg = palette.bg })
+  hi("VertSplit", { fg = palette.gray_darker })
+  hi("WinSeparator", { fg = palette.gray_darker })
+  hi("Folded", { fg = palette.gray, bg = palette.navy_light })
+  hi("FoldColumn", { fg = palette.gray_dim, bg = palette.bg })
+  hi("ColorColumn", { bg = palette.navy_light })
+  
+  -- Visual selection
+  hi("Visual", { bg = palette.selection })
+  hi("VisualNOS", { bg = palette.selection })
+  
+  -- Search
+  hi("Search", { fg = palette.bg, bg = palette.orange })
+  hi("IncSearch", { fg = palette.bg, bg = palette.aws_orange })
+  hi("CurSearch", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("Substitute", { fg = palette.bg, bg = palette.red })
+  
+  -- Statusline
+  hi("StatusLine", { fg = palette.fg, bg = palette.bg_statusline })
+  hi("StatusLineNC", { fg = palette.gray, bg = palette.bg_statusline })
+  hi("ModeMsg", { fg = palette.aws_orange, bold = true })
+  hi("MsgArea", { fg = palette.fg })
+  
+  -- Tabline
+  hi("TabLine", { fg = palette.gray, bg = palette.bg_statusline })
+  hi("TabLineFill", { bg = palette.bg_statusline })
+  hi("TabLineSel", { fg = palette.aws_orange, bg = palette.navy_light, bold = true })
+  
+  -- Popup menu
+  hi("Pmenu", { fg = palette.fg, bg = palette.bg_float })
+  hi("PmenuSel", { fg = palette.bg, bg = palette.aws_orange })
+  hi("PmenuSbar", { bg = palette.gray_darker })
+  hi("PmenuThumb", { bg = palette.gray })
+  hi("PmenuKind", { fg = palette.blue })
+  hi("PmenuKindSel", { fg = palette.bg, bg = palette.aws_orange })
+  hi("PmenuExtra", { fg = palette.gray })
+  hi("PmenuExtraSel", { fg = palette.bg, bg = palette.aws_orange })
+  
+  -- Floats and borders
+  hi("FloatBorder", { fg = palette.border, bg = palette.bg_float })
+  hi("FloatTitle", { fg = palette.aws_orange, bg = palette.bg_float, bold = true })
+  
+  -- Miscellaneous
+  hi("Conceal", { fg = palette.gray })
+  hi("Directory", { fg = palette.blue })
+  hi("SpecialKey", { fg = palette.gray_dim })
+  hi("Title", { fg = palette.aws_orange, bold = true })
+  hi("ErrorMsg", { fg = palette.error })
+  hi("WarningMsg", { fg = palette.warning })
+  hi("MoreMsg", { fg = palette.blue })
+  hi("Question", { fg = palette.blue })
+  hi("NonText", { fg = palette.gray_darker })
+  hi("Whitespace", { fg = palette.gray_darker })
+  hi("MatchParen", { fg = palette.aws_orange, bold = true })
+  hi("WildMenu", { fg = palette.bg, bg = palette.aws_orange })
+  
+  -- Diffs
+  hi("DiffAdd", { fg = palette.git_add, bg = palette.none })
+  hi("DiffChange", { fg = palette.git_change, bg = palette.none })
+  hi("DiffDelete", { fg = palette.git_delete, bg = palette.none })
+  hi("DiffText", { fg = palette.yellow, bg = palette.navy_lighter })
+  
+  -- Spelling
+  hi("SpellBad", { sp = palette.error, undercurl = true })
+  hi("SpellCap", { sp = palette.warning, undercurl = true })
+  hi("SpellLocal", { sp = palette.info, undercurl = true })
+  hi("SpellRare", { sp = palette.hint, undercurl = true })
+  
+  -- Syntax highlighting (standard groups)
+  hi("Comment", { fg = palette.comment, italic = true })
+  hi("Constant", { fg = palette.orange_soft })
+  hi("String", { fg = palette.green })
+  hi("Character", { fg = palette.green_soft })
+  hi("Number", { fg = palette.orange_soft })
+  hi("Boolean", { fg = palette.orange })
+  hi("Float", { fg = palette.orange_soft })
+  
+  hi("Identifier", { fg = palette.fg })
+  hi("Function", { fg = palette.blue_light })
+  
+  hi("Statement", { fg = palette.aws_orange })
+  hi("Conditional", { fg = palette.aws_orange })
+  hi("Repeat", { fg = palette.aws_orange })
+  hi("Label", { fg = palette.aws_orange })
+  hi("Operator", { fg = palette.fg_dim })
+  hi("Keyword", { fg = palette.aws_orange, bold = true })
+  hi("Exception", { fg = palette.red })
+  
+  hi("PreProc", { fg = palette.magenta })
+  hi("Include", { fg = palette.magenta })
+  hi("Define", { fg = palette.magenta })
+  hi("Macro", { fg = palette.magenta })
+  hi("PreCondit", { fg = palette.magenta })
+  
+  hi("Type", { fg = palette.cyan })
+  hi("StorageClass", { fg = palette.cyan_dim })
+  hi("Structure", { fg = palette.cyan })
+  hi("Typedef", { fg = palette.cyan })
+  
+  hi("Special", { fg = palette.purple })
+  hi("SpecialChar", { fg = palette.purple })
+  hi("Tag", { fg = palette.blue })
+  hi("Delimiter", { fg = palette.fg_dim })
+  hi("SpecialComment", { fg = palette.gray, italic = true })
+  hi("Debug", { fg = palette.red })
+  
+  hi("Underlined", { underline = true })
+  hi("Ignore", { fg = palette.gray_dim })
+  hi("Error", { fg = palette.error, bold = true })
+  hi("Todo", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  
+  -- Treesitter
+  hi("@variable", { fg = palette.fg })
+  hi("@variable.builtin", { fg = palette.cyan_dim })
+  hi("@variable.parameter", { fg = palette.fg_dim })
+  hi("@variable.member", { fg = palette.fg })
+  
+  hi("@constant", { fg = palette.orange_soft })
+  hi("@constant.builtin", { fg = palette.orange })
+  hi("@constant.macro", { fg = palette.magenta })
+  
+  hi("@module", { fg = palette.cyan })
+  hi("@label", { fg = palette.aws_orange })
+  
+  hi("@string", { fg = palette.green })
+  hi("@string.regex", { fg = palette.green_soft })
+  hi("@string.escape", { fg = palette.purple })
+  hi("@string.special", { fg = palette.purple })
+  
+  hi("@character", { fg = palette.green_soft })
+  hi("@character.special", { fg = palette.purple })
+  
+  hi("@number", { fg = palette.orange_soft })
+  hi("@boolean", { fg = palette.orange })
+  hi("@float", { fg = palette.orange_soft })
+  
+  hi("@function", { fg = palette.blue_light })
+  hi("@function.builtin", { fg = palette.blue })
+  hi("@function.macro", { fg = palette.magenta })
+  hi("@function.method", { fg = palette.blue_light })
+  
+  hi("@constructor", { fg = palette.cyan })
+  hi("@operator", { fg = palette.fg_dim })
+  
+  hi("@keyword", { fg = palette.aws_orange, bold = true })
+  hi("@keyword.function", { fg = palette.aws_orange })
+  hi("@keyword.operator", { fg = palette.aws_orange })
+  hi("@keyword.return", { fg = palette.aws_orange, bold = true })
+  hi("@keyword.conditional", { fg = palette.aws_orange })
+  hi("@keyword.repeat", { fg = palette.aws_orange })
+  hi("@keyword.import", { fg = palette.magenta })
+  hi("@keyword.exception", { fg = palette.red })
+  
+  hi("@type", { fg = palette.cyan })
+  hi("@type.builtin", { fg = palette.cyan_dim })
+  hi("@type.qualifier", { fg = palette.aws_orange })
+  
+  hi("@attribute", { fg = palette.purple })
+  hi("@property", { fg = palette.fg })
+  
+  hi("@comment", { fg = palette.comment, italic = true })
+  hi("@comment.todo", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("@comment.warning", { fg = palette.bg, bg = palette.warning })
+  hi("@comment.note", { fg = palette.bg, bg = palette.info })
+  hi("@comment.error", { fg = palette.bg, bg = palette.error })
+  
+  hi("@tag", { fg = palette.blue })
+  hi("@tag.attribute", { fg = palette.cyan_dim })
+  hi("@tag.delimiter", { fg = palette.gray })
+  
+  hi("@markup.heading", { fg = palette.aws_orange, bold = true })
+  hi("@markup.strong", { bold = true })
+  hi("@markup.italic", { italic = true })
+  hi("@markup.strikethrough", { strikethrough = true })
+  hi("@markup.underline", { underline = true })
+  hi("@markup.link", { fg = palette.blue, underline = true })
+  hi("@markup.raw", { fg = palette.green })
+  hi("@markup.list", { fg = palette.aws_orange })
+  hi("@markup.quote", { fg = palette.gray, italic = true })
+  
+  hi("@diff.plus", { fg = palette.git_add })
+  hi("@diff.minus", { fg = palette.git_delete })
+  hi("@diff.delta", { fg = palette.git_change })
+  
+  -- LSP (hover and signature help use NormalFloat)
+  hi("LspReferenceText", { bg = palette.navy_lighter })
+  hi("LspReferenceRead", { bg = palette.navy_lighter })
+  hi("LspReferenceWrite", { bg = palette.navy_lighter })
+  
+  hi("LspSignatureActiveParameter", { fg = palette.aws_orange_glow, bold = true })
+  hi("LspCodeLens", { fg = palette.comment })
+  hi("LspInlayHint", { fg = palette.gray_dim, bg = palette.none })
+  
+  -- LSP floating windows
+  hi("LspInfoBorder", { link = "FloatBorder" })
+  hi("LspInfoTitle", { link = "FloatTitle" })
+  
+  -- LSP Diagnostics
+  hi("DiagnosticError", { fg = palette.error })
+  hi("DiagnosticWarn", { fg = palette.warning })
+  hi("DiagnosticInfo", { fg = palette.info })
+  hi("DiagnosticHint", { fg = palette.hint })
+  
+  hi("DiagnosticVirtualTextError", { fg = palette.error, bg = palette.none })
+  hi("DiagnosticVirtualTextWarn", { fg = palette.warning, bg = palette.none })
+  hi("DiagnosticVirtualTextInfo", { fg = palette.info, bg = palette.none })
+  hi("DiagnosticVirtualTextHint", { fg = palette.hint, bg = palette.none })
+  
+  hi("DiagnosticUnderlineError", { sp = palette.error, undercurl = true })
+  hi("DiagnosticUnderlineWarn", { sp = palette.warning, undercurl = true })
+  hi("DiagnosticUnderlineInfo", { sp = palette.info, undercurl = true })
+  hi("DiagnosticUnderlineHint", { sp = palette.hint, undercurl = true })
+  
+  hi("DiagnosticSignError", { fg = palette.error, bg = palette.bg })
+  hi("DiagnosticSignWarn", { fg = palette.warning, bg = palette.bg })
+  hi("DiagnosticSignInfo", { fg = palette.info, bg = palette.bg })
+  hi("DiagnosticSignHint", { fg = palette.hint, bg = palette.bg })
+  
+  -- Telescope
+  hi("TelescopeBorder", { fg = palette.border, bg = palette.bg_float })
+  hi("TelescopePromptBorder", { fg = palette.border, bg = palette.bg_float })
+  hi("TelescopeResultsBorder", { fg = palette.border_alt, bg = palette.bg_float })
+  hi("TelescopePreviewBorder", { fg = palette.border_alt, bg = palette.bg_float })
+  
+  hi("TelescopePromptTitle", { fg = palette.aws_orange, bg = palette.bg_float, bold = true })
+  hi("TelescopeResultsTitle", { fg = palette.blue, bg = palette.bg_float, bold = true })
+  hi("TelescopePreviewTitle", { fg = palette.blue, bg = palette.bg_float, bold = true })
+  
+  hi("TelescopeSelection", { fg = palette.fg, bg = palette.selection, bold = true })
+  hi("TelescopeSelectionCaret", { fg = palette.aws_orange, bg = palette.selection })
+  hi("TelescopeMultiSelection", { fg = palette.blue, bg = palette.selection })
+  
+  hi("TelescopeMatching", { fg = palette.aws_orange, bold = true })
+  hi("TelescopePromptPrefix", { fg = palette.aws_orange, bold = true })
+  
+  hi("TelescopeNormal", { fg = palette.fg, bg = palette.bg_float })
+  hi("TelescopePromptNormal", { fg = palette.fg, bg = palette.bg_float })
+  hi("TelescopeResultsNormal", { fg = palette.fg, bg = palette.bg_float })
+  hi("TelescopePreviewNormal", { fg = palette.fg, bg = palette.bg_float })
+  
+  -- Neo-tree / NvimTree
+  hi("NeoTreeNormal", { fg = palette.fg, bg = palette.bg_sidebar })
+  hi("NeoTreeNormalNC", { fg = palette.fg, bg = palette.bg_sidebar })
+  hi("NeoTreeDirectoryIcon", { fg = palette.blue })
+  hi("NeoTreeDirectoryName", { fg = palette.blue })
+  hi("NeoTreeFileName", { fg = palette.fg })
+  hi("NeoTreeFileIcon", { fg = palette.fg_dim })
+  hi("NeoTreeRootName", { fg = palette.aws_orange, bold = true })
+  hi("NeoTreeGitAdded", { fg = palette.git_add })
+  hi("NeoTreeGitModified", { fg = palette.git_change })
+  hi("NeoTreeGitDeleted", { fg = palette.git_delete })
+  hi("NeoTreeGitUntracked", { fg = palette.gray })
+  hi("NeoTreeIndentMarker", { fg = palette.gray_darker })
+  hi("NeoTreeSymbolicLinkTarget", { fg = palette.cyan })
+  
+  hi("NvimTreeNormal", { fg = palette.fg, bg = palette.bg_sidebar })
+  hi("NvimTreeFolderIcon", { fg = palette.blue })
+  hi("NvimTreeFolderName", { fg = palette.blue })
+  hi("NvimTreeOpenedFolderName", { fg = palette.blue_light, bold = true })
+  hi("NvimTreeRootFolder", { fg = palette.aws_orange, bold = true })
+  hi("NvimTreeSpecialFile", { fg = palette.purple })
+  hi("NvimTreeGitNew", { fg = palette.git_add })
+  hi("NvimTreeGitDirty", { fg = palette.git_change })
+  hi("NvimTreeGitDeleted", { fg = palette.git_delete })
+  hi("NvimTreeIndentMarker", { fg = palette.gray_darker })
+  
+  -- Git signs
+  hi("GitSignsAdd", { fg = palette.git_add, bg = palette.bg })
+  hi("GitSignsChange", { fg = palette.git_change, bg = palette.bg })
+  hi("GitSignsDelete", { fg = palette.git_delete, bg = palette.bg })
+  hi("GitSignsCurrentLineBlame", { fg = palette.comment, italic = true })
+  
+  -- Which-key
+  hi("WhichKey", { fg = palette.aws_orange, bold = true })
+  hi("WhichKeyGroup", { fg = palette.blue })
+  hi("WhichKeyDesc", { fg = palette.fg })
+  hi("WhichKeySeparator", { fg = palette.gray })
+  hi("WhichKeyFloat", { bg = palette.bg_float })
+  hi("WhichKeyBorder", { fg = palette.border, bg = palette.bg_float })
+  hi("WhichKeyValue", { fg = palette.cyan_dim })
+  
+  -- CMP (completion)
+  hi("CmpItemAbbrDeprecated", { fg = palette.gray, strikethrough = true })
+  hi("CmpItemAbbrMatch", { fg = palette.aws_orange, bold = true })
+  hi("CmpItemAbbrMatchFuzzy", { fg = palette.orange_soft })
+  hi("CmpItemKindDefault", { fg = palette.fg_dim })
+  hi("CmpItemMenu", { fg = palette.comment })
+  
+  hi("CmpItemKindVariable", { fg = palette.fg })
+  hi("CmpItemKindFunction", { fg = palette.blue_light })
+  hi("CmpItemKindMethod", { fg = palette.blue_light })
+  hi("CmpItemKindClass", { fg = palette.cyan })
+  hi("CmpItemKindInterface", { fg = palette.cyan })
+  hi("CmpItemKindStruct", { fg = palette.cyan })
+  hi("CmpItemKindModule", { fg = palette.cyan })
+  hi("CmpItemKindKeyword", { fg = palette.aws_orange })
+  hi("CmpItemKindProperty", { fg = palette.fg })
+  hi("CmpItemKindField", { fg = palette.fg })
+  hi("CmpItemKindEnum", { fg = palette.cyan })
+  hi("CmpItemKindSnippet", { fg = palette.purple })
+  hi("CmpItemKindText", { fg = palette.fg_dim })
+  hi("CmpItemKindFile", { fg = palette.blue })
+  hi("CmpItemKindFolder", { fg = palette.blue })
+  hi("CmpItemKindConstant", { fg = palette.orange_soft })
+  hi("CmpItemKindOperator", { fg = palette.fg_dim })
+  hi("CmpItemKindTypeParameter", { fg = palette.cyan_dim })
+  
+  -- Indent Blankline
+  hi("IblIndent", { fg = palette.gray_darker })
+  hi("IblScope", { fg = palette.gray_dim })
+  hi("IndentBlanklineChar", { fg = palette.gray_darker })
+  hi("IndentBlanklineContextChar", { fg = palette.gray_dim })
+  
+  -- Dashboard / Alpha
+  hi("DashboardHeader", { fg = palette.aws_orange, bold = true })
+  hi("DashboardCenter", { fg = palette.blue })
+  hi("DashboardFooter", { fg = palette.comment, italic = true })
+  hi("DashboardShortCut", { fg = palette.aws_orange })
+  
+  hi("AlphaHeader", { fg = palette.aws_orange, bold = true })
+  hi("AlphaButtons", { fg = palette.blue })
+  hi("AlphaFooter", { fg = palette.comment, italic = true })
+  hi("AlphaShortcut", { fg = palette.aws_orange })
+  
+  -- Notify (notification floats)
+  hi("NotifyBackground", { link = "NormalFloat" })
+  hi("NotifyERRORBorder", { fg = palette.error, bg = palette.bg_float })
+  hi("NotifyWARNBorder", { fg = palette.warning, bg = palette.bg_float })
+  hi("NotifyINFOBorder", { fg = palette.info, bg = palette.bg_float })
+  hi("NotifyDEBUGBorder", { fg = palette.gray, bg = palette.bg_float })
+  hi("NotifyTRACEBorder", { fg = palette.purple, bg = palette.bg_float })
+  hi("NotifyERRORTitle", { fg = palette.error, bold = true })
+  hi("NotifyWARNTitle", { fg = palette.warning, bold = true })
+  hi("NotifyINFOTitle", { fg = palette.info, bold = true })
+  hi("NotifyDEBUGTitle", { fg = palette.gray, bold = true })
+  hi("NotifyTRACETitle", { fg = palette.purple, bold = true })
+  
+  -- Lazy.nvim
+  hi("LazyButton", { bg = palette.navy_lighter })
+  hi("LazyButtonActive", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("LazyH1", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("LazyH2", { fg = palette.aws_orange, bold = true })
+  hi("LazySpecial", { fg = palette.blue })
+  hi("LazyProgressDone", { fg = palette.aws_orange })
+  hi("LazyProgressTodo", { fg = palette.gray_dim })
+  
+  -- Mason
+  hi("MasonHeader", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("MasonHeaderSecondary", { fg = palette.bg, bg = palette.blue, bold = true })
+  hi("MasonHighlight", { fg = palette.aws_orange })
+  hi("MasonHighlightBlock", { fg = palette.bg, bg = palette.aws_orange })
+  hi("MasonHighlightBlockBold", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("MasonMuted", { fg = palette.gray })
+  hi("MasonMutedBlock", { bg = palette.navy_lighter })
+  
+  -- Noice
+  hi("NoiceCmdlinePopup", { fg = palette.fg, bg = palette.bg_float })
+  hi("NoiceCmdlinePopupBorder", { fg = palette.border, bg = palette.bg_float })
+  hi("NoiceCmdlineIcon", { fg = palette.aws_orange })
+  hi("NoiceCmdlinePopupTitle", { fg = palette.aws_orange, bold = true })
+  hi("NoiceConfirm", { bg = palette.bg_float })
+  hi("NoiceConfirmBorder", { fg = palette.border, bg = palette.bg_float })
+  
+  -- Navic (breadcrumbs)
+  hi("NavicIconsFile", { fg = palette.blue })
+  hi("NavicIconsModule", { fg = palette.cyan })
+  hi("NavicIconsNamespace", { fg = palette.cyan })
+  hi("NavicIconsPackage", { fg = palette.cyan })
+  hi("NavicIconsClass", { fg = palette.cyan })
+  hi("NavicIconsMethod", { fg = palette.blue_light })
+  hi("NavicIconsProperty", { fg = palette.fg })
+  hi("NavicIconsField", { fg = palette.fg })
+  hi("NavicIconsConstructor", { fg = palette.cyan })
+  hi("NavicIconsEnum", { fg = palette.cyan })
+  hi("NavicIconsInterface", { fg = palette.cyan })
+  hi("NavicIconsFunction", { fg = palette.blue_light })
+  hi("NavicIconsVariable", { fg = palette.fg })
+  hi("NavicIconsConstant", { fg = palette.orange_soft })
+  hi("NavicIconsString", { fg = palette.green })
+  hi("NavicIconsNumber", { fg = palette.orange_soft })
+  hi("NavicIconsBoolean", { fg = palette.orange })
+  hi("NavicIconsArray", { fg = palette.fg })
+  hi("NavicIconsObject", { fg = palette.fg })
+  hi("NavicIconsKey", { fg = palette.fg })
+  hi("NavicIconsNull", { fg = palette.gray })
+  hi("NavicIconsEnumMember", { fg = palette.orange_soft })
+  hi("NavicIconsStruct", { fg = palette.cyan })
+  hi("NavicIconsEvent", { fg = palette.purple })
+  hi("NavicIconsOperator", { fg = palette.fg_dim })
+  hi("NavicIconsTypeParameter", { fg = palette.cyan_dim })
+  hi("NavicText", { fg = palette.fg_dim })
+  hi("NavicSeparator", { fg = palette.gray })
+  
+  -- Trouble (diagnostics float)
+  hi("TroubleNormal", { link = "NormalFloat" })
+  hi("TroubleBorder", { link = "FloatBorder" })
+  hi("TroubleText", { fg = palette.fg })
+  hi("TroubleCount", { fg = palette.aws_orange_glow, bold = true })
+  
+  -- Illuminate
+  hi("IlluminatedWordText", { bg = palette.navy_lighter })
+  hi("IlluminatedWordRead", { bg = palette.navy_lighter })
+  hi("IlluminatedWordWrite", { bg = palette.navy_lighter })
+  
+  -- Hop / Flash
+  hi("HopNextKey", { fg = palette.aws_orange, bold = true })
+  hi("HopNextKey1", { fg = palette.blue_light, bold = true })
+  hi("HopNextKey2", { fg = palette.blue })
+  hi("HopUnmatched", { fg = palette.gray_dim })
+  
+  hi("FlashBackdrop", { fg = palette.gray_dim })
+  hi("FlashLabel", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("FlashMatch", { fg = palette.blue_light })
+  hi("FlashCurrent", { fg = palette.aws_orange })
+  
+  -- Mini.nvim
+  hi("MiniIndentscopeSymbol", { fg = palette.aws_orange })
+  hi("MiniJump", { fg = palette.bg, bg = palette.aws_orange, bold = true })
+  hi("MiniStarterHeader", { fg = palette.aws_orange, bold = true })
+  hi("MiniStarterFooter", { fg = palette.comment, italic = true })
+  hi("MiniStarterCurrent", { fg = palette.fg })
+  hi("MiniStarterSection", { fg = palette.blue })
+  hi("MiniStarterItem", { fg = palette.fg })
+  hi("MiniStarterQuery", { fg = palette.aws_orange })
+  
+  -- Aerial
+  hi("AerialNormal", { fg = palette.fg, bg = palette.bg_sidebar })
+  hi("AerialLine", { bg = palette.selection })
+  hi("AerialGuide", { fg = palette.gray_darker })
+  
+  -- BufferLine
+  hi("BufferLineFill", { bg = palette.bg_statusline })
+  hi("BufferLineBackground", { fg = palette.gray, bg = palette.bg_statusline })
+  hi("BufferLineBufferSelected", { fg = palette.aws_orange, bg = palette.bg, bold = true })
+  hi("BufferLineBufferVisible", { fg = palette.fg_dim, bg = palette.navy_light })
+  hi("BufferLineError", { fg = palette.error, bg = palette.bg_statusline })
+  hi("BufferLineErrorSelected", { fg = palette.error, bg = palette.bg, bold = true })
+  hi("BufferLineWarning", { fg = palette.warning, bg = palette.bg_statusline })
+  hi("BufferLineWarningSelected", { fg = palette.warning, bg = palette.bg, bold = true })
+  hi("BufferLineInfo", { fg = palette.info, bg = palette.bg_statusline })
+  hi("BufferLineInfoSelected", { fg = palette.info, bg = palette.bg, bold = true })
+  hi("BufferLineModified", { fg = palette.git_change, bg = palette.bg_statusline })
+  hi("BufferLineModifiedSelected", { fg = palette.git_change, bg = palette.bg })
+  hi("BufferLineTab", { fg = palette.gray, bg = palette.bg_statusline })
+  hi("BufferLineTabSelected", { fg = palette.aws_orange, bg = palette.bg, bold = true })
+  hi("BufferLineSeparator", { fg = palette.bg_statusline, bg = palette.bg_statusline })
+  hi("BufferLineIndicatorSelected", { fg = palette.aws_orange, bg = palette.bg })
+  
+  -- Gitsigns (additional)
+  hi("GitSignsAddPreview", { fg = palette.git_add, bg = palette.navy_lighter })
+  hi("GitSignsDeletePreview", { fg = palette.git_delete, bg = palette.navy_lighter })
+  
+  -- Terminal colors
+  vim.g.terminal_color_0 = palette.bg
+  vim.g.terminal_color_1 = palette.red
+  vim.g.terminal_color_2 = palette.green
+  vim.g.terminal_color_3 = palette.yellow
+  vim.g.terminal_color_4 = palette.blue
+  vim.g.terminal_color_5 = palette.purple
+  vim.g.terminal_color_6 = palette.cyan
+  vim.g.terminal_color_7 = palette.fg
+  vim.g.terminal_color_8 = palette.gray
+  vim.g.terminal_color_9 = palette.red_dim
+  vim.g.terminal_color_10 = palette.green_soft
+  vim.g.terminal_color_11 = palette.orange
+  vim.g.terminal_color_12 = palette.blue_light
+  vim.g.terminal_color_13 = palette.magenta
+  vim.g.terminal_color_14 = palette.cyan_dim
+  vim.g.terminal_color_15 = palette.fg_dim
+end
+
+M.load()
+
+return M

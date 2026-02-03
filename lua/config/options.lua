@@ -4,3 +4,5 @@
 
 -- Options
 require("config.options.terraform_discover")
+
+-- aws theme for default colorscheme
