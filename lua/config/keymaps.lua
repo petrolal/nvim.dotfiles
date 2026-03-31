@@ -9,8 +9,8 @@ vim.defer_fn(function()
   if ok_maven and maven.find_pom() and not maven.keymaps_registered then
     maven.setup()
   end
-  
-  -- Gradle  
+
+  -- Gradle
   local ok_gradle, gradle = pcall(require, "config.autocmds.gradle")
   if ok_gradle and gradle.find_gradle() and not gradle.keymaps_registered then
     gradle.setup()

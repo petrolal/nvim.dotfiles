@@ -6,7 +6,7 @@ function M.find_gradle()
   local cwd = vim.fn.getcwd()
   local build_gradle = vim.fn.findfile("build.gradle", cwd .. ";")
   local build_gradle_kts = vim.fn.findfile("build.gradle.kts", cwd .. ";")
-  
+
   -- Se não encontrou, tenta a partir do arquivo atual (caso esteja editando)
   if build_gradle == "" and build_gradle_kts == "" then
     local current_file = vim.fn.expand("%:p:h")
@@ -15,7 +15,7 @@ function M.find_gradle()
       build_gradle_kts = vim.fn.findfile("build.gradle.kts", current_file .. ";")
     end
   end
-  
+
   return build_gradle ~= "" or build_gradle_kts ~= ""
 end
 
@@ -29,7 +29,7 @@ function M.run_gradle_cmd(cmd)
   local gradlew = vim.fn.getcwd() .. "/gradlew"
   local gradlew_exists = vim.fn.filereadable(gradlew) == 1
   local gradlew_executable = vim.fn.executable(gradlew) == 1
-  
+
   -- Se gradlew existe mas não é executável, torna executável
   if gradlew_exists and not gradlew_executable then
     vim.fn.system("chmod +x " .. gradlew)
@@ -59,7 +59,7 @@ end
 function M.get_gradle_tasks()
   local gradlew = vim.fn.getcwd() .. "/gradlew"
   local gradlew_exists = vim.fn.filereadable(gradlew) == 1
-  
+
   if gradlew_exists then
     local gradlew_executable = vim.fn.executable(gradlew) == 1
     if not gradlew_executable then
@@ -69,7 +69,7 @@ function M.get_gradle_tasks()
 
   local cmd = gradlew_exists and "./gradlew tasks --all" or "gradle tasks --all"
   local output = vim.fn.system(cmd)
-  
+
   if vim.v.shell_error ~= 0 then
     vim.notify("Failed to fetch Gradle tasks", vim.log.levels.ERROR)
     return {}
@@ -77,9 +77,14 @@ function M.get_gradle_tasks()
 
   local tasks = {}
   local in_tasks_section = false
-  
+
   for line in output:gmatch("[^\r\n]+") do
-    if line:match("^%-%-%-%-") or line:match("^All tasks") or line:match("^Build tasks") or line:match("^[A-Z][a-z]+ tasks") then
+    if
+      line:match("^%-%-%-%-")
+      or line:match("^All tasks")
+      or line:match("^Build tasks")
+      or line:match("^[A-Z][a-z]+ tasks")
+    then
       in_tasks_section = true
     elseif line:match("^$") or line:match("^To see all tasks") then
       in_tasks_section = false
@@ -117,9 +122,9 @@ function M.run_gradle_task()
   end
 
   vim.notify("Loading Gradle tasks...", vim.log.levels.INFO)
-  
+
   local tasks = M.get_gradle_tasks()
-  
+
   if #tasks == 0 then
     vim.notify("No Gradle tasks found", vim.log.levels.WARN)
     return
