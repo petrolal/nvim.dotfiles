@@ -1,9 +1,10 @@
 local config_bin = vim.fn.stdpath("config") .. "/remotes/bin"
+local home = vim.fn.expand("~")
 vim.env.PATH = config_bin
   .. ":"
-  .. os.getenv("HOME")
+  .. home
   .. "/.cargo/bin:"
-  .. os.getenv("HOME")
+  .. home
   .. "/.local/bin:"
   .. (vim.env.PATH or "")
 

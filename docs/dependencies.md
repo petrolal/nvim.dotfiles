@@ -3,55 +3,45 @@
 ## Overview
 This LazyVim-based config relies on a handful of system tools plus Mason-managed language servers and linters. Install the system prerequisites first; Mason will fetch the rest on demand.
 
-## System Packages
-- Git + curl or wget (plugin bootstrap):
-  ```bash
-  sudo apt install git curl # Debian/Ubuntu
-  sudo pacman -S git curl    # Arch
-  sudo dnf install git curl  # Fedora
-  ```
-- Compression utilities (`tar`, `unzip`) usually ship with the distro; otherwise install them via your package manager.
-- Search helpers: `ripgrep` and `fd` (or `fd-find`):
-  ```bash
-  sudo apt install ripgrep fd-find
-  sudo pacman -S ripgrep fd
-  sudo dnf install ripgrep fd-find
-  ```
-- Compiler toolchain for native plugins:
-  ```bash
-  sudo apt install build-essential
-  sudo pacman -S base-devel
-  sudo dnf groupinstall "Development Tools"
-  ```
-- Language hosts:
-  ```bash
-  sudo apt install python3 python3-pip nodejs npm cargo
-  # or equivalent pacman/dnf commands
-  ```
-- Remote tooling:
-  ```bash
-  sudo apt install openssh-client sshfs       # Debian/Ubuntu
-  sudo pacman -S openssh sshfs                # Arch
-  sudo dnf install openssh-clients fuse-sshfs # Fedora
-  ```
-  Adicione `user_allow_other` em `/etc/fuse.conf` para liberar `-o allow_other` (necessita privilégios root).
-- Optional CLI integrations:
-  ```bash
-  sudo apt install lazygit lazydocker  # use yay/paru on Arch, brew on macOS
-  ```
+## System Packages (Windows — Scoop)
 
-## User Binaries
-- `stylua`: install via cargo for formatting
-  ```bash
-  cargo install stylua --locked
-  ```
+Install [Scoop](https://scoop.sh) first, then add the required buckets:
+```powershell
+scoop bucket add extras
+scoop bucket add java
+```
+
+Core tools:
+```powershell
+scoop install git curl unzip ripgrep fd stylua tree-sitter lazygit lazydocker
+```
+
+C compiler (required by nvim-treesitter):
+```powershell
+winget install --id BrechtSanders.WinLibs.POSIX.UCRT -e
+```
+
+Language runtimes:
+```powershell
+scoop install python nodejs
+winget install --id Rustlang.Rustup -e   # installs cargo + rustc
+```
+
+> After installing Rust via rustup, restart your terminal so `~/.cargo/bin` is on PATH.
 
 ## Mason-Managed Tools
-Open Neovim and run:
+
+Mason (`ensure_installed`) handles these automatically on first launch:
+- **Formatters/linters**: `shfmt`, `shellcheck`, `flake8`, `ruff`
+- **LSP servers**: `pyright`
+- **Debug adapters**: `debugpy`
+- **Java**: `jdtls`, `java-debug-adapter`, `java-test`, `google-java-format`
+- **Treesitter**: `tree-sitter-cli` (auto-installed by LazyVim if `tree-sitter` is not in PATH)
+
+To check status or install manually inside Neovim:
 ```vim
-:MasonInstall shellcheck shfmt flake8 pyright ruff debugpy
+:Mason
 ```
-Mason installs into `~/.local/share/nvim/mason`; rerun `:Mason` anytime to check status.
 
 ## Verification
 1. Restart Neovim and execute:
@@ -64,4 +54,4 @@ Mason installs into `~/.local/share/nvim/mason`; rerun `:Mason` anytime to check
    :checkhealth
    :Mason
    ```
-Confirm all providers show **OK**. If any command is missing, install it via your package manager and rerun the checks.
+Confirm all providers show **OK**. If any command is missing, install it via Scoop/winget and rerun the checks.

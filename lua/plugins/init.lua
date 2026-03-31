@@ -1,5 +1,6 @@
 return {
   { import = "plugins.editor.completion" },
+  { import = "plugins.editor.neo-tree" },
   { import = "plugins.editor.telescope" },
   { import = "plugins.lang.json" },
   { import = "plugins.lsp.clangd" },
