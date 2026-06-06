@@ -208,14 +208,24 @@ function M.load()
   hi("NeoTreeNormal", { fg = palette.fg, bg = bg_sidebar })
   hi("NeoTreeNormalNC", { fg = palette.fg_dim, bg = bg_sidebar })
   hi("NeoTreeRootName", { fg = palette.primary, bold = true })
-  hi("NeoTreeDirectoryName", { fg = palette.blue })
+  hi("NeoTreeDirectoryName", { fg = palette.primary })
   hi("NeoTreeFileName", { fg = palette.fg })
+  hi("NeoTreeFileIcon", { fg = palette.primary }) -- Ícones de arquivo em laranja
+  hi("NeoTreeDirectoryIcon", { fg = palette.primary }) -- Ícones de pasta em laranja
+  hi("NeoTreeGitAdded", { fg = palette.primary }) -- Engrenagem em laranja
+  hi("NeoTreeGitModified", { fg = palette.secondary }) -- Chave inglesa em amarelo munição
+  hi("NeoTreeGitDeleted", { fg = palette.error })
 
   -- Dashboard
   hi("AlphaHeader", { fg = palette.primary })
-  hi("AlphaButtons", { fg = palette.blue })
+  hi("AlphaButtons", { fg = palette.fg })
   hi("AlphaFooter", { fg = palette.comment, italic = true })
-  hi("AlphaShortcut", { fg = palette.primary })
+  hi("AlphaShortcut", { fg = palette.secondary })
+  hi("AlphaIcon", { fg = palette.primary })
+
+  -- Lualine / Statusline (Overrides)
+  hi("LualineIcons", { fg = palette.primary })
+  hi("LualineStatus", { fg = palette.secondary })
 end
 
 function M.setup(opts)
