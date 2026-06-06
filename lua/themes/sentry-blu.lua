@@ -19,7 +19,7 @@ local palette = {
   fg_gutter = "#30363D",
 
   primary = "#2A7EBF",   -- Azul Team BLU
-  secondary = "#2ECC71", -- Verde Diagnóstico
+  secondary = "#45B7A0", -- Verde Diagnóstico Teal (menos saturado)
   border = "#34495E",    -- Cinza Azulado
   comment = "#5D6D7E",
   error = "#E67E22",
@@ -27,7 +27,7 @@ local palette = {
   -- Derived colors for compatibility with aws-theme structure
   orange = "#E67E22",
   yellow = "#F1C40F",
-  green = "#2ECC71",
+  green = "#45B7A0",
   purple = "#9B59B6",
   magenta = "#8E44AD",
   cyan = "#1ABC9C",
@@ -228,6 +228,16 @@ function M.load()
   -- Lualine / Statusline (Overrides)
   hi("LualineIcons", { fg = palette.primary })
   hi("LualineStatus", { fg = palette.secondary })
+
+  -- Lazy / Mason / WhichKey (UI states)
+  hi("LazyButtonActive", { fg = palette.bg, bg = palette.secondary })
+  hi("LazyH1", { fg = palette.bg, bg = palette.primary })
+  hi("LazySpecial", { fg = palette.secondary })
+  hi("MasonHeader", { fg = palette.bg, bg = palette.primary })
+  hi("MasonHighlight", { fg = palette.secondary })
+  hi("MasonHighlightBlock", { fg = palette.bg, bg = palette.secondary })
+  hi("WhichKey", { fg = palette.secondary })
+  hi("WhichKeyGroup", { fg = palette.primary })
 end
 
 function M.setup(opts)

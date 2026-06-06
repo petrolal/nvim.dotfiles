@@ -1,10 +1,10 @@
 local banner = [[
- ██████╗███████╗███╗   ██╗████████╗██████╗ ██╗   ██╗██╗   ██╗██╗███╗   ███╗
-██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗╚██╗ ██╔╝██║   ██║██║████╗ ████║
-███████╗█████╗  ██╔██╗ ██║   ██║   ██████╔╝ ╚████╔╝ ██║   ██║██║██╔████╔██║
-╚════██║██╔══╝  ██║╚██╗██║   ██║   ██╔══██╗  ╚██╔╝  ╚██╗ ██╔╝██║██║╚██╔╝██║
-███████║███████╗██║ ╚████║   ██║   ██║  ██║   ██║    ╚████╔╝ ██║██║ ╚═╝ ██║
-╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝     ╚═══╝  ╚═╝╚═╝     ╚═╝
+ ██████╗███████╗███╗   ██╗████████╗██████╗ ██╗   ██╗     ██╗    ██╗██████╗ ███████╗███╗   ██╗ ██████╗██╗  ██╗
+██╔════╝██╔════╝████╗  ██║╚══██╔══╝██╔══██╗╚██╗ ██╔╝     ██║    ██║██╔══██╗██╔════╝████╗  ██║██╔════╝██║  ██║
+███████╗█████╗  ██╔██╗ ██║   ██║   ██████╔╝ ╚████╔╝█████╗██║ █╗ ██║██████╔╝█████╗  ██╔██╗ ██║██║     ███████║
+╚════██║██╔══╝  ██║╚██╗██║   ██║   ██╔══██╗  ╚██╔╝ ╚════╝██║███╗██║██╔══██╗██╔══╝  ██║╚██╗██║██║     ██║  ██║
+███████║███████╗██║ ╚████║   ██║   ██║  ██║   ██║        ╚███╔███╔╝██║  ██║███████╗██║ ╚████║╚██████╗██║  ██║
+╚══════╝╚══════╝╚═╝  ╚═══╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝         ╚══╝╚══╝ ╚═╝  ╚═╝╚══════╝╚═╝  ╚═══╝ ╚═════╝╚═╝  ╚═╝
 
                                             Heavy load commin' throught!
 ]]
@@ -52,10 +52,10 @@ return {
       -- Definir cores baseadas no colorscheme ativo (RED ou BLU)
       local is_blu = vim.g.colors_name == "sentry-blu"
       local primary = is_blu and "#2A7EBF" or "#D35400"
-      local secondary = is_blu and "#2ECC71" or "#F1C40F"
+      local secondary = is_blu and "#45B7A0" or "#F1C40F"
       local fg = is_blu and "#D1D9E0" or "#F0EAD6"
 
-      -- Definir destaques personalizados para o dashboard SentryVim (Industrial TF2)
+      -- Definir destaques personalizados para o dashboard Sentry-Wrench (Industrial TF2)
       vim.api.nvim_set_hl(0, "AlphaHeader", { fg = primary })
       vim.api.nvim_set_hl(0, "AlphaButtons", { fg = fg })
       vim.api.nvim_set_hl(0, "AlphaShortcut", { fg = secondary })
@@ -97,7 +97,7 @@ return {
       end
 
       dashboard.section.footer.val = {
-        "SentryVim "
+        "Sentry-Wrench "
           .. get_git_version()
           .. " • Neovim "
           .. vim.version().major
