@@ -8,8 +8,10 @@ return {
   { import = "plugins.tools.lazygit" },
   { import = "plugins.tools.mason" },
   { import = "plugins.tools.lazydocker" },
+  { import = "plugins.tools.cmake" },
   { import = "plugins.ui.dashboard" },
   { import = "plugins.ui.icons" },
+  { import = "plugins.ui.noice_minimal" },
   { import = "plugins.ai.copilot-lsp" },
   { import = "plugins.ai.copilot-cli" },
 }
