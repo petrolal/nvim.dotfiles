@@ -15,6 +15,8 @@ return {
     priority = 1000,
     lazy = false,
     opts = function(_, opts)
+      opts.explorer = opts.explorer or {}
+      opts.explorer.replace_netrw = true
       opts.dashboard = opts.dashboard or {}
       opts.dashboard.enabled = true
       opts.dashboard.sections = {
