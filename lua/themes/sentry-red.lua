@@ -216,12 +216,18 @@ function M.load()
   hi("NeoTreeGitModified", { fg = palette.secondary }) -- Chave inglesa em amarelo munição
   hi("NeoTreeGitDeleted", { fg = palette.error })
 
-  -- Dashboard
+  -- Dashboard (Alpha & Snacks)
   hi("AlphaHeader", { fg = palette.primary })
   hi("AlphaButtons", { fg = palette.fg })
   hi("AlphaFooter", { fg = palette.comment, italic = true })
   hi("AlphaShortcut", { fg = palette.secondary })
   hi("AlphaIcon", { fg = palette.primary })
+
+  hi("SnacksDashboardHeader", { fg = palette.primary })
+  hi("SnacksDashboardKey", { fg = palette.secondary })
+  hi("SnacksDashboardDesc", { fg = palette.fg })
+  hi("SnacksDashboardFooter", { fg = palette.comment, italic = true })
+  hi("SnacksDashboardSpecial", { fg = palette.primary })
 
   -- Lualine / Statusline (Overrides)
   hi("LualineIcons", { fg = palette.primary })

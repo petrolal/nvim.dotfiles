@@ -2,17 +2,18 @@ return {
   {
     "LazyVim/LazyVim",
     opts = {
+      colorscheme = "sentry-red",
       icons = {
         diagnostics = {
-          Error = "󱗼 ", -- Botão de pânico/ferramenta de erro
-          Warn  = "󱁊 ", -- Alerta técnico
-          Hint  = "󱁐 ", -- Dica técnica
-          Info  = "󰠮 ", -- Informação de sistema
+          Error = "󱗼 ",
+          Warn  = "󱁊 ",
+          Hint  = "󱁐 ",
+          Info  = "󰠮 ",
         },
         git = {
-          added    = "󰒓 ", -- Engrenagem (adição)
-          modified = "󰒔 ", -- Chave inglesa (modificação)
-          removed  = "󱗼 ", -- Ferramenta de remoção
+          added    = "󰒓 ",
+          modified = "󰒔 ",
+          removed  = "󱗼 ",
         },
         kinds = {
           Array         = "󱔐 ",

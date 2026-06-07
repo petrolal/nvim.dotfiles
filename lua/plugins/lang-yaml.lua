@@ -1,6 +1,4 @@
 return {
-  { import = "lazyvim.plugins.extras.lang.yaml" },
-
   -- Configure YAML LSP for CloudFormation
   {
     "neovim/nvim-lspconfig",
