@@ -1,4 +1,4 @@
-# Contexto de Plugins do TurasVim
+# Contexto de Plugins do Sentry-Wrench
 
 Este guia descreve como os principais plugins e ajustes personalizados desta configuração LazyVim trabalham em conjunto. Use-o como referência rápida ao revisar ou estender a configuração.
 
@@ -60,7 +60,7 @@ Este guia descreve como os principais plugins e ajustes personalizados desta con
 
 ## Interface & UX
 - **Dashboard** (`lua/plugins/ui/dashboard.lua`)
-  - Usa `alpha-nvim` com banner ASCII “TurasVim”, botões para ações frequentes (Lazy, ChatGPT, sessão, etc.) e rodapé que exibe versão do TurasVim (tag Git), versão do Neovim, hash curto e data atual.
+  - Usa `alpha-nvim` com banner ASCII “Sentry-Wrench”, botões para ações frequentes (Lazy, ChatGPT, sessão, etc.) e rodapé que exibe versão do Sentry-Wrench (tag Git), versão do Neovim, hash curto e data atual.
   - Fecha a janela `lazy` automaticamente se o dashboard abrir primeiro, reabrindo o Lazy após `AlphaReady` quando apropriado.
 - **Tema OneDark** (`lua/plugins/ui/theme.lua`)
   - Define `onedark` como colorscheme padrão do LazyVim.

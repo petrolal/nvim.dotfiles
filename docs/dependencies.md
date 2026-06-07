@@ -1,4 +1,4 @@
-# TurasVim Dependencies
+# Sentry-Wrench Dependencies
 
 ## Overview
 This LazyVim-based config relies on a handful of system tools plus Mason-managed language servers and linters. Install the system prerequisites first; Mason will fetch the rest on demand.

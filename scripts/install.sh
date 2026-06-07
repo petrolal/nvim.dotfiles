@@ -136,10 +136,10 @@ clone_config() {
     mv "$config_dir" "$backup"
   fi
   if [[ -d "$config_dir/.git" ]]; then
-    log "Config TurasVim já clonada; atualizando"
+    log "Config Sentry-Wrench já clonada; atualizando"
     git -C "$config_dir" pull --ff-only
   else
-    log "Clonando TurasVim para ${config_dir}"
+    log "Clonando Sentry-Wrench para ${config_dir}"
     git clone --depth 1 "$REPO_URL" "$config_dir"
   fi
 }

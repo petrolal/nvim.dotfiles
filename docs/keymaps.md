@@ -1,4 +1,4 @@
-# Keymaps Personalizadas do TurasVim
+# Keymaps Personalizadas do Sentry-Wrench
 
 Esta referência lista os atalhos adicionais definidos pela configuração local. Os mapeamentos padrão do LazyVim continuam disponíveis; aqui estão apenas os atalhos acrescentados ou ajustados neste repositório.
 

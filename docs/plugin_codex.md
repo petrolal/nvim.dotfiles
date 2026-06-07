@@ -1,6 +1,6 @@
 # Codex (Wrapper ChatGPT.nvim)
 
-Este módulo envolve o `jackMort/ChatGPT.nvim`, mas apresenta tudo com a marca Codex dentro do TurasVim.
+Este módulo envolve o `jackMort/ChatGPT.nvim`, mas apresenta tudo com a marca Codex dentro do Sentry-Wrench.
 
 -## Especificação
 - Local: `lua/plugins/ai/codex.lua`.

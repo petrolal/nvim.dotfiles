@@ -1,4 +1,4 @@
-# Dependências do TurasVim
+# Dependências do Sentry-Wrench
 
 Este arquivo consolida todas as dependências necessárias para executar esta configuração com recursos completos (LSP, DAP, IA, SSHFS, Maven etc.). Use junto com os scripts e instruções existentes para preparar novos ambientes.
 
@@ -43,4 +43,4 @@ Configuradas em `lua/plugins/tools/mason.lua`:
    - `<leader>rm` para validar SSHFS.
    - `:LspInfo` em projetos Java/Python/C++ para confirmar servidores.
 
-Com estes pré-requisitos instalados, o TurasVim inicializa todos os LSPs, DAPs, integrações AI/Maven, ferramentas de formatação e recursos de UI sem pendências adicionais.
+Com estes pré-requisitos instalados, o Sentry-Wrench inicializa todos os LSPs, DAPs, integrações AI/Maven, ferramentas de formatação e recursos de UI sem pendências adicionais.

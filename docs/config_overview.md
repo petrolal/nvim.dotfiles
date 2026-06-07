@@ -1,4 +1,4 @@
-# Visão Geral do TurasVim
+# Visão Geral do Sentry-Wrench
 
 Este documento resume a configuração Neovim deste repositório para ajudar na navegação rápida e na compreensão dos principais componentes.
 
@@ -37,7 +37,7 @@ Este documento resume a configuração Neovim deste repositório para ajudar na 
 - Integrações opcionais com LazyGit/LazyDocker via `toggleterm` e atalhos dedicados.
 
 ## Interface & UX
-- Dashboard personalizado com `alpha-nvim` (`lua/plugins/ui/dashboard.lua`): banner “TurasVim”, atalhos para ações frequentes, rodapé com versão Git/Neovim e data atual.
+- Dashboard personalizado com `alpha-nvim` (`lua/plugins/ui/dashboard.lua`): banner “Sentry-Wrench”, atalhos para ações frequentes, rodapé com versão Git/Neovim e data atual.
 - Tema `OneDark` transparente (`lua/plugins/ui/theme.lua`), carregado via `navarasu/onedark.nvim` com ajuste `style = "darker"`, transparência para janelas laterais e integração com o Lualine.
 
 ## Fluxo de Desenvolvimento

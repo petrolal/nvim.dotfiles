@@ -1,4 +1,4 @@
-# P3TROL4LVim
+# Sentry-Wrench
 
 My Touretted Neovim template based on **💤 LazyVim**.
 
