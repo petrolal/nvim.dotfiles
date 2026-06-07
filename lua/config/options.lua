@@ -4,17 +4,3 @@
 
 vim.g.have_nerd_font = true
 vim.g.lazyvim_colorscheme = "sentry-red"
-
--- Terraform auto discover
-vim.filetype.add({
-  extension = {
-    tf = "terraform",
-    tfvars = "terraform",
-    hcl = "hcl",
-    nomad = "hcl",
-  },
-  filename = {
-    [".terraformrc"] = "hcl",
-    ["terraform.rc"] = "hcl",
-  },
-})
