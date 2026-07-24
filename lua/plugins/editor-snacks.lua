@@ -18,7 +18,16 @@ return {
       opts.explorer = opts.explorer or {}
       opts.explorer.replace_netrw = true
       opts.dashboard = opts.dashboard or {}
-      opts.dashboard.enabled = true
+      -- Don't show the dashboard when a directory was passed on the command line
+      -- (e.g. `nvim .`), since the explorer replaces netrw for that buffer instead.
+      local opened_dir = false
+      for _, arg in ipairs(vim.fn.argv() --[[@as string[] ]]) do
+        if vim.fn.isdirectory(arg) == 1 then
+          opened_dir = true
+          break
+        end
+      end
+      opts.dashboard.enabled = not opened_dir
       opts.dashboard.sections = {
         { section = "header" },
         { section = "keys", gap = 1, padding = 1 },
