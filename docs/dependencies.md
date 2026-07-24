@@ -38,6 +38,14 @@ Mason (`ensure_installed`) handles these automatically on first launch:
 - **Java**: `jdtls`, `java-debug-adapter`, `java-test`, `google-java-format`
 - **Treesitter**: `tree-sitter-cli` (auto-installed by LazyVim if `tree-sitter` is not in PATH)
 
+### Kotlin LSP (JDK 21 requirement)
+`kotlin-language-server` bundles `kotlin-compiler` 2.1.0, whose IntelliJ-derived
+`JavaVersion` parser crashes on newer JDK version strings (e.g. Java 25's
+`25.0.3`). `scripts/install.sh` installs a JDK 21 package (`openjdk-21-jdk` /
+`jdk21-openjdk` / `java-21-openjdk`) alongside the system default JDK, and
+`lua/plugins/lsp-kotlin.lua` pins the server's `JAVA_HOME` to that JDK 21
+install regardless of which JDK is the system default.
+
 To check status or install manually inside Neovim:
 ```vim
 :Mason

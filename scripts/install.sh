@@ -39,13 +39,16 @@ detect_pkg_mgr() {
 }
 
 install_packages() {
+  # openjdk-21 is required because kotlin-language-server (Mason-managed) bundles
+  # kotlin-compiler 2.1.0, whose version parser crashes on newer JDKs (e.g. 25).
+  # lua/plugins/lsp-kotlin.lua pins JAVA_HOME to this JDK for the server process.
   local mgr="$1"
   case "$mgr" in
     apt)
       sudo apt-get update
       sudo apt-get install -y \
         git curl wget tar unzip ripgrep fd-find python3 python3-pip nodejs npm cargo \
-        build-essential openssh-client sshpass lazygit lazydocker
+        build-essential openssh-client sshpass lazygit lazydocker openjdk-21-jdk
       # fd-find instala como fdfind; cria link simbólico para fd se necessário
       if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then
         sudo ln -sf "$(command -v fdfind)" /usr/local/bin/fd
@@ -54,7 +57,7 @@ install_packages() {
     pacman)
       sudo pacman -Sy --needed --noconfirm \
         git curl wget ripgrep fd python python-pip nodejs npm rustup base-devel \
-        openssh sshpass lazygit lazydocker
+        openssh sshpass lazygit lazydocker jdk21-openjdk
       if ! command -v cargo >/dev/null 2>&1; then
         log "Habilitando cargo via rustup"
         rustup default stable
@@ -63,7 +66,7 @@ install_packages() {
     dnf)
       sudo dnf install -y \
         git curl wget tar unzip ripgrep fd-find python3 python3-pip nodejs npm cargo \
-        @"Development Tools" openssh-clients sshpass lazygit
+        @"Development Tools" openssh-clients sshpass lazygit java-21-openjdk
       # lazydocker pode não estar disponível; tenta instalar via go se presente
       if ! command -v lazydocker >/dev/null 2>&1; then
         if command -v go >/dev/null 2>&1; then

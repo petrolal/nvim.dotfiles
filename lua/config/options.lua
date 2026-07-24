@@ -3,4 +3,4 @@
 -- Add any additional options here
 
 vim.g.have_nerd_font = true
-vim.g.lazyvim_colorscheme = "sentry-red"
+vim.g.lazyvim_colorscheme = "sentry-blu"
