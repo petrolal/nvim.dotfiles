@@ -199,7 +199,7 @@ return {
         function()
           Snacks.terminal("lazydocker")
         end,
-        desc = "LazyDocker",
+        desc = "Lazy Docker",
       },
       {
         "<C-/>",

@@ -1,6 +1,18 @@
 -- Autocmds are automatically loaded on the VeryLazy event
 -- Default autocmds that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/autocmds.lua
 
+-- Auto-save Java & Kotlin files on FocusLost or BufLeave to trigger ktlint & google-java-format
+vim.api.nvim_create_autocmd({ "FocusLost", "BufLeave" }, {
+  pattern = { "*.kt", "*.java", "*.kts" },
+  callback = function(event)
+    if vim.bo[event.buf].modified and vim.bo[event.buf].buftype == "" then
+      vim.api.nvim_buf_call(event.buf, function()
+        vim.cmd("silent! write")
+      end)
+    end
+  end,
+})
+
 -- Java and Kotlin build tools setup (Maven & Gradle)
 vim.api.nvim_create_autocmd("FileType", {
   pattern = { "java", "kotlin" },
