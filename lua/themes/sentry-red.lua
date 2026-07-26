@@ -18,9 +18,9 @@ local palette = {
   fg_dim = "#C0B8A0",
   fg_gutter = "#5A3A35",
 
-  primary = "#D35400",   -- Laranja Team RED
+  primary = "#D35400", -- Laranja Team RED
   secondary = "#F1C40F", -- Amarelo Munição
-  border = "#8E44AD",    -- Acento
+  border = "#8E44AD", -- Acento
   comment = "#7F8C8D",
   error = "#C0392B",
 

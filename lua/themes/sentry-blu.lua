@@ -18,9 +18,9 @@ local palette = {
   fg_dim = "#9BA3AF",
   fg_gutter = "#30363D",
 
-  primary = "#2A7EBF",   -- Azul Team BLU
+  primary = "#2A7EBF", -- Azul Team BLU
   secondary = "#45B7A0", -- Verde Diagnóstico Teal (menos saturado)
-  border = "#34495E",    -- Cinza Azulado
+  border = "#34495E", -- Cinza Azulado
   comment = "#5D6D7E",
   error = "#E67E22",
 

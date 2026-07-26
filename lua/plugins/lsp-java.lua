@@ -26,7 +26,14 @@ return {
         end
       end
 
-      -- 2. Configure Java Runtimes & JDTLS options
+      -- 2. Fallback root_dir for standalone Java files outside traditional project roots
+      local orig_root_dir = opts.root_dir
+      opts.root_dir = function(fname)
+        local root = orig_root_dir and orig_root_dir(fname)
+        return root or vim.fs.dirname(fname) or vim.fn.getcwd()
+      end
+
+      -- 3. Configure Java Runtimes & JDTLS options
       local java21_path = "/usr/lib/jvm/java-21-openjdk-amd64"
       local runtimes = {}
       if vim.fn.isdirectory(java21_path) == 1 then
