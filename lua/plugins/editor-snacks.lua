@@ -21,7 +21,9 @@ return {
       -- Don't show the dashboard when a directory was passed on the command line
       -- (e.g. `nvim .`), since the explorer replaces netrw for that buffer instead.
       local opened_dir = false
-      for _, arg in ipairs(vim.fn.argv() --[[@as string[] ]]) do
+      for _, arg in
+        ipairs(vim.fn.argv() --[[@as string[] ]])
+      do
         if vim.fn.isdirectory(arg) == 1 then
           opened_dir = true
           break
@@ -45,7 +47,17 @@ return {
           return {
             align = "center",
             text = {
-              { "SENTRY-WRENCH [" .. (is_blu and (is_blu and "BLU" or "RED") or "RED") .. "] • " .. version .. " • " .. commit .. " • " .. date, hl = "SnacksDashboardFooter" },
+              {
+                "SENTRY-WRENCH ["
+                  .. (is_blu and (is_blu and "BLU" or "RED") or "RED")
+                  .. "] • "
+                  .. version
+                  .. " • "
+                  .. commit
+                  .. " • "
+                  .. date,
+                hl = "SnacksDashboardFooter",
+              },
             },
           }
         end,
@@ -53,11 +65,39 @@ return {
       opts.dashboard.preset = opts.dashboard.preset or {}
       opts.dashboard.preset.header = banner
       opts.dashboard.preset.keys = {
-        { icon = " ", key = "f", desc = "Find File", action = function() Snacks.picker.files() end },
+        {
+          icon = " ",
+          key = "f",
+          desc = "Find File",
+          action = function()
+            Snacks.picker.files()
+          end,
+        },
         { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-        { icon = "󰄉 ", key = "r", desc = "Recent Files", action = function() Snacks.picker.recent() end },
-        { icon = " ", key = "g", desc = "Find Text", action = function() Snacks.picker.grep() end },
-        { icon = " ", key = "c", desc = "Config", action = function() Snacks.picker.files({ cwd = vim.fn.stdpath("config") }) end },
+        {
+          icon = "󰄉 ",
+          key = "r",
+          desc = "Recent Files",
+          action = function()
+            Snacks.picker.recent()
+          end,
+        },
+        {
+          icon = " ",
+          key = "g",
+          desc = "Find Text",
+          action = function()
+            Snacks.picker.grep()
+          end,
+        },
+        {
+          icon = " ",
+          key = "c",
+          desc = "Config",
+          action = function()
+            Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
+          end,
+        },
         { icon = " ", key = "s", desc = "Restore Session", action = ':lua require("persistence").load()' },
         { icon = "󱔗 ", key = "x", desc = "Lazy Extras", action = ":LazyExtras" },
         { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
@@ -67,27 +107,129 @@ return {
     end,
     keys = {
       -- Explorer
-      { "<leader>e", function() Snacks.explorer() end, desc = "File Explorer" },
+      {
+        "<leader>e",
+        function()
+          Snacks.explorer()
+        end,
+        desc = "File Explorer",
+      },
       -- Picker
-      { "<leader><space>", function() Snacks.picker.files() end, desc = "Find Files" },
-      { "<leader>ff", function() Snacks.picker.files() end, desc = "Find Files" },
-      { "<leader>fg", function() Snacks.picker.git_files() end, desc = "Find Git Files" },
-      { "<leader>fr", function() Snacks.picker.recent() end, desc = "Recent" },
-      { "<leader>fb", function() Snacks.picker.buffers() end, desc = "Buffers" },
-      { "<leader>sg", function() Snacks.picker.grep() end, desc = "Grep" },
-      { "<leader>sw", function() Snacks.picker.grep_word() end, desc = "Visual selection or word", mode = { "n", "x" } },
-      { "<leader>sh", function() Snacks.picker.help() end, desc = "Help Pages" },
-      { "<leader>sk", function() Snacks.picker.keymaps() end, desc = "Keymaps" },
-      { "<leader>ld", function() Snacks.picker.diagnostics() end, desc = "Diagnostics" },
-      { "<leader>ls", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
+      {
+        "<leader><space>",
+        function()
+          Snacks.picker.files()
+        end,
+        desc = "Find Files",
+      },
+      {
+        "<leader>ff",
+        function()
+          Snacks.picker.files()
+        end,
+        desc = "Find Files",
+      },
+      {
+        "<leader>fg",
+        function()
+          Snacks.picker.git_files()
+        end,
+        desc = "Find Git Files",
+      },
+      {
+        "<leader>fr",
+        function()
+          Snacks.picker.recent()
+        end,
+        desc = "Recent",
+      },
+      {
+        "<leader>fb",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "Buffers",
+      },
+      {
+        "<leader>sg",
+        function()
+          Snacks.picker.grep()
+        end,
+        desc = "Grep",
+      },
+      {
+        "<leader>sw",
+        function()
+          Snacks.picker.grep_word()
+        end,
+        desc = "Visual selection or word",
+        mode = { "n", "x" },
+      },
+      {
+        "<leader>sh",
+        function()
+          Snacks.picker.help()
+        end,
+        desc = "Help Pages",
+      },
+      {
+        "<leader>sk",
+        function()
+          Snacks.picker.keymaps()
+        end,
+        desc = "Keymaps",
+      },
+      {
+        "<leader>ld",
+        function()
+          Snacks.picker.diagnostics()
+        end,
+        desc = "Diagnostics",
+      },
+      {
+        "<leader>ls",
+        function()
+          Snacks.picker.lsp_symbols()
+        end,
+        desc = "LSP Symbols",
+      },
       -- Terminals
-      { "<leader>Ld", function() Snacks.terminal("lazydocker") end, desc = "LazyDocker" },
-      { "<leader>at", function() Snacks.terminal("copilot") end, desc = "Copilot CLI" },
-      { "<C-/>", function() Snacks.terminal() end, desc = "Terminal" },
+      {
+        "<leader>Ld",
+        function()
+          Snacks.terminal("lazydocker")
+        end,
+        desc = "LazyDocker",
+      },
+      {
+        "<C-/>",
+        function()
+          Snacks.terminal()
+        end,
+        desc = "Terminal",
+      },
       -- Other
-      { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
-      { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
-      { "<leader>gg", function() Snacks.lazygit() end, desc = "LazyGit" },
+      {
+        "<leader>un",
+        function()
+          Snacks.notifier.hide()
+        end,
+        desc = "Dismiss All Notifications",
+      },
+      {
+        "<leader>bd",
+        function()
+          Snacks.bufdelete()
+        end,
+        desc = "Delete Buffer",
+      },
+      {
+        "<leader>gg",
+        function()
+          Snacks.lazygit()
+        end,
+        desc = "LazyGit",
+      },
     },
   },
 }
