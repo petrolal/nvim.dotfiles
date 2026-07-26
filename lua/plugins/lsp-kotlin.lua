@@ -20,12 +20,19 @@ local function find_java21_home()
   return nil
 end
 
+local storage_path = vim.fn.stdpath("cache") .. "/kotlin-language-server"
+vim.fn.mkdir(storage_path, "p")
+
 return {
   {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
         kotlin_language_server = {
+          -- Pass storagePath in init_options so KLS receives it during initialize phase
+          init_options = {
+            storagePath = storage_path,
+          },
           cmd_env = (function()
             local java21_home = find_java21_home()
             if not java21_home then
@@ -37,11 +44,19 @@ return {
             -- kotlin-language-server's documentHighlight implementation crashes in Kotlin Compiler 2.1
             -- with UnsupportedOperationException (JSON-RPC error -32603) on annotated classes.
             client.server_capabilities.documentHighlightProvider = false
+
+            -- Remove any stray kls_database files from project root
+            local root = client.config.root_dir or vim.fn.getcwd()
+            if root and root ~= "" then
+              local kls_files = vim.fn.glob(root .. "/kls_database*", false, true)
+              for _, f in ipairs(kls_files) do
+                vim.fn.delete(f)
+              end
+            end
           end,
           settings = {
             kotlin = {
-              -- Redirect database/cache storage path to stdpath("cache") instead of project root
-              storagePath = vim.fn.stdpath("cache") .. "/kotlin-language-server",
+              storagePath = storage_path,
               compiler = {
                 jvm = {
                   target = "21",
