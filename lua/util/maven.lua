@@ -14,10 +14,28 @@ function M.find_pom()
   return pom ~= ""
 end
 
+function M.get_mvn_cmd()
+  local cwd = vim.fn.getcwd()
+  local mvnw = cwd .. "/mvnw"
+  if vim.fn.filereadable(mvnw) == 1 then
+    if vim.fn.executable(mvnw) == 0 then
+      vim.fn.system("chmod +x " .. mvnw)
+    end
+    return "./mvnw"
+  end
+  return "mvn"
+end
+
 function M.run_maven_cmd(cmd)
   if not M.find_pom() then
     vim.notify("No pom.xml found in project", vim.log.levels.WARN)
     return
+  end
+
+  -- Replace 'mvn ' prefix with wrapper if mvnw exists
+  local base_cmd = M.get_mvn_cmd()
+  if cmd:sub(1, 4) == "mvn " then
+    cmd = base_cmd .. cmd:sub(4)
   end
 
   vim.cmd("botright 15split")
@@ -48,8 +66,19 @@ function M.get_maven_goals()
   end
 
   local goals = {
-    "clean", "validate", "compile", "test", "package", "verify", "install", "deploy",
-    "clean compile", "clean test", "clean package", "clean install", "clean verify",
+    "clean",
+    "validate",
+    "compile",
+    "test",
+    "package",
+    "verify",
+    "install",
+    "deploy",
+    "clean compile",
+    "clean test",
+    "clean package",
+    "clean install",
+    "clean verify",
   }
 
   if pom_path ~= "" then
@@ -101,15 +130,16 @@ function M.run_maven_goal()
 
   vim.notify("Loading Maven goals...", vim.log.levels.INFO)
   local goals = M.get_maven_goals()
+  local base_cmd = M.get_mvn_cmd()
 
   vim.ui.select(goals, {
     prompt = "Select Maven Goal:",
     format_item = function(item)
-      return "mvn " .. item
+      return base_cmd .. " " .. item
     end,
   }, function(choice)
     if choice then
-      M.run_maven_cmd("mvn " .. choice)
+      M.run_maven_cmd(base_cmd .. " " .. choice)
     end
   end)
 end

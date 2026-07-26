@@ -47,7 +47,7 @@ install_packages() {
     apt)
       sudo apt-get update
       sudo apt-get install -y \
-        git curl wget tar unzip ripgrep fd-find python3 python3-pip nodejs npm cargo \
+        git curl wget tar unzip ripgrep fd-find python3 python3-pip python3-venv python3-full nodejs npm cargo \
         build-essential openssh-client sshpass lazygit lazydocker openjdk-21-jdk
       # fd-find instala como fdfind; cria link simbólico para fd se necessário
       if command -v fdfind >/dev/null 2>&1 && ! command -v fd >/dev/null 2>&1; then

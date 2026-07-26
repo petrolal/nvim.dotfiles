@@ -16,16 +16,29 @@ function M.find_gradle()
   return build_gradle ~= "" or build_gradle_kts ~= ""
 end
 
+function M.get_gradle_cmd()
+  local cwd = vim.fn.getcwd()
+  local gradlew = cwd .. "/gradlew"
+  if vim.fn.filereadable(gradlew) == 1 then
+    if vim.fn.executable(gradlew) == 0 then
+      vim.fn.system("chmod +x " .. gradlew)
+    end
+    return "./gradlew"
+  end
+  return "gradle"
+end
+
 function M.run_gradle_cmd(cmd)
   if not M.find_gradle() then
     vim.notify("No build.gradle or build.gradle.kts found in project", vim.log.levels.WARN)
     return
   end
 
-  local gradlew = vim.fn.getcwd() .. "/gradlew"
-  local gradlew_exists = vim.fn.filereadable(gradlew) == 1
-  if gradlew_exists and vim.fn.executable(gradlew) == 0 then
-    vim.fn.system("chmod +x " .. gradlew)
+  local base_cmd = M.get_gradle_cmd()
+  if cmd:sub(1, 10) == "./gradlew " then
+    cmd = base_cmd .. cmd:sub(10)
+  elseif cmd:sub(1, 7) == "gradle " then
+    cmd = base_cmd .. cmd:sub(7)
   end
 
   vim.cmd("botright 15split")
@@ -45,9 +58,8 @@ function M.run_gradle_cmd(cmd)
 end
 
 function M.get_gradle_tasks()
-  local gradlew = vim.fn.getcwd() .. "/gradlew"
-  local gradlew_exists = vim.fn.filereadable(gradlew) == 1
-  local cmd = gradlew_exists and "./gradlew tasks --all" or "gradle tasks --all"
+  local base_cmd = M.get_gradle_cmd()
+  local cmd = base_cmd .. " tasks --all"
   local output = vim.fn.system(cmd)
 
   if vim.v.shell_error ~= 0 then
@@ -58,7 +70,12 @@ function M.get_gradle_tasks()
   local tasks = {}
   local in_tasks_section = false
   for line in output:gmatch("[^\r\n]+") do
-    if line:match("^%-%-%-%-") or line:match("^All tasks") or line:match("^Build tasks") or line:match("^[A-Z][a-z]+ tasks") then
+    if
+      line:match("^%-%-%-%-")
+      or line:match("^All tasks")
+      or line:match("^Build tasks")
+      or line:match("^[A-Z][a-z]+ tasks")
+    then
       in_tasks_section = true
     elseif line:match("^$") or line:match("^To see all tasks") then
       in_tasks_section = false
@@ -98,14 +115,15 @@ function M.run_gradle_task()
     return
   end
 
+  local base_cmd = M.get_gradle_cmd()
   vim.ui.select(tasks, {
     prompt = "Select Gradle Task:",
     format_item = function(item)
-      return "./gradlew " .. item
+      return base_cmd .. " " .. item
     end,
   }, function(choice)
     if choice then
-      M.run_gradle_cmd("./gradlew " .. choice)
+      M.run_gradle_cmd(base_cmd .. " " .. choice)
     end
   end)
 end

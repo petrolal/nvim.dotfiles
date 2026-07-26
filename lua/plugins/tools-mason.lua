@@ -7,6 +7,12 @@ return {
         "shellcheck",
         "flake8",
         "google-java-format",
+        "jdtls",
+        "java-debug-adapter",
+        "java-test",
+        "kotlin-language-server",
+        "kotlin-debug-adapter",
+        "ktlint",
       })
     end,
   },
