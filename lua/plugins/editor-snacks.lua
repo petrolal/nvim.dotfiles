@@ -195,7 +195,7 @@ return {
       },
       -- Terminals
       {
-        "<leader>Ld",
+        "<leader>lD",
         function()
           Snacks.terminal("lazydocker")
         end,
@@ -222,13 +222,6 @@ return {
           Snacks.bufdelete()
         end,
         desc = "Delete Buffer",
-      },
-      {
-        "<leader>gg",
-        function()
-          Snacks.lazygit()
-        end,
-        desc = "LazyGit",
       },
     },
   },
