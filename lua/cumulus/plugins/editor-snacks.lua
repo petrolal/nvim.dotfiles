@@ -33,6 +33,10 @@ return {
       opts.explorer = opts.explorer or {}
       opts.explorer.replace_netrw = true
 
+      opts.image = opts.image or {}
+      opts.image.enabled = true
+      opts.image.doc = { inline = true }
+
       opts.dashboard = opts.dashboard or {}
       local opened_dir = false
       for _, arg in ipairs(vim.fn.argv() --[[@as string[] ]]) do

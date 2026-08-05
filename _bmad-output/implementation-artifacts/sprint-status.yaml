@@ -201,6 +201,28 @@ development_status:
   31-2-interactive-cloud-theme-switcher-keymap-persistence: done
   epic-31-retrospective: optional
 
+  epic-32: done
+  32-1-native-in-buffer-markdown-engine-integration: done
+  32-2-live-sync-markdown-mermaid-diagram-preview-engine: done
+  32-3-inline-image-media-engine-integration: done
+  epic-32-retrospective: optional
+
+  epic-33: done
+  33-1-save-current-file-via-update: done
+  33-2-save-all-modified-files-via-wall: done
+  33-3-interactive-save-as-via-input-saveas: done
+  epic-33-retrospective: optional
+
+  epic-34: backlog
+  34-1-search-bar-notification-prompt-cloud-glyph-standardization: backlog
+  epic-34-retrospective: optional
+
+
+
+
+
+
+
 
 
 

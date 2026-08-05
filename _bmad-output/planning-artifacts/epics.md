@@ -999,6 +999,105 @@ So that I can select and switch cloud themes effortlessly.
 - **When** pressing `<leader>ut`,
 - **Then** a picker displays AWS, Azure, GCP, and OCI options, applying and persisting the selection upon entry.
 
+---
+
+## Epic 32: Rich Markdown Rendering, Inline Image & Mermaid Graphics Engine
+
+Equip Cumulus with native in-buffer markdown formatting, live browser/floating window preview with Mermaid diagrams, and inline image rendering.
+
+### Story 32.1: Native In-Buffer Markdown Engine Integration (`render-markdown.nvim`)
+
+As a Technical Writer,  
+I want `MeanderingProgrammer/render-markdown.nvim` configured in Cumulus,  
+So that Markdown headers, callout boxes (`> [!NOTE]`), table borders, and code blocks render formatted text directly inside Neovim buffers.
+
+**Acceptance Criteria:**
+- **Given** a Markdown file opened in Neovim,
+- **When** viewing the buffer,
+- **Then** headings, callout icons, checkboxes, and table borders are styled in-buffer.
+
+### Story 32.2: Live Sync Markdown & Mermaid Diagram Preview Engine
+
+As an Architect,  
+I want `<leader>mp` mapped to launch a live sync Markdown preview supporting Mermaid flowcharts (`graph TD`, `sequenceDiagram`) and MathJax LaTeX,  
+So that I can view rendered architecture diagrams without leaving my workspace.
+
+**Acceptance Criteria:**
+- **Given** a Markdown document containing Mermaid diagram blocks,
+- **When** pressing `<leader>mp`,
+- **Then** a live preview launches rendering Mermaid diagrams and formatting in real time.
+
+### Story 32.3: Inline Image & Media Engine Integration (`Snacks.image` / `image.nvim`)
+
+As a Developer,  
+I want inline image rendering for `.png`, `.jpg`, `.svg`, and `.webp` files,  
+So that images referenced in Markdown documents display directly within Neovim.
+
+**Acceptance Criteria:**
+- **Given** an image file or Markdown image link,
+- **When** opening or previewing,
+- **Then** the image renders inline inside Neovim using terminal graphics protocols.
+
+---
+
+## Epic 33: Standard Editor File Operations (Save, Save All, Save As)
+
+Implement standard editor file-saving workflows (Save File, Save All, Save As...) using native Neovim primitives and interactive prompts.
+
+### Story 33.1: Save Current File (`<leader>fs` & `<C-s>`) via `:update`
+
+As a Developer,  
+I want `<leader>fs` and `<C-s>` configured to save the current buffer using `:update`,  
+So that modified files are saved to disk with clear visual feedback.
+
+**Acceptance Criteria:**
+- **Given** an active buffer in Neovim,
+- **When** pressing `<leader>fs` or `<C-s>`,
+- **Then** Neovim executes `:update` and notifies the user upon save.
+
+### Story 33.2: Save All Modified Files (`<leader>fa`) via `:wall`
+
+As a Developer,  
+I want `<leader>fa` configured to save all open modified buffers using `:wall`,  
+So that all pending changes across workspace buffers are saved atomically.
+
+**Acceptance Criteria:**
+- **Given** multiple open modified buffers,
+- **When** pressing `<leader>fa`,
+- **Then** Neovim executes `:wall` and notifies the user that all modified buffers were written.
+
+### Story 33.3: Interactive Save As... (`<leader>fS`) via `vim.ui.input` & `:saveas`
+
+As a Developer,  
+I want `<leader>fS` mapped to prompt for a target file path and execute `:saveas`,  
+So that I can duplicate or rename the current buffer to a new target path.
+
+**Acceptance Criteria:**
+- **Given** an active buffer,
+- **When** pressing `<leader>fS`,
+- **Then** an interactive prompt requests a new file path, executes `:saveas!`, and updates the buffer target.
+
+---
+
+## Epic 34: UI Prompt Minimalism & Signature Cloud Glyph Integration
+
+Replace verbose text labels in search bars, pickers, and notification popups with the signature cloud glyph (`☁ ` / `󰅍 `).
+
+### Story 34.1: Search Bar & Notification Prompt Cloud Glyph Standardization
+
+As a UX Designer,  
+I want text headers like `"Cumulus >"` in search pickers and notifications replaced with the minimalist cloud glyph (`☁ `),  
+So that search prompts and notification titles are clean, modern, and uncluttered.
+
+**Acceptance Criteria:**
+- **Given** search pickers (`Snacks.picker`) or notifications,
+- **When** prompts or popup headers display,
+- **Then** the prompt uses ` ☁ > ` and notification title uses ` ☁ ` instead of verbose text labels.
+
+
+
+
+
 
 
 

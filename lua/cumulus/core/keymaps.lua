@@ -92,4 +92,33 @@ map("n", "<leader>ut", function()
   require("cumulus.theme").select_theme()
 end, { desc = "Select Cloud Theme (AWS/Azure/GCP/OCI)" })
 
+-- Universal File Operations: Save, Save All, Save As (Epic 33)
+local function save_current_file()
+  vim.cmd("update")
+  local name = vim.fn.expand("%:t")
+  if name == "" then
+    name = "[No Name]"
+  end
+  vim.notify("Saved " .. name, vim.log.levels.INFO)
+end
+
+map({ "n", "i" }, "<C-s>", save_current_file, { desc = "Save Current File" })
+map("n", "<leader>fs", save_current_file, { desc = "Save Current File" })
+
+map("n", "<leader>fa", function()
+  vim.cmd("wall")
+  vim.notify("Saved all modified files", vim.log.levels.INFO)
+end, { desc = "Save All Files" })
+
+map("n", "<leader>fS", function()
+  local current = vim.fn.expand("%:p")
+  vim.ui.input({ prompt = " Save As: ", default = current }, function(input)
+    if input and #input > 0 then
+      vim.cmd("saveas! " .. vim.fn.fnameescape(input))
+      vim.notify("Saved as: " .. input, vim.log.levels.INFO)
+    end
+  end)
+end, { desc = "Save As..." })
+
+
 
