@@ -138,3 +138,7 @@ development_status:
   epic-19: done
   19-1-direct-lspconfig-configs-server-setup-migration: done
   epic-19-retrospective: optional
+
+  epic-20: done
+  20-1-system-wide-nerd-font-v3-mapping-standardization: done
+  epic-20-retrospective: optional

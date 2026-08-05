@@ -71,16 +71,16 @@ return {
       opts.dashboard.preset.header = banner
       opts.dashboard.preset.keys = {
         {
-          icon = "󰉋 ",
+          icon = "󰈞 ",
           key = "f",
           desc = "Find File",
           action = function()
             Snacks.picker.files()
           end,
         },
-        { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+        { icon = "󰝒 ", key = "n", desc = "New File", action = ":ene | startinsert" },
         {
-          icon = "󰄉 ",
+          icon = "󰋚 ",
           key = "r",
           desc = "Recent Files",
           action = function()
@@ -88,7 +88,7 @@ return {
           end,
         },
         {
-          icon = "󰈞 ",
+          icon = "󰍉 ",
           key = "g",
           desc = "Find Text (Grep)",
           action = function()
@@ -120,16 +120,16 @@ return {
           end,
         },
         {
-          icon = " ",
+          icon = "󰒓 ",
           key = "c",
           desc = "Config",
           action = function()
             Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
           end,
         },
-        { icon = " ", key = "s", desc = "Restore Session", action = function() require("persistence").load() end },
-        { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
-        { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+        { icon = "󰦛 ", key = "s", desc = "Restore Session", action = function() require("persistence").load() end },
+        { icon = "󰏖 ", key = "l", desc = "Lazy", action = ":Lazy" },
+        { icon = "󰗼 ", key = "q", desc = "Quit", action = ":qa" },
       }
       return opts
     end,

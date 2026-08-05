@@ -663,6 +663,24 @@ So that `lspconfig` framework deprecation warnings (`line 81`) are completely by
 - **When** opening files or attaching LSP servers,
 - **Then** `require("lspconfig.configs")[server].setup(server_opts)` attaches LSP servers without triggering `vim.deprecate` warnings.
 
+---
+
+## Epic 20: Comprehensive Nerd Font v3 System-Wide Iconography Design
+
+Standardize all Neovim UI icons across Snacks Dashboard, WhichKey, Lualine, Bufferline, LSP Diagnostics, and DAP debuggers using modern Nerd Font v3 glyphs.
+
+### Story 20.1: System-Wide Nerd Font v3 Mapping & Standardization
+
+As a UX Designer,  
+I want all UI icons mapped to high-clarity Nerd Font v3 glyphs across all plugins,  
+So that the interface presents a visually cohesive, modern, and beautiful cloud-native aesthetic.
+
+**Acceptance Criteria:**
+- **Given** any Neovim UI element (Dashboard, WhichKey, Statusline, LSP signs, DAP signs),
+- **When** rendered in the editor,
+- **Then** all icons use standard Nerd Font v3 glyphs without unrendered unicode boxes.
+
+
 
 
 
