@@ -13,7 +13,7 @@ vim.opt.relativenumber = true
 vim.opt.number = true
 vim.opt.confirm = true
 
--- Load default AWS theme engine (FR7)
+-- Load persisted Cloud Theme (Story 31.2)
 vim.schedule(function()
-  pcall(vim.cmd, "colorscheme aws-theme")
+  require("cumulus.theme").load_saved_theme()
 end)

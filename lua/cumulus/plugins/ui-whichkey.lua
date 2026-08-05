@@ -9,7 +9,7 @@ return {
       spec = {
         { "<leader>f", group = "file/find", icon = "󰈞 " },
         { "<leader>s", group = "search", icon = "󰍉 " },
-        { "<leader>t", group = "telescope search", icon = "🔭 " },
+        { "<leader>t", group = "telescope search", icon = "󰈞 " },
         { "<leader>c", group = "code/build/lsp", icon = "󰅍 " },
         { "<leader>w", group = "windows", icon = "󰖲 " },
         { "<leader>l", group = "lsp/mason", icon = "󰒓 " },

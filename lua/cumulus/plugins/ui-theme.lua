@@ -131,4 +131,13 @@ return {
       }
     end,
   },
+
+  -- Global Devicons Specification (Story 30.2)
+  {
+    "nvim-tree/nvim-web-devicons",
+    lazy = false,
+    opts = {
+      default = true,
+    },
+  },
 }

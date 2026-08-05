@@ -87,3 +87,9 @@ end, { desc = "JVM Build: Run Tests" })
 map("n", "<leader>qq", "<cmd>confirm qa<cr>", { desc = "Quit Neovim (Confirm)" })
 map("n", "<leader>qQ", "<cmd>qa!<cr>", { desc = "Force Quit Neovim (No Save)" })
 
+-- Cloud Theme Switcher Keymap (Story 31.2)
+map("n", "<leader>ut", function()
+  require("cumulus.theme").select_theme()
+end, { desc = "Select Cloud Theme (AWS/Azure/GCP/OCI)" })
+
+
