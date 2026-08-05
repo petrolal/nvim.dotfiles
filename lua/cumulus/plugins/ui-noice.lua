@@ -1,3 +1,5 @@
+-- Cumulus Noice UI Integration (Story 14.2)
+
 return {
   {
     "folke/noice.nvim",
@@ -16,6 +18,9 @@ return {
       popupmenu = {
         enabled = true,
         backend = "nui",
+      },
+      notify = {
+        enabled = false,
       },
       views = {
         mini = {

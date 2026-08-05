@@ -15,8 +15,24 @@ return {
     priority = 1000,
     lazy = false,
     opts = function(_, opts)
+      opts.styles = opts.styles or {}
+      opts.styles.notification = vim.tbl_deep_extend("force", opts.styles.notification or {}, {
+        title = " Cumulus ",
+      })
+      opts.styles.notification_history = vim.tbl_deep_extend("force", opts.styles.notification_history or {}, {
+        title = " Cumulus Notifications ",
+      })
+
+      opts.picker = opts.picker or {}
+      opts.picker.prompt = " 󰅍 Cumulus > "
+
+      opts.notifier = opts.notifier or {}
+      opts.notifier.enabled = true
+      opts.notifier.timeout = 3000
+
       opts.explorer = opts.explorer or {}
       opts.explorer.replace_netrw = true
+
       opts.dashboard = opts.dashboard or {}
       local opened_dir = false
       for _, arg in ipairs(vim.fn.argv() --[[@as string[] ]]) do
@@ -34,7 +50,8 @@ return {
           local commit = ""
           local handle = io.popen("git rev-parse --short HEAD 2>/dev/null")
           if handle then
-            commit = handle:read("*a"):gsub("%s+", "")
+            local raw = handle:read("*a")
+            commit = (raw or ""):gsub("%s+", "")
             handle:close()
           end
           local date = os.date("%d/%m/%y")
@@ -79,7 +96,7 @@ return {
           end,
         },
         {
-          icon = "󰅟 ",
+          icon = "󱥸 ",
           key = "t",
           desc = "Terraform Workspace",
           action = function()
@@ -110,11 +127,17 @@ return {
             Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
           end,
         },
-        { icon = " ", key = "s", desc = "Restore Session", action = ':lua require("persistence").load()' },
+        { icon = " ", key = "s", desc = "Restore Session", action = function() require("persistence").load() end },
         { icon = "󰒲 ", key = "l", desc = "Lazy", action = ":Lazy" },
         { icon = " ", key = "q", desc = "Quit", action = ":qa" },
       }
       return opts
+    end,
+    config = function(_, opts)
+      require("snacks").setup(opts)
+      vim.notify = function(msg, level, notify_opts)
+        Snacks.notifier.notify(msg, level, notify_opts)
+      end
     end,
     keys = {
       {

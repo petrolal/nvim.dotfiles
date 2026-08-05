@@ -11,11 +11,11 @@ return {
       servers = {},
     },
     config = function(_, opts)
-      local lspconfig = require("lspconfig")
+      local configs = require("lspconfig.configs")
       if opts.servers then
         for server, server_opts in pairs(opts.servers) do
-          if lspconfig[server] then
-            lspconfig[server].setup(server_opts or {})
+          if configs[server] then
+            configs[server].setup(server_opts or {})
           end
         end
       end

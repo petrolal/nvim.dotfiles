@@ -1,18 +1,41 @@
--- Cumulus Telescope & Ripgrep Integration
+-- Cumulus Telescope & Ripgrep Integration (Story 16.1 & 16.2)
 
 return {
   {
     "nvim-telescope/telescope.nvim",
     dependencies = {
       "nvim-lua/plenary.nvim",
+      {
+        "nvim-telescope/telescope-fzf-native.nvim",
+        build = "make",
+        config = function()
+          pcall(function()
+            require("telescope").load_extension("fzf")
+          end)
+        end,
+      },
     },
     keys = {
       {
+        "<leader>ff",
+        function()
+          require("telescope.builtin").find_files({ hidden = true })
+        end,
+        desc = "Find Files (Telescope Ripgrep)",
+      },
+      {
         "<leader>tf",
         function()
-          require("telescope.builtin").find_files()
+          require("telescope.builtin").find_files({ hidden = true })
         end,
-        desc = "Find Files (Telescope)",
+        desc = "Find Files (Telescope Ripgrep)",
+      },
+      {
+        "<leader>sg",
+        function()
+          require("telescope.builtin").live_grep()
+        end,
+        desc = "Ripgrep Live Search (Telescope)",
       },
       {
         "<leader>tg",
@@ -31,7 +54,7 @@ return {
         desc = "Find Plugin File (Telescope)",
       },
       {
-        "<leader>tw",
+        "<leader>sw",
         function()
           require("telescope.builtin").grep_string()
         end,
@@ -82,7 +105,9 @@ return {
       return opts
     end,
     config = function(_, opts)
-      require("telescope").setup(opts)
+      local telescope = require("telescope")
+      telescope.setup(opts)
+      pcall(telescope.load_extension, "fzf")
     end,
   },
 }

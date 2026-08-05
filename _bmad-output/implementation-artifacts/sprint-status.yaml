@@ -110,3 +110,31 @@ development_status:
   13-2-keymap-disambiguation-api-modernization: done
   13-3-language-server-debug-adapter-completeness: done
   epic-13-retrospective: optional
+
+  epic-14: done
+  14-1-snacks-notifier-enablement-vim-notify-override: done
+  14-2-noice-warning-route-disambiguation: done
+  epic-14-retrospective: optional
+
+  epic-15: done
+  15-1-snacks-dashboard-lazy-docker-icon-standardization: done
+  15-2-devicon-system-integration-across-workloads: done
+  epic-15-retrospective: optional
+
+  epic-16: done
+  16-1-telescope-keymap-consolidation-ripgrep-integration: done
+  16-2-telescope-fzf-native-extension-performance-optimization: done
+  epic-16-retrospective: optional
+
+  epic-17: done
+  17-1-research-audit-default-titles-in-snacks-engine: done
+  17-2-custom-cumulus-branding-title-override-implementation: done
+  epic-17-retrospective: optional
+
+  epic-18: done
+  18-1-safe-lspconfig-metamethod-index-guarding: done
+  epic-18-retrospective: optional
+
+  epic-19: done
+  19-1-direct-lspconfig-configs-server-setup-migration: done
+  epic-19-retrospective: optional

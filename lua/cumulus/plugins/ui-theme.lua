@@ -54,7 +54,9 @@ return {
           end
           local names = {}
           for _, client in ipairs(clients) do
-            table.insert(names, client.name)
+            if client.name then
+              table.insert(names, client.name)
+            end
           end
           return "󰅍 " .. table.concat(names, ", ")
         end,
