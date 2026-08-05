@@ -1135,9 +1135,12 @@ I want standard Vim LSP goto shortcuts (`gd` for Definition, `gD` for Declaratio
 So that symbol navigation is fast, visually interactive on multiple targets, and handles edge cases without crashing.
 
 **Acceptance Criteria:**
-- **Given** an LSP-attached buffer,
-- **When** pressing `gd`, `gD`, `gy`, `gi`, or `gr`,
+- **Given** an LSP-attached buffer supporting the requested capability method (`textDocument/definition`, `textDocument/declaration`, `textDocument/typeDefinition`, `textDocument/implementation`, `textDocument/references`),
+- **When** pressing `gd`, `gD`, `gy`, `gi`, or `gr` in Normal mode,
 - **Then** Snacks LSP pickers (`Snacks.picker.lsp_definitions`, `lsp_declarations`, `lsp_type_definitions`, `lsp_implementations`, `lsp_references`) trigger directly, auto-confirming on single matches and opening interactive floating previews on multiple matches.
+- **Given** a buffer without an active LSP client supporting the method,
+- **When** pressing `gd`, `gD`, `gi`, or `gr`,
+- **Then** smart fallbacks trigger (`pcall(vim.cmd, "normal! gd")` for `gd`/`gD`/`gi`, and `Snacks.picker.grep_word()` for `gr`), ensuring zero crash exceptions.
 
 
 

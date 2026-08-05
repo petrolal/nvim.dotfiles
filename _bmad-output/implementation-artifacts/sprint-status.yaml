@@ -164,14 +164,14 @@ development_status:
   24-3-complete-dap-debugger-keymap-suite: done
   epic-24-retrospective: optional
 
-  epic-25: backlog
-  25-1-devtools-keymap-group-shortcuts: backlog
-  25-2-whichkey-devtools-group-registration: backlog
+  epic-25: done
+  25-1-devtools-keymap-group-shortcuts: done
+  25-2-whichkey-devtools-group-registration: done
   epic-25-retrospective: optional
 
-  epic-26: backlog
-  26-1-enforce-telescope-live-search-precedence: backlog
-  26-2-whichkey-right-side-vertical-drawer-layout-configuration: backlog
+  epic-26: done
+  26-1-enforce-telescope-live-search-precedence: done
+  26-2-whichkey-right-side-vertical-drawer-layout-configuration: done
   epic-26-retrospective: optional
 
   epic-27: done
@@ -222,11 +222,9 @@ development_status:
   35-2-complete-automated-validation-script-update: done
   epic-35-retrospective: optional
 
-
-
-
-
-
+  epic-36: done
+  36-1-snacks-lsp-goto-navigation-keymap-integration: done
+  epic-36-retrospective: optional
 
 
 

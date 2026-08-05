@@ -230,56 +230,61 @@ return {
       {
         "gd",
         function()
-          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+          if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/definition" }) > 0 then
             Snacks.picker.lsp_definitions()
           else
-            vim.cmd("normal! gd")
+            pcall(vim.cmd, "normal! gd")
           end
         end,
+        mode = "n",
         desc = "Goto Definition (Smart Fallback)",
       },
       {
         "gD",
         function()
-          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+          if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/declaration" }) > 0 then
             Snacks.picker.lsp_declarations()
           else
-            vim.cmd("normal! gD")
+            pcall(vim.cmd, "normal! gD")
           end
         end,
+        mode = "n",
         desc = "Goto Declaration (Smart Fallback)",
       },
       {
         "gy",
         function()
-          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+          if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/typeDefinition" }) > 0 then
             Snacks.picker.lsp_type_definitions()
           else
-            vim.notify("No active LSP client for type definitions", vim.log.levels.WARN)
+            vim.notify("LSP type definition not supported for buffer", vim.log.levels.WARN)
           end
         end,
+        mode = "n",
         desc = "Goto Type Definition",
       },
       {
         "gi",
         function()
-          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+          if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/implementation" }) > 0 then
             Snacks.picker.lsp_implementations()
           else
-            vim.notify("No active LSP client for implementations", vim.log.levels.WARN)
+            pcall(vim.cmd, "normal! gi")
           end
         end,
-        desc = "Goto Implementation",
+        mode = "n",
+        desc = "Goto Implementation (Smart Fallback)",
       },
       {
         "gr",
         function()
-          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+          if #vim.lsp.get_clients({ bufnr = 0, method = "textDocument/references" }) > 0 then
             Snacks.picker.lsp_references()
           else
             Snacks.picker.grep_word()
           end
         end,
+        mode = "n",
         desc = "References (Grep Fallback)",
       },
       {
