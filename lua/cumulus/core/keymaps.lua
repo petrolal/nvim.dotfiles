@@ -50,16 +50,16 @@ map("n", "]e", function() vim.diagnostic.jump({ count = 1, severity = vim.diagno
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename Symbol" })
 
--- JVM Build Tool Keymaps (<leader>j*) (Story 4.1)
-map("n", "<leader>jm", function()
+-- Code & Build Tool Keymaps (<leader>c*) (Story 4.1 & Story 24.2)
+map("n", "<leader>cm", function()
   require("cumulus.util.maven").run_maven_goal()
 end, { desc = "Maven: Select Goal" })
 
-map("n", "<leader>jg", function()
+map("n", "<leader>cg", function()
   require("cumulus.util.gradle").run_gradle_task()
 end, { desc = "Gradle: Select Task" })
 
-map("n", "<leader>jc", function()
+map("n", "<leader>cc", function()
   local maven = require("cumulus.util.maven")
   local gradle = require("cumulus.util.gradle")
   if maven.find_pom() then
@@ -69,9 +69,9 @@ map("n", "<leader>jc", function()
   else
     vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
   end
-end, { desc = "JVM Build: Clean Compile" })
+end, { desc = "Build Project (Clean Compile)" })
 
-map("n", "<leader>jt", function()
+map("n", "<leader>ct", function()
   local maven = require("cumulus.util.maven")
   local gradle = require("cumulus.util.gradle")
   if maven.find_pom() then

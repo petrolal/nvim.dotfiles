@@ -1,9 +1,19 @@
--- Cumulus Noice UI Integration (Story 14.2)
+-- Cumulus Noice UI Integration (Story 14.2 & Story 24.1)
 
 return {
   {
     "folke/noice.nvim",
     opts = {
+      cmdline = {
+        enabled = true,
+        view = "cmdline_popup",
+        opts = {
+          position = {
+            row = "10%",
+            col = "50%",
+          },
+        },
+      },
       lsp = {
         progress = { enabled = false },
         override = {
@@ -26,6 +36,16 @@ return {
         mini = {
           win_options = {
             winblend = 0,
+          },
+        },
+        cmdline_popup = {
+          position = {
+            row = "10%",
+            col = "50%",
+          },
+          size = {
+            width = 60,
+            height = "auto",
           },
         },
       },

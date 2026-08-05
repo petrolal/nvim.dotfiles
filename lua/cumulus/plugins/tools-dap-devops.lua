@@ -71,6 +71,13 @@ return {
         end,
         desc = "Toggle DAP UI",
       },
+      {
+        "<leader>dt",
+        function()
+          require("dap").terminate()
+        end,
+        desc = "Terminate Debugging",
+      },
     },
   },
 }

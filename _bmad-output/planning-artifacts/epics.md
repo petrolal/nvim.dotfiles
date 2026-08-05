@@ -680,22 +680,181 @@ So that the interface presents a visually cohesive, modern, and beautiful cloud-
 - **When** rendered in the editor,
 - **Then** all icons use standard Nerd Font v3 glyphs without unrendered unicode boxes.
 
+---
 
+## Epic 21: Telescope Primary Keymap Alignment & WhichKey Group Title Corrections
 
+Bind `<leader><space>` directly to Telescope Find Files and fix WhichKey `<leader>t` group title ("Telescope Search").
 
+### Story 21.1: `<leader><space>` Rebind to Telescope Find Files
 
-
-
-
+As a Developer,  
+I want `<leader><space>` mapped to `telescope.builtin.find_files({ hidden = true })`,  
+So that pressing `<leader><space>` opens Telescope Find Files with Ripgrep filtering.
 
 **Acceptance Criteria:**
-- **Given** any DAP-enabled buffer (Go, Python, Java, Kotlin, C/C++, JS, Bash),
-- **When** pressing `<leader>db` or `<leader>dc`,
-- **Then** breakpoints toggle and execution continues/steps cleanly.
+- **Given** Neovim buffer,
+- **When** pressing `<leader><space>`,
+- **Then** Telescope Find Files opens.
 
+### Story 21.2: WhichKey `<leader>t` Group Title Fix
 
+As a Developer,  
+I want `{ "<leader>t", group = "telescope search", icon = "🔭 " }` registered in `ui-whichkey.lua`,  
+So that pressing `<leader>t` shows the correct "Telescope Search" group header in WhichKey.
 
+**Acceptance Criteria:**
+- **Given** WhichKey popup,
+- **When** pressing `<leader>t`,
+- **Then** WhichKey displays the icon `🔭` and title `Telescope Search`.
 
+---
 
+## Epic 22: Telescope `vim.ui.select` Integration & Unified 10-Group WhichKey Ergonomics
 
+Integrate `telescope-ui-select.nvim` to handle Neovim `vim.ui.select` pickers and consolidate all top-level WhichKey keybindings into 10 clean groups.
 
+### Story 22.1: `telescope-ui-select.nvim` Integration
+
+As a Developer,  
+I want `nvim-telescope/telescope-ui-select.nvim` integrated in `editor-telescope.lua`,  
+So that LSP code actions, Maven goals, and input selection prompts render in Telescope dropdown pickers.
+
+**Acceptance Criteria:**
+- **Given** any `vim.ui.select` call (code actions, build goal selectors),
+- **When** triggered in Neovim,
+- **Then** a Telescope dropdown picker handles the selection prompt.
+
+### Story 22.2: Complete 10-Group WhichKey Spec Consolidation
+
+As a Developer,  
+I want `ui-whichkey.lua` updated with all 10 standard top-level groups (`f`, `s`, `t`, `c`, `j`, `w`, `g`, `d`, `u`, `b`, `q`),  
+So that all keybindings are cleanly categorized with Nerd Font v3 icons.
+
+**Acceptance Criteria:**
+- **Given** WhichKey popup window,
+- **When** pressing `<leader>`,
+- **Then** 10 organized group headers with Nerd Font v3 icons render cleanly.
+
+---
+
+## Epic 23: Telescope Universal Shortcuts & Right-Side WhichKey Vertical Layout
+
+Bind `<leader>/` to Telescope Live Grep and configure WhichKey as a right-side vertical floating drawer window.
+
+### Story 23.1: `<leader>/` Universal Telescope Live Grep Shortcut
+
+As a Developer,  
+I want `<leader>/` mapped to `telescope.builtin.live_grep()`,  
+So that searching codebase text is instantaneous via one-hand shortcut.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>/`,
+- **Then** Telescope Live Grep opens.
+
+### Story 23.2: WhichKey Right-Side Vertical Drawer Window Positioning
+
+As a Developer,  
+I want `ui-whichkey.lua` configured with `win = { position = "right" }`,  
+So that WhichKey hints slide in as a vertical drawer on the right edge of the screen.
+
+**Acceptance Criteria:**
+- **Given** WhichKey popup window,
+- **When** pressing `<leader>`,
+- **Then** WhichKey slides in vertically on the right screen edge.
+
+---
+
+## Epic 24: Top-Centered Floating CMDLINE, Code/Build Consolidation & Complete DAP Suite
+
+Enable top-centered floating CMDLINE popup bar in `ui-noice.lua`, consolidate build tools under `<leader>c`, and finalize DAP debugging suite under `<leader>d`.
+
+### Story 24.1: Top-Centered Floating CMDLINE Popup Bar
+
+As a Developer,  
+I want `cmdline_popup` enabled in `ui-noice.lua` positioned top-center (`row = "20%", col = "50%"`),  
+So that pressing `:` opens a modern floating command box at the top of the editor.
+
+**Acceptance Criteria:**
+- **Given** Neovim editor,
+- **When** pressing `:`,
+- **Then** a floating commandline popup box opens at top-center.
+
+### Story 24.2: Code & Build Group Consolidation (`<leader>c`)
+
+As a Developer,  
+I want Maven (`<leader>cm`) and Gradle (`<leader>cg`) mapped under `<leader>c` ("Code & Build"),  
+So that build tools and LSP actions are consolidated under a single key prefix.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>cm` or `<leader>cg`,
+- **Then** Maven goals or Gradle tasks open.
+
+### Story 24.3: Complete DAP Debugger Keymap Suite (`<leader>d`)
+
+As a Developer,  
+I want `<leader>db` (breakpoint), `<leader>dc` (continue), `<leader>di` (step in), `<leader>do` (step over), `<leader>dO` (step out), `<leader>du` (ui), `<leader>dt` (terminate) mapped in `tools-dap-devops.lua`,  
+So that debugging features are accessible via uniform `<leader>d*` chords.
+
+**Acceptance Criteria:**
+- **Given** DAP-enabled buffer,
+- **When** pressing `<leader>d*` chords,
+- **Then** debugging actions execute cleanly.
+
+---
+
+## Epic 25: Dedicated DevTools Group (`<leader>o`) & Container/Git Workload Management
+
+Establish a dedicated `<leader>o` ("DevTools & Workloads") group for interactive developer tools including LazyDocker and LazyGit, with an extensible structure for future tool additions.
+
+### Story 25.1: DevTools Keymap Group (`<leader>o`) & Shortcuts (`<leader>od`, `<leader>og`)
+
+As a DevOps Engineer,  
+I want a dedicated `<leader>o` keymap group with shortcuts for LazyDocker (`<leader>od`) and LazyGit (`<leader>og`),  
+So that container and git management tools are organized cleanly under a unified DevTools prefix.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>od` or `<leader>og`,
+- **Then** LazyDocker or LazyGit launches in a popup terminal window.
+
+### Story 25.2: WhichKey DevTools Group Registration & Extensibility
+
+As a Developer,  
+I want `{ "<leader>o", group = "devtools/workloads", icon = "󰒓 " }` registered in `ui-whichkey.lua`,  
+So that WhichKey displays the DevTools group header with room for future tool additions.
+
+**Acceptance Criteria:**
+- **Given** WhichKey popup,
+- **When** pressing `<leader>`,
+- **Then** WhichKey displays the `󰒓 devtools/workloads` group header.
+
+---
+
+## Epic 26: Telescope Search Priority & Right-Side Vertical WhichKey Drawer
+
+Enforce Telescope search engine precedence for `<leader>/` and configure WhichKey as a right-side vertical floating drawer window.
+
+### Story 26.1: Enforce Telescope Live Search Precedence (`<leader>/`)
+
+As a Developer,  
+I want `<leader>/` explicitly mapped to `telescope.builtin.live_grep()` in `editor-telescope.lua` and conflicting grep keymaps in `editor-snacks.lua` removed,  
+So that pressing `<leader>/` opens Telescope Live Search rather than Snacks grep.
+
+**Acceptance Criteria:**
+- **Given** Neovim editor,
+- **When** pressing `<leader>/`,
+- **Then** Telescope Live Search picker opens with live preview.
+
+### Story 26.2: WhichKey Right-Side Vertical Drawer Layout Configuration
+
+As a Developer,  
+I want `ui-whichkey.lua` configured with a right-side vertical drawer layout (`preset = "helix"` or custom `win`/`layout` alignment),  
+So that WhichKey hints render as a vertical side panel on the right edge of the screen instead of a bottom bar.
+
+**Acceptance Criteria:**
+- **Given** WhichKey popup window,
+- **When** pressing `<leader>`,
+- **Then** WhichKey opens as a vertical panel on the right side of the screen.

@@ -148,13 +148,6 @@ return {
         desc = "File Explorer",
       },
       {
-        "<leader><space>",
-        function()
-          Snacks.picker.files()
-        end,
-        desc = "Find Files",
-      },
-      {
         "<leader>ff",
         function()
           Snacks.picker.files()
@@ -181,13 +174,6 @@ return {
           Snacks.picker.buffers()
         end,
         desc = "Buffers",
-      },
-      {
-        "<leader>sg",
-        function()
-          Snacks.picker.grep()
-        end,
-        desc = "Grep",
       },
       {
         "<leader>sw",
@@ -231,6 +217,20 @@ return {
           Snacks.terminal("lazydocker")
         end,
         desc = "Lazy Docker",
+      },
+      {
+        "<leader>od",
+        function()
+          Snacks.terminal("lazydocker")
+        end,
+        desc = "LazyDocker",
+      },
+      {
+        "<leader>og",
+        function()
+          Snacks.terminal("lazygit")
+        end,
+        desc = "LazyGit",
       },
       {
         "<leader>gg",

@@ -1,4 +1,4 @@
--- Cumulus Telescope & Ripgrep Integration (Story 16.1 & 16.2)
+-- Cumulus Telescope & Ripgrep Integration (Story 16.1, 16.2 & Story 22.1)
 
 return {
   {
@@ -14,8 +14,23 @@ return {
           end)
         end,
       },
+      "nvim-telescope/telescope-ui-select.nvim",
     },
     keys = {
+      {
+        "<leader>/",
+        function()
+          require("telescope.builtin").live_grep()
+        end,
+        desc = "Ripgrep Live Search (Telescope)",
+      },
+      {
+        "<leader><space>",
+        function()
+          require("telescope.builtin").find_files({ hidden = true })
+        end,
+        desc = "Find Files (Telescope Ripgrep)",
+      },
       {
         "<leader>ff",
         function()
@@ -102,12 +117,18 @@ return {
         "--glob",
         "!**/.git/*",
       }
+      opts.extensions = vim.tbl_deep_extend("force", opts.extensions or {}, {
+        ["ui-select"] = {
+          require("telescope.themes").get_dropdown({}),
+        },
+      })
       return opts
     end,
     config = function(_, opts)
       local telescope = require("telescope")
       telescope.setup(opts)
       pcall(telescope.load_extension, "fzf")
+      pcall(telescope.load_extension, "ui-select")
     end,
   },
 }

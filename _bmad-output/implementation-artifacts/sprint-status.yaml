@@ -142,3 +142,24 @@ development_status:
   epic-20: done
   20-1-system-wide-nerd-font-v3-mapping-standardization: done
   epic-20-retrospective: optional
+
+  epic-21: done
+  21-1-leader-space-rebind-to-telescope-find-files: done
+  21-2-whichkey-leader-t-group-title-fix: done
+  epic-21-retrospective: optional
+
+  epic-22: done
+  22-1-telescope-ui-select-integration: done
+  22-2-complete-10-group-whichkey-spec-consolidation: done
+  epic-22-retrospective: optional
+
+  epic-23: done
+  23-1-leader-slash-universal-telescope-live-grep-shortcut: done
+  23-2-whichkey-right-side-vertical-drawer-window-positioning: done
+  epic-23-retrospective: optional
+
+  epic-24: done
+  24-1-top-centered-floating-cmdline-popup-bar: done
+  24-2-code-build-group-consolidation: done
+  24-3-complete-dap-debugger-keymap-suite: done
+  epic-24-retrospective: optional
