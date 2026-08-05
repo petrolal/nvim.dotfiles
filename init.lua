@@ -1,2 +1,3 @@
--- bootstrap lazy.nvim, LazyVim and your plugins
-require("config.lazy")
+-- Cumulus Neovim Distribution Entry Point
+require("cumulus.core")
+require("cumulus.core.lazy")
