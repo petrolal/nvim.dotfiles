@@ -8,21 +8,21 @@ return {
     },
     keys = {
       {
-        "<leader>ff",
+        "<leader>tf",
         function()
           require("telescope.builtin").find_files()
         end,
         desc = "Find Files (Telescope)",
       },
       {
-        "<leader>fg",
+        "<leader>tg",
         function()
-          require("telescope.builtin").git_files()
+          require("telescope.builtin").live_grep()
         end,
-        desc = "Find Git Files (Telescope)",
+        desc = "Ripgrep Live Search (Telescope)",
       },
       {
-        "<leader>fp",
+        "<leader>tp",
         function()
           require("telescope.builtin").find_files({
             cwd = require("lazy.core.config").options.root,
@@ -31,18 +31,11 @@ return {
         desc = "Find Plugin File (Telescope)",
       },
       {
-        "<leader>sg",
-        function()
-          require("telescope.builtin").live_grep()
-        end,
-        desc = "Ripgrep Live Search",
-      },
-      {
-        "<leader>sw",
+        "<leader>tw",
         function()
           require("telescope.builtin").grep_string()
         end,
-        desc = "Ripgrep Word Under Cursor",
+        desc = "Ripgrep Word Under Cursor (Telescope)",
       },
       {
         "<leader>sb",

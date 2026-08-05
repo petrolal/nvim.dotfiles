@@ -104,3 +104,9 @@ development_status:
   12-2-js-ts-bash-debug-adapter-integration: done
   12-3-central-dap-keymap-bindings-controls: done
   epic-12-retrospective: optional
+
+  epic-13: done
+  13-1-security-path-safety-shell-execution-hardening: done
+  13-2-keymap-disambiguation-api-modernization: done
+  13-3-language-server-debug-adapter-completeness: done
+  epic-13-retrospective: optional

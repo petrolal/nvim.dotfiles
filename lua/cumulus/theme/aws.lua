@@ -54,8 +54,8 @@ function M.load()
 
   local bg = M.opts.transparent and palette.none or palette.bg
   local bg_inactive = M.opts.transparent and palette.none or palette.bg_inactive
-  local bg_sidebar = M.opts.transparent and palette.bg_sidebar or palette.bg_sidebar
-  local bg_float = M.opts.transparent and palette.bg_float or palette.bg_float
+  local bg_sidebar = M.opts.transparent and palette.none or palette.bg_sidebar
+  local bg_float = M.opts.transparent and palette.none or palette.bg_float
 
   -- Editor highlights
   hi("Normal", { fg = palette.fg, bg = bg })

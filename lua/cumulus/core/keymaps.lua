@@ -22,7 +22,7 @@ map("n", "<leader>bo", function()
   local current = vim.api.nvim_get_current_buf()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     if buf ~= current and vim.bo[buf].buflisted then
-      vim.api.nvim_buf_delete(buf, { force = false })
+      pcall(vim.api.nvim_buf_delete, buf, { force = false })
     end
   end
 end, { desc = "Close Other Buffers" })
@@ -42,11 +42,11 @@ map("v", ">", ">gv", { desc = "Indent and Reselect" })
 map("n", "n", "nzzzv", { desc = "Next Search Centered" })
 map("n", "N", "Nzzzv", { desc = "Prev Search Centered" })
 
--- LSP Diagnostics & Symbol Navigation Chords (Story 9.3)
-map("n", "[d", function() vim.diagnostic.goto_prev() end, { desc = "Prev Diagnostic" })
-map("n", "]d", function() vim.diagnostic.goto_next() end, { desc = "Next Diagnostic" })
-map("n", "[e", function() vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR }) end, { desc = "Prev Error" })
-map("n", "]e", function() vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR }) end, { desc = "Next Error" })
+-- LSP Diagnostics & Symbol Navigation Chords (Story 9.3 & Story 13.2)
+map("n", "[d", function() vim.diagnostic.jump({ count = -1 }) end, { desc = "Prev Diagnostic" })
+map("n", "]d", function() vim.diagnostic.jump({ count = 1 }) end, { desc = "Next Diagnostic" })
+map("n", "[e", function() vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR }) end, { desc = "Prev Error" })
+map("n", "]e", function() vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR }) end, { desc = "Next Error" })
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename Symbol" })
 

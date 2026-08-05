@@ -23,7 +23,7 @@ function M.get_gradle_cmd()
   local gradlew = cwd .. "/gradlew"
   if vim.fn.filereadable(gradlew) == 1 then
     if vim.fn.executable(gradlew) == 0 then
-      vim.fn.system("chmod +x " .. gradlew)
+      vim.fn.system({ "chmod", "+x", gradlew })
     end
     return "./gradlew"
   end
@@ -49,8 +49,9 @@ function M.run_gradle_cmd(cmd)
   vim.api.nvim_win_set_buf(win, buf)
 
   vim.fn.termopen(cmd, {
-    on_exit = function()
-      vim.notify("Gradle command finished", vim.log.levels.INFO)
+    on_exit = function(_, code)
+      local level = (code == 0) and vim.log.levels.INFO or vim.log.levels.ERROR
+      vim.notify("Gradle command exited with code " .. code, level)
     end,
   })
 

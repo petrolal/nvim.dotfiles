@@ -478,6 +478,51 @@ So that I have a consistent debugging control interface across all languages.
 - **When** pressing `<leader>db` or `<leader>dc`,
 - **Then** breakpoints toggle and execution continues/steps cleanly.
 
+---
+
+## Epic 13: Code Review Remediation & Architecture Hardening
+
+Address code review findings across security, path safety, keymap disambiguation, JDTLS lifecycle, and DAP/LSP completeness.
+
+### Story 13.1: Security, Path Safety & Shell Execution Hardening
+
+As a DevOps Engineer,  
+I want shell calls in Maven/Gradle utilities sanitized and theme transparent logic corrected,  
+So that path special characters do not break execution and transparent themes render correctly.
+
+**Acceptance Criteria:**
+- **Given** workspace paths with spaces or special characters,
+- **When** executing Maven/Gradle commands or loading AWS theme with `transparent = true`,
+- **Then** `chmod` uses list table syntax, Gradle task enumeration is async, and transparent backgrounds render properly.
+
+### Story 13.2: Keymap Disambiguation & API Modernization
+
+As a Developer,  
+I want keymap conflicts resolved and deprecated APIs modernized,  
+So that Telescope maps to `<leader>tf`/`<leader>tg`, `<leader>gbl` triggers line blame, and diagnostic jumps use modern `vim.diagnostic.jump`.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>tf`, `<leader>gbl`, or `[d`,
+- **Then** Telescope opens, line blame shows, and diagnostic jumping uses non-deprecated APIs.
+
+### Story 13.3: Language Server & Debug Adapter Completeness
+
+As a Developer,  
+I want `ftplugin/java.lua` created and DAP adapters for JS/TS and Bash configured,  
+So that Java LSP initializes properly and Node/Bash scripts can be step-debugged.
+
+**Acceptance Criteria:**
+- **Given** a Java, JS/TS, or Bash buffer,
+- **When** opening file or starting debug session,
+- **Then** JDTLS attaches via `ftplugin/java.lua` and DAP adapters attach cleanly.
+
+
+**Acceptance Criteria:**
+- **Given** any DAP-enabled buffer (Go, Python, Java, Kotlin, C/C++, JS, Bash),
+- **When** pressing `<leader>db` or `<leader>dc`,
+- **Then** breakpoints toggle and execution continues/steps cleanly.
+
 
 
 

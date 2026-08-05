@@ -69,7 +69,23 @@ return {
           section_separators = { left = "", right = "" },
         },
         sections = {
-          lualine_a = { { "mode", fmt = function(str) return "󰋜 " .. str end } },
+          lualine_a = {
+            {
+              "mode",
+              fmt = function(str)
+                local icons = {
+                  NORMAL = "󰋜 ",
+                  INSERT = "󰏫 ",
+                  VISUAL = "󰈟 ",
+                  V_LINE = "󰈟 ",
+                  V_BLOCK = "󰈟 ",
+                  REPLACE = "󰑐 ",
+                  COMMAND = "󰌾 ",
+                }
+                return (icons[str] or "") .. str
+              end,
+            },
+          },
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = { { "filename", path = 1 } },
           lualine_x = { lsp_component, "encoding", "fileformat", "filetype" },

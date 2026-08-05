@@ -21,7 +21,7 @@ function M.get_mvn_cmd()
   local mvnw = cwd .. "/mvnw"
   if vim.fn.filereadable(mvnw) == 1 then
     if vim.fn.executable(mvnw) == 0 then
-      vim.fn.system("chmod +x " .. mvnw)
+      vim.fn.system({ "chmod", "+x", mvnw })
     end
     return "./mvnw"
   end
@@ -45,8 +45,9 @@ function M.run_maven_cmd(cmd)
   vim.api.nvim_win_set_buf(win, buf)
 
   vim.fn.termopen(cmd, {
-    on_exit = function()
-      vim.notify("Maven command finished", vim.log.levels.INFO)
+    on_exit = function(_, code)
+      local level = (code == 0) and vim.log.levels.INFO or vim.log.levels.ERROR
+      vim.notify("Maven command exited with code " .. code, level)
     end,
   })
 
