@@ -228,6 +228,61 @@ return {
         desc = "LSP Symbols",
       },
       {
+        "gd",
+        function()
+          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+            Snacks.picker.lsp_definitions()
+          else
+            vim.cmd("normal! gd")
+          end
+        end,
+        desc = "Goto Definition (Smart Fallback)",
+      },
+      {
+        "gD",
+        function()
+          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+            Snacks.picker.lsp_declarations()
+          else
+            vim.cmd("normal! gD")
+          end
+        end,
+        desc = "Goto Declaration (Smart Fallback)",
+      },
+      {
+        "gy",
+        function()
+          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+            Snacks.picker.lsp_type_definitions()
+          else
+            vim.notify("No active LSP client for type definitions", vim.log.levels.WARN)
+          end
+        end,
+        desc = "Goto Type Definition",
+      },
+      {
+        "gi",
+        function()
+          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+            Snacks.picker.lsp_implementations()
+          else
+            vim.notify("No active LSP client for implementations", vim.log.levels.WARN)
+          end
+        end,
+        desc = "Goto Implementation",
+      },
+      {
+        "gr",
+        function()
+          if #vim.lsp.get_clients({ bufnr = 0 }) > 0 then
+            Snacks.picker.lsp_references()
+          else
+            Snacks.picker.grep_word()
+          end
+        end,
+        desc = "References (Grep Fallback)",
+      },
+      {
         "<leader>od",
         function()
           Snacks.terminal("lazydocker")

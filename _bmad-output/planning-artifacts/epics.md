@@ -1122,6 +1122,24 @@ So that `./scripts/validate.sh` serves as an automated CLI test suite.
 - **When** executing `./scripts/validate.sh`,
 - **Then** all validation stages (Lazy check, core options, 4 cloud themes, `:checkhealth cumulus`, markdown plugins) pass with exit code 0.
 
+---
+
+## Epic 36: LSP Goto Symbol Navigation & Snacks Picker Parity
+
+Implement ergonomic LSP goto keymaps (`gd`, `gD`, `gy`, `gi`, `gr`) using Snacks pickers to provide single-jump speed with multi-result floating previews and robust error resilience.
+
+### Story 36.1: Snacks LSP Goto Navigation Keymap Integration (`editor-snacks.lua`)
+
+As a Developer,  
+I want standard Vim LSP goto shortcuts (`gd` for Definition, `gD` for Declaration, `gy` for Type Definition, `gi` for Implementation, `gr` for References) integrated via `folke/snacks.nvim`,  
+So that symbol navigation is fast, visually interactive on multiple targets, and handles edge cases without crashing.
+
+**Acceptance Criteria:**
+- **Given** an LSP-attached buffer,
+- **When** pressing `gd`, `gD`, `gy`, `gi`, or `gr`,
+- **Then** Snacks LSP pickers (`Snacks.picker.lsp_definitions`, `lsp_declarations`, `lsp_type_definitions`, `lsp_implementations`, `lsp_references`) trigger directly, auto-confirming on single matches and opening interactive floating previews on multiple matches.
+
+
 
 
 
