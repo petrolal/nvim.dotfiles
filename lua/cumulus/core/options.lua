@@ -11,6 +11,7 @@ vim.opt.ttimeoutlen = 10
 vim.opt.mouse = "a"
 vim.opt.relativenumber = true
 vim.opt.number = true
+vim.opt.confirm = true
 
 -- Load default AWS theme engine (FR7)
 vim.schedule(function()

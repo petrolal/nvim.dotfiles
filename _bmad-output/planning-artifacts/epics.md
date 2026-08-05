@@ -858,3 +858,147 @@ So that WhichKey hints render as a vertical side panel on the right edge of the 
 - **Given** WhichKey popup window,
 - **When** pressing `<leader>`,
 - **Then** WhichKey opens as a vertical panel on the right side of the screen.
+
+---
+
+## Epic 27: Unified Telescope UI Branding & Search Engine Taxonomy
+
+Consolidate all search keymaps and WhichKey descriptions around Telescope UI branding while maintaining Ripgrep (`rg`) as an implicit system backend engine.
+
+### Story 27.1: Search Keymap Taxonomy Standardization
+
+As a Developer,  
+I want keymap descriptions in `editor-telescope.lua` and `ui-whichkey.lua` standardized under Telescope UI naming (e.g., "Telescope Live Grep", "Telescope Find Files"),  
+So that backend CLI implementation details (like Ripgrep) are abstracted away from the UI menu labels.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** opening WhichKey or triggering Telescope keymaps,
+- **Then** all search descriptions consistently reference Telescope actions without fragmented CLI labels.
+
+### Story 27.2: Healthcheck Dependency Verification for Search Engine Backends
+
+As a Systems Architect,  
+I want `:checkhealth telescope` and startup diagnostics to verify `ripgrep` (`rg`) and `fd` binary installations,  
+So that missing search engines are flagged cleanly in health checks without cluttering keymap UX.
+
+**Acceptance Criteria:**
+- **Given** Neovim environment,
+- **When** running `:checkhealth telescope` or initializing search plugins,
+- **Then** `ripgrep` availability is reported in health checks with clear installation instructions if missing.
+
+---
+
+## Epic 28: Total LazyVim Reference Purge & Ecosystem Terminology Clarification
+
+Purge all residual references to LazyVim across project documentation and add clear terminology disclaimers separating `lazy.nvim`, `lazy-lock.json`, and `lazygit`.
+
+### Story 28.1: Purge Residual LazyVim References from Documentation
+
+As a Developer,  
+I want all residual references to "LazyVim" removed from `README.md`, `CLAUDE.md`, `project-context.md`, and `docs/`,  
+So that the codebase and documentation accurately reflect Cumulus as a 100% independent, zero-framework Neovim distribution.
+
+**Acceptance Criteria:**
+- **Given** project documentation files,
+- **When** auditing text for framework references,
+- **Then** all legacy "LazyVim" mentions are replaced or refactored to reference `lazy.nvim` native specifications.
+
+### Story 28.2: Ecosystem Terminology Disambiguation Guide
+
+As a Technical Writer,  
+I want a clear "Ecosystem Terminology" section added to `README.md` and `docs/architecture.md`,  
+So that users clearly understand the difference between `lazy.nvim` (plugin manager), `lazy-lock.json` (SHA lockfile), and `lazygit` (Git TUI).
+
+**Acceptance Criteria:**
+- **Given** `README.md` and `docs/architecture.md`,
+- **When** reading the architecture overview,
+- **Then** an explicit section details `lazy.nvim` vs. `lazy-lock.json` vs. `lazygit` to prevent user confusion.
+
+---
+
+## Epic 29: Unsaved Buffer Confirmation & Safe Exit Workflows
+
+Implement global exit confirmation prompts (Save / Don't Save / Cancel) when quitting Neovim with unsaved modifications.
+
+### Story 29.1: Global `confirm` Option Enablement & Safe Exit Keymaps
+
+As a Developer,  
+I want `vim.opt.confirm = true` set in options and exit shortcuts configured to prompt for save confirmation,  
+So that exiting Neovim with unsaved changes prompts me to save, discard, or cancel instead of silently failing or losing data.
+
+**Acceptance Criteria:**
+- **Given** modified buffers in Neovim,
+- **When** attempting to quit via `:q`, `:qa`, or `<leader>qq`,
+- **Then** Neovim presents a confirmation prompt asking to save changes, discard, or cancel exit.
+
+### Story 29.2: Modern UI Dialog Overlay Integration for Exit Prompts
+
+As a UX Designer,  
+I want exit confirmation prompts to render cleanly via Neovim UI overlays (`vim.ui.select` / `noice`),  
+So that confirmation dialogs match the AWS visual theme.
+
+**Acceptance Criteria:**
+- **Given** exit confirmation prompt triggered,
+- **When** prompt is displayed,
+- **Then** choice buttons (Save / Discard / Cancel) render cleanly in an interactive UI overlay.
+
+---
+
+## Epic 30: System-Wide Nerd Font v3 & Visual Iconography Standardization
+
+Standardize all UI icons across WhichKey, file trees, and pickers using modern Nerd Font v3 glyphs, eliminating raw emojis and unstyled icon fallbacks.
+
+### Story 30.1: WhichKey Nerd Font v3 Icon Standardization
+
+As a UX Designer,  
+I want raw emojis in `ui-whichkey.lua` (such as `🔭 `) replaced with high-clarity Nerd Font v3 icons (`󰈞 `),  
+So that WhichKey group menus render cleanly without font underline artifacts or misaligned text heights.
+
+**Acceptance Criteria:**
+- **Given** WhichKey popup window,
+- **When** pressing `<leader>`,
+- **Then** all top-level group headers display crisp Nerd Font v3 icons without font underline glitches.
+
+### Story 30.2: Global Devicons Integration for Document Tree & Pickers
+
+As a Developer,  
+I want `nvim-tree/nvim-web-devicons` configured as a top-level global plugin specification (`lazy = false`),  
+So that document trees (`Snacks.explorer`) and Telescope pickers display filetype icons for Terraform, Docker, Ansible, Kotlin, Java, and YAML.
+
+**Acceptance Criteria:**
+- **Given** document tree or Telescope picker,
+- **When** viewing file lists,
+- **Then** all files render high-clarity devicons corresponding to their file extension.
+
+---
+
+## Epic 31: Multi-Cloud Signature Theme Engine (AWS, Azure, GCP, OCI)
+
+Deliver first-class, built-in cloud themes for AWS, Azure, Google Cloud Platform (GCP), and Oracle Cloud Infrastructure (OCI) with an interactive theme switcher.
+
+### Story 31.1: Multi-Cloud Palette Engines (`azure.lua`, `gcp.lua`, `oci.lua`)
+
+As a DevOps Engineer,  
+I want dedicated theme engines for Azure (`azure.lua`), GCP (`gcp.lua`), and OCI (`oci.lua`),  
+So that I can switch my editor aesthetic to match my target cloud provider platform.
+
+**Acceptance Criteria:**
+- **Given** Neovim,
+- **When** executing `:colorscheme aws-theme`, `:colorscheme azure-theme`, `:colorscheme gcp-theme`, or `:colorscheme oci-theme`,
+- **Then** Neovim loads signature palette highlights for the chosen cloud provider.
+
+### Story 31.2: Interactive Cloud Theme Switcher Keymap & Persistence
+
+As a Cloud Specialist,  
+I want `<leader>ut` mapped to an interactive Cloud Theme selector picker that persists my selection across restarts,  
+So that I can select and switch cloud themes effortlessly.
+
+**Acceptance Criteria:**
+- **Given** Neovim editor,
+- **When** pressing `<leader>ut`,
+- **Then** a picker displays AWS, Azure, GCP, and OCI options, applying and persisting the selection upon entry.
+
+
+
+

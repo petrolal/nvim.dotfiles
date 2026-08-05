@@ -163,3 +163,49 @@ development_status:
   24-2-code-build-group-consolidation: done
   24-3-complete-dap-debugger-keymap-suite: done
   epic-24-retrospective: optional
+
+  epic-25: backlog
+  25-1-devtools-keymap-group-shortcuts: backlog
+  25-2-whichkey-devtools-group-registration: backlog
+  epic-25-retrospective: optional
+
+  epic-26: backlog
+  26-1-enforce-telescope-live-search-precedence: backlog
+  26-2-whichkey-right-side-vertical-drawer-layout-configuration: backlog
+  epic-26-retrospective: optional
+
+  epic-27: done
+  27-1-search-keymap-taxonomy-standardization: done
+  27-2-healthcheck-dependency-verification-for-search-engine-backends: done
+  epic-27-retrospective: optional
+
+  epic-28: done
+  28-1-purge-residual-lazyvim-references-from-documentation: done
+  28-2-ecosystem-terminology-disambiguation-guide: done
+  epic-28-retrospective: optional
+
+  epic-29: done
+  29-1-global-confirm-option-enablement-safe-exit-keymaps: done
+  29-2-modern-ui-dialog-overlay-integration-for-exit-prompts: done
+  epic-29-retrospective: optional
+
+  epic-30: backlog
+  30-1-whichkey-nerd-font-v3-icon-standardization: backlog
+  30-2-global-devicons-integration-for-document-tree-pickers: backlog
+  epic-30-retrospective: optional
+
+  epic-31: backlog
+  31-1-multi-cloud-palette-engines: backlog
+  31-2-interactive-cloud-theme-switcher-keymap-persistence: backlog
+  epic-31-retrospective: optional
+
+
+
+
+
+
+
+
+
+
+

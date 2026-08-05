@@ -22,42 +22,42 @@ return {
         function()
           require("telescope.builtin").live_grep()
         end,
-        desc = "Ripgrep Live Search (Telescope)",
+        desc = "Live Grep (Telescope)",
       },
       {
         "<leader><space>",
         function()
           require("telescope.builtin").find_files({ hidden = true })
         end,
-        desc = "Find Files (Telescope Ripgrep)",
+        desc = "Find Files (Telescope)",
       },
       {
         "<leader>ff",
         function()
           require("telescope.builtin").find_files({ hidden = true })
         end,
-        desc = "Find Files (Telescope Ripgrep)",
+        desc = "Find Files (Telescope)",
       },
       {
         "<leader>tf",
         function()
           require("telescope.builtin").find_files({ hidden = true })
         end,
-        desc = "Find Files (Telescope Ripgrep)",
+        desc = "Find Files (Telescope)",
       },
       {
         "<leader>sg",
         function()
           require("telescope.builtin").live_grep()
         end,
-        desc = "Ripgrep Live Search (Telescope)",
+        desc = "Live Grep (Telescope)",
       },
       {
         "<leader>tg",
         function()
           require("telescope.builtin").live_grep()
         end,
-        desc = "Ripgrep Live Search (Telescope)",
+        desc = "Live Grep (Telescope)",
       },
       {
         "<leader>tp",
@@ -73,7 +73,7 @@ return {
         function()
           require("telescope.builtin").grep_string()
         end,
-        desc = "Ripgrep Word Under Cursor (Telescope)",
+        desc = "Word Under Cursor (Telescope)",
       },
       {
         "<leader>sb",

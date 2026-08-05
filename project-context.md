@@ -31,9 +31,9 @@
    * Plugin specs: `lua/cumulus/plugins/` (`core-*`, `cloud-*`, `ui-*`, `tools-*`).
    * Utility modules: `lua/cumulus/util/` (`iac.lua`, `maven.lua`, `gradle.lua`).
 
-2. **LazyVim Independence:**
-   * Do not import `{ "LazyVim/LazyVim", import = "lazyvim.plugins" }` or rely on `lazyvim.json`.
-   * `init.lua` bootstraps `lazy.nvim` and loads `cumulus.plugins` directly.
+2. **Native Bootstrap & Plugin Specifications:**
+   * All plugin specs are loaded directly via `lazy.nvim` from `{ import = "cumulus.plugins" }`.
+   * `init.lua` bootstraps `lazy.nvim` natively without external distribution frameworks.
 
 3. **Validation Invariants:**
    * Run `stylua` before committing Lua code (2-space indent, 120 column width).

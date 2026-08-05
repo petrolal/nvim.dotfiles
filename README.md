@@ -8,8 +8,15 @@
 
 * ☁️ **Infrastructure-as-Code First-Class Citizen:** Pre-configured LSP, diagnostic linting, syntax highlighting, and formatting for **Terraform / OpenTofu**, **AWS CloudFormation / SAM**, **Ansible**, **Docker**, and **Kubernetes / Helm**.
 * 🎨 **AWS Signature Theme:** Programmatically loaded AWS Cloud Theme featuring `#FF9900` AWS Orange accents, deep navy backgrounds (`#071521`), and glassmorphism window splits.
-* 🚀 **Zero-Framework Autonomy:** Built directly on `lazy.nvim` with zero runtime dependency on external distribution wrappers (e.g. LazyVim).
+* 🚀 **Zero-Framework Autonomy:** Built directly on native `lazy.nvim` plugin specifications with zero external distribution framework dependencies.
 * ☕ **JVM & Automation Tooling:** Integrated support for Maven, Gradle, Java, Kotlin, Python, and Bash automation scripts.
+
+> [!NOTE]
+> **Ecosystem Terminology:**
+> - **`lazy.nvim`**: Neovim's plugin manager loaded via `lua/cumulus/core/lazy.lua`.
+> - **`lazy-lock.json`**: Auto-generated lockfile pinning git commit SHAs for reproducible builds (unrelated to lazygit).
+> - **`lazygit`**: Optional terminal TUI for Git launched via `<leader>og`.
+
 
 ---
 

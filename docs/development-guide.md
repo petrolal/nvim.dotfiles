@@ -35,5 +35,5 @@ nvim --headless "+MasonUpdate" +qa
 ## Code Conventions
 
 * **Namespace Rule:** Place all Lua modules under `lua/cumulus/`. Do not introduce top-level plugins outside `cumulus.plugins`.
-* **Zero LazyVim Dependency:** Do not import `lazyvim.plugins` or call `LazyVim.*` utility functions. Use standard Neovim Lua APIs (`vim.api.*`, `vim.keymap.set`, `vim.notify`).
+* **Native Lua APIs:** Use standard Neovim Lua APIs (`vim.api.*`, `vim.keymap.set`, `vim.notify`) directly.
 * **Clean Commits:** Write conventional commit messages (`feature:`, `fix:`, `refactor:`, `docs:`).

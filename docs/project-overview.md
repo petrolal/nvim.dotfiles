@@ -4,7 +4,7 @@
 
 **Cumulus** is an independent, high-performance Neovim distribution engineered specifically for **Cloud Engineers, Site Reliability Engineers (SREs), and DevOps Practitioners**.
 
-Unlike general-purpose distributions or starter layers (such as LazyVim), Cumulus operates as a completely autonomous, zero-framework distribution managed directly with `lazy.nvim`. It encapsulates core editing, LSP orchestration, diagnostic linting, and visual aesthetics into a clean, maintainable `cumulus.*` namespace.
+Cumulus operates as a completely autonomous, zero-framework Neovim distribution managed directly with `lazy.nvim`. It encapsulates core editing, LSP orchestration, diagnostic linting, and visual aesthetics into a clean, maintainable `cumulus.*` namespace.
 
 ---
 
@@ -24,7 +24,7 @@ Unlike general-purpose distributions or starter layers (such as LazyVim), Cumulu
 
 ## Core Pillars & Architectural Principles
 
-* **Zero Upstream Distro Dependency:** No reliance on `LazyVim/LazyVim` or `lazyvim.json`.
+* **Zero External Framework Dependency:** Direct `lazy.nvim` native bootstrap without external distribution wrappers.
 * **AWS Cloud Signature Theme:** Built-in AWS Palette (`#FF9900` AWS Orange / `#071521` AWS Navy) loaded programmatically on startup.
 * **Modular Namespace (`cumulus.*`):** Strict directory separation:
   * `lua/cumulus/core/` (options, keymaps, autocmds)

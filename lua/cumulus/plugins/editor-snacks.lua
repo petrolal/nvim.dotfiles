@@ -127,9 +127,21 @@ return {
             Snacks.picker.files({ cwd = vim.fn.stdpath("config") })
           end,
         },
-        { icon = "󰦛 ", key = "s", desc = "Restore Session", action = function() require("persistence").load() end },
+        {
+          icon = "󰦛 ",
+          key = "s",
+          desc = "Restore Session",
+          action = function()
+            local ok, persistence = pcall(require, "persistence")
+            if ok then
+              persistence.load()
+            else
+              vim.notify("persistence.nvim is not loaded", vim.log.levels.WARN)
+            end
+          end,
+        },
         { icon = "󰏖 ", key = "l", desc = "Lazy", action = ":Lazy" },
-        { icon = "󰗼 ", key = "q", desc = "Quit", action = ":qa" },
+        { icon = "󰗼 ", key = "q", desc = "Quit", action = ":confirm qa" },
       }
       return opts
     end,
@@ -210,13 +222,6 @@ return {
           Snacks.picker.lsp_symbols()
         end,
         desc = "LSP Symbols",
-      },
-      {
-        "<leader>lD",
-        function()
-          Snacks.terminal("lazydocker")
-        end,
-        desc = "Lazy Docker",
       },
       {
         "<leader>od",
@@ -339,6 +344,34 @@ return {
           Snacks.bufdelete()
         end,
         desc = "Delete Buffer",
+      },
+    },
+  },
+  {
+    "folke/persistence.nvim",
+    event = "BufReadPre",
+    opts = {},
+    keys = {
+      {
+        "<leader>qs",
+        function()
+          require("persistence").load()
+        end,
+        desc = "Restore Session",
+      },
+      {
+        "<leader>ql",
+        function()
+          require("persistence").load({ last = true })
+        end,
+        desc = "Restore Last Session",
+      },
+      {
+        "<leader>qd",
+        function()
+          require("persistence").stop()
+        end,
+        desc = "Don't Save Current Session",
       },
     },
   },

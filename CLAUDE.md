@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) and AI agents workin
 
 **Cumulus** is an independent, high-performance Neovim distribution purpose-built for **Cloud Engineers, SREs, and DevOps Practitioners**. It provides first-class, out-of-the-box editing, LSP, linting, and formatting for Terraform/OpenTofu, AWS CloudFormation/SAM, Ansible, Docker, Kubernetes/Helm, and JVM automation scripts—styled with a signature **AWS Cloud Theme**.
 
-It is completely independent of `LazyVim/LazyVim`, using `lazy.nvim` directly as its plugin manager.
+It uses `lazy.nvim` directly as its native plugin manager under the `cumulus.*` namespace.
 
 ## Commands
 

@@ -82,3 +82,8 @@ map("n", "<leader>ct", function()
     vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
   end
 end, { desc = "JVM Build: Run Tests" })
+
+-- Session & Quit Keymaps (Story 10.1 & Story 29.1)
+map("n", "<leader>qq", "<cmd>confirm qa<cr>", { desc = "Quit Neovim (Confirm)" })
+map("n", "<leader>qQ", "<cmd>qa!<cr>", { desc = "Force Quit Neovim (No Save)" })
+
