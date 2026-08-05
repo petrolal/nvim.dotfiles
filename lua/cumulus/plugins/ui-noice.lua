@@ -1,0 +1,29 @@
+return {
+  {
+    "folke/noice.nvim",
+    opts = {
+      lsp = {
+        progress = { enabled = false },
+        override = {
+          ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+          ["vim.lsp.util.set_hl_from_snippet"] = true,
+        },
+      },
+      messages = {
+        enabled = true,
+        view = "mini",
+      },
+      popupmenu = {
+        enabled = true,
+        backend = "nui",
+      },
+      views = {
+        mini = {
+          win_options = {
+            winblend = 0,
+          },
+        },
+      },
+    },
+  },
+}

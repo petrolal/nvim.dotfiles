@@ -1,0 +1,72 @@
+# generated: 2026-08-04
+# last_updated: 2026-08-04
+# project: neovim-dotfiles
+# project_key: NOKEY
+# tracking_system: file-system
+# story_location: _bmad-output/implementation-artifacts
+
+# STATUS DEFINITIONS:
+# ==================
+# Epic Status:
+#   - backlog: Epic not yet started
+#   - in-progress: Epic actively being worked on
+#   - done: All stories in epic completed
+#
+# Epic Status Transitions:
+#   - backlog → in-progress: Automatically when first story is created (via create-story)
+#   - in-progress → done: Manually when all stories reach 'done' status
+#
+# Story Status:
+#   - backlog: Story only exists in epic file
+#   - ready-for-dev: Story file created in stories folder
+#   - in-progress: Developer actively working on implementation
+#   - review: Ready for code review (via Dev's code-review workflow)
+#   - done: Story completed
+#
+# Retrospective Status:
+#   - optional: Can be completed but not required
+#   - done: Retrospective has been completed
+#
+# Action Item Status:
+#   - open: Committed during a retrospective, not yet addressed
+#   - in-progress: Actively being worked on
+#   - done: Done
+
+generated: 2026-08-04
+last_updated: 2026-08-04
+project: neovim-dotfiles
+project_key: NOKEY
+tracking_system: file-system
+story_location: _bmad-output/implementation-artifacts
+
+development_status:
+  epic-1: done
+  1-1-core-namespace-option-decoupling: done
+  1-2-native-bootstrapper-lazyvim-decoupling: done
+  epic-1-retrospective: optional
+
+  epic-2: done
+  2-1-aws-palette-engine-highlight-generator: done
+  2-2-theme-plugin-integration-ui-statusline-styling: done
+  epic-2-retrospective: optional
+
+  epic-3: done
+  3-1-terraform-opentofu-integration: done
+  3-2-aws-cloudformation-ansible-integration: done
+  3-3-containers-kubernetes-docker-helm: done
+  epic-3-retrospective: optional
+
+  epic-4: done
+  4-1-utility-namespace-migration: done
+  4-2-automated-headless-validation-script: done
+  epic-4-retrospective: optional
+
+  epic-5: done
+  5-1-telescope-ripgrep-deep-integration: done
+  5-2-whichkey-modern-visual-keymap-guide: done
+  epic-5-retrospective: optional
+
+  epic-6: done
+  6-1-dap-ui-virtual-text-integration: done
+  6-2-git-gutter-signs-hunk-navigation: done
+  epic-6-retrospective: optional
