@@ -1,4 +1,4 @@
--- Cumulus Git Signs & Version Control Integration (Story 6.2)
+-- Cumulus Git Signs & Version Control Integration (Story 6.2 & Story 10.2)
 
 return {
   {
@@ -35,12 +35,14 @@ return {
           return "<Ignore>"
         end, { expr = true, desc = "Prev Hunk" })
 
-        -- Actions
+        -- Actions (Story 10.2)
+        map("n", "<leader>gb", function() gs.blame_line({ full = true }) end, { desc = "Blame Line" })
+        map("n", "<leader>gB", gs.blame, { desc = "Blame Buffer Toggle" })
+        map("n", "<leader>gd", gs.diffthis, { desc = "Git Diff This" })
         map("n", "<leader>ghs", gs.stage_hunk, { desc = "Stage Hunk" })
         map("n", "<leader>ghr", gs.reset_hunk, { desc = "Reset Hunk" })
         map("n", "<leader>ghu", gs.undo_stage_hunk, { desc = "Undo Stage Hunk" })
-        map("n", "<leader>gbl", function() gs.blame_line({ full = true }) end, { desc = "Blame Line" })
-        map("n", "<leader>gpreview", gs.preview_hunk, { desc = "Preview Hunk" })
+        map("n", "<leader>ghp", gs.preview_hunk, { desc = "Preview Hunk" })
       end,
     },
   },

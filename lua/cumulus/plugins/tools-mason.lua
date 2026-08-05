@@ -1,4 +1,4 @@
--- Cumulus Mason Package Management (AR2 & Epic 3)
+-- Cumulus Mason Package Management (AR2, Epic 3, Epic 11 & Epic 12)
 
 return {
   {
@@ -16,6 +16,13 @@ return {
         "dockerls",
         "hadolint",
         "helm-ls",
+        "gopls",
+        "delve",
+        "pyright",
+        "debugpy",
+        "typescript-language-server",
+        "json-lsp",
+        "lemminx",
         "bash-language-server",
         "shellcheck",
         "shfmt",

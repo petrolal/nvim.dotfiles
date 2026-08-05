@@ -70,3 +70,37 @@ development_status:
   6-1-dap-ui-virtual-text-integration: done
   6-2-git-gutter-signs-hunk-navigation: done
   epic-6-retrospective: optional
+
+  epic-7: done
+  7-1-snacks-zen-mode-scratchpad: done
+  7-2-snacks-notification-history-lazygit-terminal: done
+  epic-7-retrospective: optional
+
+  epic-8: done
+  8-1-dashboard-cloud-workload-launcher-iconography: done
+  8-2-statusline-active-lsp-pill-mode-badges: done
+  8-3-bufferline-devicons-buffer-numbers: done
+  8-4-whichkey-group-iconography: done
+  epic-8-retrospective: optional
+
+  epic-9: done
+  9-1-buffer-window-navigation-ergonomics: done
+  9-2-visual-selection-line-movement-chords: done
+  9-3-lsp-diagnostics-symbol-navigation-chords: done
+  epic-9-retrospective: optional
+
+  epic-10: done
+  10-1-session-quit-keymap-suite: done
+  10-2-advanced-git-workflow-suite: done
+  epic-10-retrospective: optional
+
+  epic-11: done
+  11-1-go-python-js-ts-language-servers: done
+  11-2-data-markup-specs-json-xml-yaml-shell: done
+  epic-11-retrospective: optional
+
+  epic-12: done
+  12-1-go-python-debug-adapter-integration: done
+  12-2-js-ts-bash-debug-adapter-integration: done
+  12-3-central-dap-keymap-bindings-controls: done
+  epic-12-retrospective: optional

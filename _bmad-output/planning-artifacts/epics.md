@@ -263,4 +263,224 @@ So that file modifications, additions, and deletions are visually displayed in t
 - **Then** `gitsigns` displays colored sign column indicators using AWS theme palette tokens,
 - **And** `<leader>ghs` stages hunks, `<leader>ghr` resets hunks, and `<leader>gbl` blames lines.
 
+---
+
+## Epic 7: LazyVim Ergonomics & Extra Snacks Workflows
+
+Integrate additional Snacks.nvim developer utilities: Zen mode (`<leader>z`), Scratchpad buffers (`<leader>.`), Notification history (`<leader>sn`), and LazyGit integration (`<leader>gg`).
+
+### Story 7.1: Snacks Zen Mode & Scratchpad
+
+As a Developer,  
+I want Zen mode and Scratchpad shortcuts in `editor-snacks.lua`,  
+So that I can enter distraction-free editing with `<leader>z` and create ephemeral scratch buffers with `<leader>.`.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>z` or `<leader>.`,
+- **Then** `Snacks.zen()` toggles distraction-free mode and `Snacks.scratch()` opens an ephemeral scratchpad.
+
+### Story 7.2: Snacks Notification History & LazyGit Terminal
+
+As a DevOps Engineer,  
+I want LazyGit terminal and notification history shortcuts,  
+So that pressing `<leader>gg` launches LazyGit in a popup terminal and `<leader>sn` opens notification history.
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>gg` or `<leader>sn`,
+- **Then** `Snacks.terminal("lazygit")` opens LazyGit and `Snacks.notifier.show_history()` opens notification history.
+
+---
+
+## Epic 8: UX Layout, Iconography & Visual Information Architecture
+
+Enhance Neovim UI components with rich Nerd Font iconography, active LSP status indicators, Devicons in Bufferline with buffer numbers, and memorable WhichKey group headers.
+
+### Story 8.1: Dashboard Cloud Workload Launcher & Iconography
+
+As a Cloud Engineer,  
+I want a Cloud Workloads quick launcher on the Snacks dashboard,  
+So that I can open Terraform workspaces, LazyDocker, and Ansible shortcuts directly from startup.
+
+**Acceptance Criteria:**
+- **Given** Neovim startup dashboard,
+- **When** viewing the preset keys section,
+- **Then** distinct Nerd Font icons (`󰅟`, `󰡨`, `󰞵`) and quick actions appear for Cloud Workloads.
+
+### Story 8.2: Statusline Active LSP Pill & Mode Badges
+
+As a DevOps Developer,  
+I want Lualine to display active LSP server names and mode badges,  
+So that I have instant visual feedback on attached language servers and diagnostic counts.
+
+**Acceptance Criteria:**
+- **Given** an open buffer with attached LSP,
+- **When** navigating windows,
+- **Then** Lualine displays mode badges (`󰋜 NORMAL`, `󰏫 INSERT`) and active LSP server names in the statusline.
+
+### Story 8.3: Bufferline Devicons & Buffer Numbers
+
+As a Developer,  
+I want filetype icons and buffer numbers on Bufferline tabs,  
+So that I can identify buffer file types at a glance and jump between buffers.
+
+**Acceptance Criteria:**
+- **Given** multiple open buffers,
+- **When** viewing the tabline,
+- **Then** Bufferline displays `nvim-web-devicons` and buffer numbers.
+
+### Story 8.4: WhichKey Group Iconography
+
+As a Developer,  
+I want WhichKey group headers styled with Nerd Font icons,  
+So that keymap popups are visually categorized (`󰉋` Files, `󰈞` Search, `󰅟` Cloud, `󰏗` JVM, `󰊢` Git).
+
+**Acceptance Criteria:**
+- **Given** Neovim buffer,
+- **When** pressing `<leader>`,
+- **Then** WhichKey popup displays iconic group labels.
+
+---
+
+## Epic 9: LazyVim Native Keymap Parity & Ergonomic Mappings
+
+Integrate LazyVim default keymaps for buffer navigation (`<S-h>`, `<S-l>`, `<leader>bb`, `<leader>bo`), visual line movement (`J`, `K`), visual indent preservation (`<`, `>`), search centering (`n`, `N`), and LSP diagnostic/code actions (`[d`, `]d`, `<leader>ca`, `<leader>cr`).
+
+### Story 9.1: Buffer & Window Navigation Ergonomics
+
+As a Developer,  
+I want `<S-h>`/`<S-l>` for buffer switching and `<C-h/j/k/l>` for window navigation,  
+So that I can cycle buffers and navigate splits effortlessly without modifier overhead.
+
+**Acceptance Criteria:**
+- **Given** open buffer tabs,
+- **When** pressing `<S-h>` or `<S-l>`,
+- **Then** Neovim switches to previous or next buffer,
+- **And** `<leader>bb` switches to alternate buffer and `<leader>bo` closes other buffers.
+
+### Story 9.2: Visual Selection & Line Movement Chords
+
+As a Developer,  
+I want visual mode `J`/`K` to move lines and `<`/`>` to maintain visual selection,  
+So that moving blocks of code up/down auto-indents and stays selected.
+
+**Acceptance Criteria:**
+- **Given** a visual selection,
+- **When** pressing `J` or `K`,
+- **Then** selected lines move down/up and auto-indent,
+- **And** pressing `<` or `>` indents/outdents while preserving visual selection.
+
+### Story 9.3: LSP Diagnostics & Symbol Navigation Chords
+
+As a DevOps Engineer,  
+I want `[d`/`]d` for diagnostic jumping, `<leader>ca` for Code Action, and `<leader>cr` for Rename,  
+So that I can navigate errors and trigger LSP refactoring actions rapidly.
+
+**Acceptance Criteria:**
+- **Given** an LSP-attached buffer with diagnostics,
+- **When** pressing `[d` or `]d`,
+- **Then** cursor jumps to previous or next diagnostic,
+- **And** `<leader>ca` opens LSP Code Actions and `<leader>cr` opens symbol rename dialog.
+
+---
+
+## Epic 10: Session Quit Menu & Advanced Git Workflow Suite
+
+Implement LazyVim session/quit management under `<leader>q*` (`<leader>qq` Quit, `<leader>qs` Restore Session, `<leader>ql` Last Session) and expand the Git workflow suite under `<leader>g*` (`<leader>gb` Blame, `<leader>gd` Diff, `<leader>gl` Log, `<leader>gs` Status).
+
+### Story 10.1: Session Quit Keymap Suite
+
+As a Developer,  
+I want `<leader>q*` session management and exit keymaps,  
+So that I can quit Neovim (`<leader>qq`), force quit (`<leader>qQ`), and restore persistence sessions (`<leader>qs`).
+
+**Acceptance Criteria:**
+- **Given** Neovim workspace,
+- **When** pressing `<leader>qq`, `<leader>qQ`, or `<leader>qs`,
+- **Then** Neovim quits, force quits, or restores active session.
+
+### Story 10.2: Advanced Git Workflow Suite
+
+As a DevOps Engineer,  
+I want complete Git controls under `<leader>g*`,  
+So that I can blame lines (`<leader>gb`), preview diffs (`<leader>gd`), view commit logs (`<leader>gl`), and check git status (`<leader>gs`).
+
+**Acceptance Criteria:**
+- **Given** a git repository buffer,
+- **When** pressing `<leader>gb`, `<leader>gd`, `<leader>gl`, or `<leader>gs`,
+- **Then** inline line blame, diff view, git log picker, or status picker opens.
+
+---
+
+## Epic 11: Multi-Language DevOps LSP Stack (Go, Python, JS/TS, JSON, XML, YAML, Shell)
+
+Expand LSP and Treesitter support to cover the core DevOps development stack: Go (`gopls`), Python (`pyright`), JavaScript/TypeScript (`ts_ls`), JSON (`jsonls`), XML (`lemminx`), YAML (`yamlls`), and Shell script (`bashls`).
+
+### Story 11.1: Go, Python & JS/TS Language Servers
+
+As a DevOps Engineer,  
+I want `gopls`, `pyright`, and `ts_ls` LSP integration,  
+So that I get full autocompletion, type checking, and navigation when editing Go microservices, Python scripts, and TS tools.
+
+**Acceptance Criteria:**
+- **Given** a `.go`, `.py`, `.js`, or `.ts` buffer,
+- **When** attached to LSP,
+- **Then** `gopls`, `pyright`, and `ts_ls` provide autocompletion, diagnostics, and hover definitions.
+
+### Story 11.2: Data & Markup Specs (JSON, XML, YAML, Shell)
+
+As a DevOps Engineer,  
+I want `jsonls`, `lemminx`, `yamlls`, and `bashls` LSP servers configured,  
+So that configuration files, Kubernetes specs, XML definitions, and bash scripts are validated with schemas.
+
+**Acceptance Criteria:**
+- **Given** `.json`, `.xml`, `.yaml`, or `.sh` files,
+- **When** editing in buffer,
+- **Then** `jsonls`, `lemminx`, `yamlls`, and `bashls` validate syntax and suggest schema-compliant attributes.
+
+---
+
+## Epic 12: Universal DAP Debugging Platform & Keymap Suite
+
+Implement debugging adapters for Go (`delve`), Python (`debugpy`), JS/TS (`vscode-js-debug`), and Bash (`bash-debug-adapter`) with unified DAP launch keymaps (`<leader>db`, `<leader>dc`, `<leader>di`, `<leader>do`).
+
+### Story 12.1: Go & Python Debug Adapter Integration
+
+As a Developer,  
+I want `nvim-dap-go` (`delve`) and `nvim-dap-python` (`debugpy`) integrated,  
+So that I can set breakpoints and debug Go applications and Python scripts directly in Neovim.
+
+**Acceptance Criteria:**
+- **Given** a Go or Python file,
+- **When** launching a debugging session,
+- **Then** `delve` or `debugpy` attaches and DAP UI displays variables and stack frames.
+
+### Story 12.2: JS/TS & Bash Debug Adapter Integration
+
+As a DevOps Engineer,  
+I want `vscode-js-debug` and `bash-debug-adapter` integrated,  
+So that Node.js/TypeScript automation scripts and bash pipelines can be step-debugged.
+
+**Acceptance Criteria:**
+- **Given** a JS/TS or Shell script buffer,
+- **When** launching debugger,
+- **Then** Node or Bash debug adapter initiates stepping.
+
+### Story 12.3: Central DAP Keymap Bindings & Controls
+
+As a Developer,  
+I want unified `<leader>d*` keymaps for breakpoint toggle (`<leader>db`), continue (`<leader>dc`), step into (`<leader>di`), step over (`<leader>do`), and step out (`<leader>dO`),  
+So that I have a consistent debugging control interface across all languages.
+
+**Acceptance Criteria:**
+- **Given** any DAP-enabled buffer (Go, Python, Java, Kotlin, C/C++, JS, Bash),
+- **When** pressing `<leader>db` or `<leader>dc`,
+- **Then** breakpoints toggle and execution continues/steps cleanly.
+
+
+
+
+
+
 

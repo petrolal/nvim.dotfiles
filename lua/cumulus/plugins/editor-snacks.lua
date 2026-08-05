@@ -54,7 +54,7 @@ return {
       opts.dashboard.preset.header = banner
       opts.dashboard.preset.keys = {
         {
-          icon = " ",
+          icon = "󰉋 ",
           key = "f",
           desc = "Find File",
           action = function()
@@ -71,11 +71,35 @@ return {
           end,
         },
         {
-          icon = " ",
+          icon = "󰈞 ",
           key = "g",
-          desc = "Find Text",
+          desc = "Find Text (Grep)",
           action = function()
             Snacks.picker.grep()
+          end,
+        },
+        {
+          icon = "󰅟 ",
+          key = "t",
+          desc = "Terraform Workspace",
+          action = function()
+            Snacks.picker.files({ cwd = vim.fn.getcwd() })
+          end,
+        },
+        {
+          icon = "󰡨 ",
+          key = "d",
+          desc = "LazyDocker Terminal",
+          action = function()
+            Snacks.terminal("lazydocker")
+          end,
+        },
+        {
+          icon = "󰊢 ",
+          key = "v",
+          desc = "LazyGit Control",
+          action = function()
+            Snacks.terminal("lazygit")
           end,
         },
         {
@@ -184,6 +208,93 @@ return {
           Snacks.terminal("lazydocker")
         end,
         desc = "Lazy Docker",
+      },
+      {
+        "<leader>gg",
+        function()
+          Snacks.terminal("lazygit")
+        end,
+        desc = "LazyGit",
+      },
+      {
+        "<leader>gl",
+        function()
+          Snacks.picker.git_log()
+        end,
+        desc = "Git Log",
+      },
+      {
+        "<leader>gL",
+        function()
+          Snacks.picker.git_log_file()
+        end,
+        desc = "Git Log (Current File)",
+      },
+      {
+        "<leader>gs",
+        function()
+          Snacks.picker.git_status()
+        end,
+        desc = "Git Status",
+      },
+      {
+        "<leader>gS",
+        function()
+          Snacks.picker.git_stash()
+        end,
+        desc = "Git Stash",
+      },
+      {
+        "<leader>qq",
+        "<cmd>qa<cr>",
+        desc = "Quit All",
+      },
+      {
+        "<leader>qQ",
+        "<cmd>qa!<cr>",
+        desc = "Force Quit All",
+      },
+      {
+        "<leader>qs",
+        function()
+          require("persistence").load()
+        end,
+        desc = "Restore Session",
+      },
+      {
+        "<leader>ql",
+        function()
+          require("persistence").load({ last = true })
+        end,
+        desc = "Restore Last Session",
+      },
+      {
+        "<leader>qd",
+        function()
+          require("persistence").stop()
+        end,
+        desc = "Don't Save Current Session",
+      },
+      {
+        "<leader>z",
+        function()
+          Snacks.zen()
+        end,
+        desc = "Toggle Zen Mode",
+      },
+      {
+        "<leader>.",
+        function()
+          Snacks.scratch()
+        end,
+        desc = "Toggle Scratch Buffer",
+      },
+      {
+        "<leader>sn",
+        function()
+          Snacks.notifier.show_history()
+        end,
+        desc = "Notification History",
       },
       {
         "<C-/>",

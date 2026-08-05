@@ -1,4 +1,4 @@
--- Cumulus UI Theme & Statusline Integration Specs (Story 2.2)
+-- Cumulus UI Theme & Statusline Integration Specs (Story 2.2, 8.2, 8.3)
 
 return {
   -- AWS Theme entry spec
@@ -12,7 +12,7 @@ return {
     end,
   },
 
-  -- Lualine statusline with AWS Navy statusline background (#020A12) & AWS Orange accents (#FF9900)
+  -- Lualine statusline with Mode Badges, Active LSP status pill & AWS Navy palette (Story 8.2)
   {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
@@ -46,18 +46,33 @@ return {
         },
       }
 
+      local lsp_component = {
+        function()
+          local clients = vim.lsp.get_clients({ bufnr = 0 })
+          if #clients == 0 then
+            return "󰅛 No LSP"
+          end
+          local names = {}
+          for _, client in ipairs(clients) do
+            table.insert(names, client.name)
+          end
+          return "󰅍 " .. table.concat(names, ", ")
+        end,
+        color = { fg = aws.aws_orange, gui = "bold" },
+      }
+
       return {
         options = {
           theme = aws_lualine_theme,
           globalstatus = true,
-          component_separators = { left = "", right = "" },
+          component_separators = { left = "│", right = "│" },
           section_separators = { left = "", right = "" },
         },
         sections = {
-          lualine_a = { "mode" },
+          lualine_a = { { "mode", fmt = function(str) return "󰋜 " .. str end } },
           lualine_b = { "branch", "diff", "diagnostics" },
           lualine_c = { { "filename", path = 1 } },
-          lualine_x = { "encoding", "fileformat", "filetype" },
+          lualine_x = { lsp_component, "encoding", "fileformat", "filetype" },
           lualine_y = { "progress" },
           lualine_z = { "location" },
         },
@@ -65,16 +80,20 @@ return {
     end,
   },
 
-  -- Bufferline with AWS Orange active indicators (#FF9900)
+  -- Bufferline with Devicons, Buffer Numbers & AWS Orange active indicators (Story 8.3)
   {
     "akinsho/bufferline.nvim",
     event = "VeryLazy",
+    dependencies = { "nvim-tree/nvim-web-devicons" },
     opts = function()
       local aws = require("cumulus.theme.aws").palette
       return {
         options = {
           mode = "buffers",
+          numbers = "ordinal",
           diagnostics = "nvim_lsp",
+          show_buffer_close_icons = true,
+          show_close_icon = true,
           indicator = {
             icon = "▎",
             style = "icon",
