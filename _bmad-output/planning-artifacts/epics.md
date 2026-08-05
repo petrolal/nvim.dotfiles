@@ -1094,6 +1094,35 @@ So that search prompts and notification titles are clean, modern, and uncluttere
 - **When** prompts or popup headers display,
 - **Then** the prompt uses ` ☁ > ` and notification title uses ` ☁ ` instead of verbose text labels.
 
+---
+
+## Epic 35: System Validation Script & Healthcheck Suite Modernization
+
+Modernize `:checkhealth cumulus` and `scripts/validate.sh` to test 100% of Cumulus features, options, multi-cloud themes, and dependencies.
+
+### Story 35.1: Comprehensive `:checkhealth cumulus` Expansion (`health.lua`)
+
+As a Developer,  
+I want `:checkhealth cumulus` to audit `rg`, `fd`, `git`, `npm`, `node`, `python3`, and active cloud themes,  
+So that running `:checkhealth cumulus` gives complete diagnostic visibility into installed system dependencies.
+
+**Acceptance Criteria:**
+- **Given** Neovim,
+- **When** executing `:checkhealth cumulus`,
+- **Then** health checks verify binary executables (`rg`, `fd`, `git`, `npm`, `node`, `python3`) and active cloud theme registration.
+
+### Story 35.2: Complete Automated Validation Script Update (`scripts/validate.sh`)
+
+As a Developer,  
+I want `scripts/validate.sh` updated to test all 4 cloud themes (`aws-theme`, `azure-theme`, `gcp-theme`, `oci-theme`), `confirm = true`, `:checkhealth cumulus`, and keymaps,  
+So that `./scripts/validate.sh` serves as an automated CLI test suite.
+
+**Acceptance Criteria:**
+- **Given** terminal shell,
+- **When** executing `./scripts/validate.sh`,
+- **Then** all validation stages (Lazy check, core options, 4 cloud themes, `:checkhealth cumulus`, markdown plugins) pass with exit code 0.
+
+
 
 
 

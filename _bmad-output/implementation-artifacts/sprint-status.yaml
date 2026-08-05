@@ -213,9 +213,19 @@ development_status:
   33-3-interactive-save-as-via-input-saveas: done
   epic-33-retrospective: optional
 
-  epic-34: backlog
-  34-1-search-bar-notification-prompt-cloud-glyph-standardization: backlog
+  epic-34: done
+  34-1-search-bar-notification-prompt-cloud-glyph-standardization: done
   epic-34-retrospective: optional
+
+  epic-35: done
+  35-1-comprehensive-checkhealth-cumulus-expansion: done
+  35-2-complete-automated-validation-script-update: done
+  epic-35-retrospective: optional
+
+
+
+
+
 
 
 

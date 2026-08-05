@@ -6,7 +6,7 @@ local banner = [[
 ╚██████╗╚█████╔╝██║ ╚═╝ ██║╚██████╔╝███████╗██║██║███████║
  ╚═════╝ ╚════╝ ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝╚══════╝
 
-                       Cloud Infrastructure & DevOps Neovim
+                 ☁  Cloud Infrastructure & DevOps Neovim
 ]]
 
 return {
@@ -17,14 +17,14 @@ return {
     opts = function(_, opts)
       opts.styles = opts.styles or {}
       opts.styles.notification = vim.tbl_deep_extend("force", opts.styles.notification or {}, {
-        title = " Cumulus ",
+        title = " ☁ ",
       })
       opts.styles.notification_history = vim.tbl_deep_extend("force", opts.styles.notification_history or {}, {
-        title = " Cumulus Notifications ",
+        title = " ☁ Notifications ",
       })
 
       opts.picker = opts.picker or {}
-      opts.picker.prompt = " 󰅍 Cumulus > "
+      opts.picker.prompt = " ☁ >"
 
       opts.notifier = opts.notifier or {}
       opts.notifier.enabled = true
