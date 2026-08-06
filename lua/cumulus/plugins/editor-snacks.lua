@@ -337,37 +337,6 @@ return {
         desc = "Git Stash",
       },
       {
-        "<leader>qq",
-        "<cmd>qa<cr>",
-        desc = "Quit All",
-      },
-      {
-        "<leader>qQ",
-        "<cmd>qa!<cr>",
-        desc = "Force Quit All",
-      },
-      {
-        "<leader>qs",
-        function()
-          require("persistence").load()
-        end,
-        desc = "Restore Session",
-      },
-      {
-        "<leader>ql",
-        function()
-          require("persistence").load({ last = true })
-        end,
-        desc = "Restore Last Session",
-      },
-      {
-        "<leader>qd",
-        function()
-          require("persistence").stop()
-        end,
-        desc = "Don't Save Current Session",
-      },
-      {
         "<leader>z",
         function()
           Snacks.zen()
@@ -413,8 +382,21 @@ return {
   },
   {
     "folke/persistence.nvim",
-    event = "BufReadPre",
+    -- Must load on every startup, not just when a real file buffer is read
+    -- ("BufReadPre" never fires if you only browse the dashboard/explorer),
+    -- otherwise persistence.nvim's save autocmd (and our explorer-reopen
+    -- hook below) never get registered and no session is saved at all.
+    event = "VimEnter",
     opts = {},
+    config = function(_, opts)
+      require("persistence").setup(opts)
+      -- mksession has no concept of the Snacks explorer (it's a picker, not
+      -- a real file buffer), so if it's left open when a session is saved,
+      -- its window is serialized as a blank `enew` buffer and comes back
+      -- empty on restore instead of reopening the explorer. Close it before
+      -- saving and reopen it once the session loads back in.
+      require("cumulus.util.session").setup()
+    end,
     keys = {
       {
         "<leader>qs",

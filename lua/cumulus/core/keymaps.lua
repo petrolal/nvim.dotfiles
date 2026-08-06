@@ -2,31 +2,6 @@
 
 local map = vim.keymap.set
 
--- Insert mode exit chords (HRM / combo friendly)
-map("i", "jk", "<ESC>", { desc = "Exit insert mode" })
-map("i", "kj", "<ESC>", { desc = "Exit insert mode" })
-
--- Leader alternatives for scrolling (avoids holding Ctrl with Home Row Mods)
-map("n", "<leader>d", "<C-d>zz", { desc = "Scroll down and center" })
-map("n", "<leader>u", "<C-u>zz", { desc = "Scroll up and center" })
-
--- Buffer & Window Navigation Ergonomics (Story 9.1)
-map("n", "<S-h>", "<cmd>bprevious<cr>", { desc = "Prev Buffer" })
-map("n", "<S-l>", "<cmd>bnext<cr>", { desc = "Next Buffer" })
-map("n", "<C-h>", "<C-w>h", { desc = "Focus Left Window" })
-map("n", "<C-j>", "<C-w>j", { desc = "Focus Lower Window" })
-map("n", "<C-k>", "<C-w>k", { desc = "Focus Upper Window" })
-map("n", "<C-l>", "<C-w>l", { desc = "Focus Right Window" })
-map("n", "<leader>bb", "<cmd>e #<cr>", { desc = "Switch to Alternate Buffer" })
-map("n", "<leader>bo", function()
-  local current = vim.api.nvim_get_current_buf()
-  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-    if buf ~= current and vim.bo[buf].buflisted then
-      pcall(vim.api.nvim_buf_delete, buf, { force = false })
-    end
-  end
-end, { desc = "Close Other Buffers" })
-
 -- Leader alternatives for window navigation
 map("n", "<leader>ww", "<C-w>w", { desc = "Cycle windows" })
 map("n", "<leader>wh", "<C-w>h", { desc = "Focus left window" })

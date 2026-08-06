@@ -32,7 +32,11 @@ return {
     "iamcco/markdown-preview.nvim",
     cmd = { "MarkdownPreviewToggle", "MarkdownPreview", "MarkdownPreviewStop" },
     ft = { "markdown" },
-    build = "cd app && npm install",
+    -- `npm install` regenerates app/yarn.lock and writes app/package-lock.json,
+    -- leaving the plugin's git working tree dirty. That blocks `:Lazy update`
+    -- with "You have local changes ... Please remove them to update." Discard
+    -- those generated files after installing so the tree stays clean.
+    build = "cd app && npm install --no-package-lock && git checkout -- yarn.lock && rm -f package-lock.json",
     init = function()
       vim.g.mkdp_filetypes = { "markdown" }
     end,

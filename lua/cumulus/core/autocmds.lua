@@ -4,6 +4,21 @@ local function augroup(name)
   return vim.api.nvim_create_augroup("cumulus_" .. name, { clear = true })
 end
 
+-- Discard any stray keystrokes typed into the terminal while Neovim was
+-- still starting up (e.g. an extra "n" or "g" pressed right after
+-- `nvim<CR>`). Without this, that buffered input gets replayed as
+-- normal-mode commands the instant the dashboard buffer's single-key
+-- mappings become active, unexpectedly opening a scratch buffer or the
+-- grep picker instead of showing the dashboard.
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = augroup("flush_typeahead"),
+  callback = function()
+    while vim.fn.getchar(1) ~= 0 do
+      vim.fn.getchar()
+    end
+  end,
+})
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
