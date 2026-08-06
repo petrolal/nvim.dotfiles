@@ -10,12 +10,20 @@ end
 -- normal-mode commands the instant the dashboard buffer's single-key
 -- mappings become active, unexpectedly opening a scratch buffer or the
 -- grep picker instead of showing the dashboard.
+-- NOTE: this must be deferred with vim.schedule rather than run inline in
+-- the VimEnter callback -- some terminals (e.g. kitty) negotiate extended
+-- keyboard protocol support over the same input stream right around
+-- startup, and draining raw getchar() input synchronously at VimEnter can
+-- race with and corrupt that in-flight handshake, which then shows up as
+-- every keystroke getting duplicated for the rest of the session.
 vim.api.nvim_create_autocmd("VimEnter", {
   group = augroup("flush_typeahead"),
   callback = function()
-    while vim.fn.getchar(1) ~= 0 do
-      vim.fn.getchar()
-    end
+    vim.schedule(function()
+      while vim.fn.getchar(1) ~= 0 do
+        vim.fn.getchar()
+      end
+    end)
   end,
 })
 
