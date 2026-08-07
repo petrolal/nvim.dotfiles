@@ -1,15 +1,13 @@
 -- Cumulus Cloud Theme Switcher & Persistence (Story 31.2)
 --
--- Theme precedence: when cumulus.dotfiles is installed, its system-wide
--- theme picker (theme.sh/theme-picker.sh) is the single source of truth —
--- Neovim always follows the flavor it last set via
--- ~/.config/cumulus/theme/state (NVIM_COLORSCHEME=...). Only when that file
--- is absent (cumulus.dotfiles not installed) do we fall back to Neovim's own
--- internal state written by <leader>ut / M.set_theme().
+-- Single source of truth: ~/.config/cumulus/theme/state, written and read
+-- by cumulus.dotfiles' scripts/theme.sh (NVIM_COLORSCHEME=<colorscheme>).
+-- Neovim has no separate internal theme state file anymore — every read
+-- and write goes through this shared state file so the system-wide theme
+-- picker and Neovim's own <leader>ut picker always agree.
 local M = {}
 
-local state_file = vim.fn.stdpath("state") .. "/cumulus_theme"
-local dotfiles_state_file = vim.fn.expand("~/.config/cumulus/theme/state")
+local state_file = vim.fn.expand("~/.config/cumulus/theme/state")
 
 local themes = {
   { name = "aws-theme", label = "🟧 AWS Cloud Theme" },
@@ -18,50 +16,49 @@ local themes = {
   { name = "oci-theme", label = "🟥 Oracle Cloud Infrastructure (OCI) Theme" },
 }
 
--- Reads NVIM_COLORSCHEME=<value> out of cumulus.dotfiles' shared theme
--- state file (a simple KEY=VALUE file written by scripts/theme.sh).
--- Returns nil if the file doesn't exist or has no usable value, so callers
--- can fall back to Neovim's own internal theme state.
-local function read_dotfiles_theme()
-  if vim.fn.filereadable(dotfiles_state_file) ~= 1 then
+-- Reads NVIM_COLORSCHEME=<value> out of the shared theme state file (a
+-- simple KEY=VALUE file written by scripts/theme.sh). Returns nil if the
+-- file doesn't exist or has no usable value.
+local function read_state()
+  if vim.fn.filereadable(state_file) ~= 1 then
     return nil
   end
-  for _, line in ipairs(vim.fn.readfile(dotfiles_state_file)) do
+  local values = {}
+  for _, line in ipairs(vim.fn.readfile(state_file)) do
     local key, value = line:match("^([%u_]+)=(.*)$")
-    if key == "NVIM_COLORSCHEME" and value and value ~= "" then
-      return value
+    if key then
+      values[key] = value
     end
   end
-  return nil
-end
-
-local function read_internal_theme()
-  if vim.fn.filereadable(state_file) == 1 then
-    local lines = vim.fn.readfile(state_file)
-    if #lines > 0 and lines[1] ~= "" then
-      return lines[1]
-    end
-  end
-  return nil
+  return values
 end
 
 function M.get_current_theme()
-  return read_dotfiles_theme() or read_internal_theme() or "aws-theme"
+  local values = read_state()
+  if values and values.NVIM_COLORSCHEME and values.NVIM_COLORSCHEME ~= "" then
+    return values.NVIM_COLORSCHEME
+  end
+  return "aws-theme"
 end
 
 function M.set_theme(theme_name)
   local ok, _ = pcall(vim.cmd, "colorscheme " .. theme_name)
   if ok then
+    -- Preserve any other keys already in the shared state file (FLAVOR,
+    -- MODE, WALLPAPER, ...) written by cumulus.dotfiles; only overwrite
+    -- NVIM_COLORSCHEME so the desktop-wide theme picker isn't clobbered.
+    local values = read_state() or {}
+    values.NVIM_COLORSCHEME = theme_name
     vim.fn.mkdir(vim.fn.fnamemodify(state_file, ":h"), "p")
-    vim.fn.writefile({ theme_name }, state_file)
-    vim.notify("Cloud theme set to: " .. theme_name, vim.log.levels.INFO)
-    if read_dotfiles_theme() then
-      vim.notify(
-        "cumulus.dotfiles is installed: this choice is for the current session only — "
-          .. "the dotfiles theme picker will take over again on next launch/refresh.",
-        vim.log.levels.WARN
-      )
+    local order = { "FLAVOR", "MODE", "WALLPAPER", "WALLPAPER_SOURCE", "INTERVAL", "NVIM_COLORSCHEME" }
+    local lines = {}
+    for _, key in ipairs(order) do
+      if values[key] ~= nil then
+        table.insert(lines, key .. "=" .. values[key])
+      end
     end
+    vim.fn.writefile(lines, state_file)
+    vim.notify("Cloud theme set to: " .. theme_name, vim.log.levels.INFO)
   else
     vim.notify("Failed to set colorscheme: " .. theme_name, vim.log.levels.ERROR)
   end
