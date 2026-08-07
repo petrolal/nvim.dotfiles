@@ -378,6 +378,55 @@ return {
         end,
         desc = "Delete Buffer",
       },
+      {
+        "<leader>bD",
+        "<cmd>bd<cr>",
+        desc = "Delete Buffer and Window",
+      },
+      {
+        "<leader>bo",
+        function()
+          Snacks.bufdelete.other()
+        end,
+        desc = "Delete Other Buffers",
+      },
+      {
+        "<leader>bi",
+        function()
+          Snacks.bufdelete.invisible()
+        end,
+        desc = "Delete Invisible Buffers",
+      },
+      {
+        "<leader>bl",
+        function()
+          Snacks.picker.buffers()
+        end,
+        desc = "List Buffers",
+      },
+      { "<leader>b1", "<cmd>BufferLineGoToBuffer 1<cr>", desc = "Go to Buffer 1" },
+      { "<leader>b2", "<cmd>BufferLineGoToBuffer 2<cr>", desc = "Go to Buffer 2" },
+      { "<leader>b3", "<cmd>BufferLineGoToBuffer 3<cr>", desc = "Go to Buffer 3" },
+      { "<leader>b4", "<cmd>BufferLineGoToBuffer 4<cr>", desc = "Go to Buffer 4" },
+      { "<leader>b5", "<cmd>BufferLineGoToBuffer 5<cr>", desc = "Go to Buffer 5" },
+      { "<leader>b6", "<cmd>BufferLineGoToBuffer 6<cr>", desc = "Go to Buffer 6" },
+      { "<leader>b7", "<cmd>BufferLineGoToBuffer 7<cr>", desc = "Go to Buffer 7" },
+      { "<leader>b8", "<cmd>BufferLineGoToBuffer 8<cr>", desc = "Go to Buffer 8" },
+      { "<leader>b9", "<cmd>BufferLineGoToBuffer 9<cr>", desc = "Go to Buffer 9" },
+      {
+        "<leader>bb",
+        "<cmd>e #<cr>",
+        desc = "Switch to Other Buffer",
+      },
+      {
+        "<leader>`",
+        "<cmd>e #<cr>",
+        desc = "Switch to Other Buffer",
+      },
+      { "<S-h>", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
+      { "<S-l>", "<cmd>bnext<cr>", desc = "Next Buffer" },
+      { "[b", "<cmd>bprevious<cr>", desc = "Prev Buffer" },
+      { "]b", "<cmd>bnext<cr>", desc = "Next Buffer" },
     },
   },
   {

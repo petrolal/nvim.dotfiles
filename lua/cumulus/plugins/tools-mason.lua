@@ -12,7 +12,7 @@ local ensure_installed = {
   "ansible-lint",
   "cfn-lint",
   "yaml-language-server",
-  "dockerls",
+  "dockerfile-language-server",
   "hadolint",
   "helm-ls",
   "gopls",
