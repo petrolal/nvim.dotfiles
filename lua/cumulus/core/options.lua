@@ -5,6 +5,9 @@ vim.g.maplocalleader = "\\"
 
 vim.g.have_nerd_font = true
 
+-- Sync yank/paste with the OS clipboard (fixes y/p not reaching system clipboard)
+vim.opt.clipboard = "unnamedplus"
+
 -- Load persisted Cloud Theme (Story 31.2)
 vim.schedule(function()
   require("cumulus.theme").load_saved_theme()
