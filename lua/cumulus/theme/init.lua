@@ -1,13 +1,15 @@
 -- Cumulus Cloud Theme Switcher & Persistence (Story 31.2)
 --
--- Single source of truth: ~/.config/cumulus/theme/state, written and read
--- by cumulus.dotfiles' scripts/theme.sh (NVIM_COLORSCHEME=<colorscheme>).
--- Neovim has no separate internal theme state file anymore — every read
--- and write goes through this shared state file so the system-wide theme
--- picker and Neovim's own <leader>ut picker always agree.
+-- Theme precedence: when cumulus.dotfiles is installed, its system-wide
+-- theme picker (theme.sh/theme-picker.sh) is the single source of truth —
+-- Neovim always follows the flavor it last set via
+-- ~/.config/cumulus/theme/state (NVIM_COLORSCHEME=...). Only when that file
+-- is absent (cumulus.dotfiles not installed) do we fall back to Neovim's own
+-- internal state written by <leader>ut / M.set_theme().
 local M = {}
 
-local state_file = vim.fn.expand("~/.config/cumulus/theme/state")
+local internal_state_file = vim.fn.stdpath("state") .. "/cumulus_theme"
+local dotfiles_state_file = vim.fn.expand("~/.config/cumulus/theme/state")
 
 local themes = {
   { name = "aws-theme", label = "🟧 AWS Cloud Theme" },
@@ -16,40 +18,60 @@ local themes = {
   { name = "oci-theme", label = "🟥 Oracle Cloud Infrastructure (OCI) Theme" },
 }
 
--- Reads NVIM_COLORSCHEME=<value> out of the shared theme state file (a
--- simple KEY=VALUE file written by scripts/theme.sh). Returns nil if the
--- file doesn't exist or has no usable value.
-local function read_state()
-  if vim.fn.filereadable(state_file) ~= 1 then
+-- Reads NVIM_COLORSCHEME=<value> out of cumulus.dotfiles' shared theme
+-- state file (a simple KEY=VALUE file written by scripts/theme.sh).
+-- Returns nil if the file doesn't exist or has no usable value, so callers
+-- can fall back to Neovim's own internal theme state.
+local function read_dotfiles_theme()
+  if vim.fn.filereadable(dotfiles_state_file) ~= 1 then
     return nil
   end
-  local values = {}
-  for _, line in ipairs(vim.fn.readfile(state_file)) do
+  for _, line in ipairs(vim.fn.readfile(dotfiles_state_file)) do
     local key, value = line:match("^([%u_]+)=(.*)$")
-    if key then
-      values[key] = value
+    if key == "NVIM_COLORSCHEME" and value and value ~= "" then
+      return value
     end
   end
-  return values
+  return nil
+end
+
+local function read_internal_theme()
+  if vim.fn.filereadable(internal_state_file) == 1 then
+    local lines = vim.fn.readfile(internal_state_file)
+    if #lines > 0 and lines[1] ~= "" then
+      return lines[1]
+    end
+  end
+  return nil
 end
 
 function M.get_current_theme()
-  local values = read_state()
-  if values and values.NVIM_COLORSCHEME and values.NVIM_COLORSCHEME ~= "" then
-    return values.NVIM_COLORSCHEME
-  end
-  return "aws-theme"
+  return read_dotfiles_theme() or read_internal_theme() or "aws-theme"
 end
 
 function M.set_theme(theme_name)
   local ok, _ = pcall(vim.cmd, "colorscheme " .. theme_name)
-  if ok then
-    -- Preserve any other keys already in the shared state file (FLAVOR,
-    -- MODE, WALLPAPER, ...) written by cumulus.dotfiles; only overwrite
-    -- NVIM_COLORSCHEME so the desktop-wide theme picker isn't clobbered.
-    local values = read_state() or {}
+  if not ok then
+    vim.notify("Failed to set colorscheme: " .. theme_name, vim.log.levels.ERROR)
+    return
+  end
+
+  vim.notify("Cloud theme set to: " .. theme_name, vim.log.levels.INFO)
+
+  if vim.fn.filereadable(dotfiles_state_file) == 1 then
+    -- cumulus.dotfiles is installed and owns the shared state file: update
+    -- NVIM_COLORSCHEME there (preserving FLAVOR/MODE/WALLPAPER/...) instead
+    -- of writing to Neovim's own internal file, and warn that the desktop
+    -- theme picker will take over again on next launch/refresh unless the
+    -- flavor is also changed there.
+    local values = {}
+    for _, line in ipairs(vim.fn.readfile(dotfiles_state_file)) do
+      local key, value = line:match("^([%u_]+)=(.*)$")
+      if key then
+        values[key] = value
+      end
+    end
     values.NVIM_COLORSCHEME = theme_name
-    vim.fn.mkdir(vim.fn.fnamemodify(state_file, ":h"), "p")
     local order = { "FLAVOR", "MODE", "WALLPAPER", "WALLPAPER_SOURCE", "INTERVAL", "NVIM_COLORSCHEME" }
     local lines = {}
     for _, key in ipairs(order) do
@@ -57,10 +79,16 @@ function M.set_theme(theme_name)
         table.insert(lines, key .. "=" .. values[key])
       end
     end
-    vim.fn.writefile(lines, state_file)
-    vim.notify("Cloud theme set to: " .. theme_name, vim.log.levels.INFO)
+    vim.fn.writefile(lines, dotfiles_state_file)
+    vim.notify(
+      "cumulus.dotfiles is installed: the desktop theme picker (Mod+Shift+T) is still the "
+        .. "source of truth for flavor; this updates the colorscheme it applies.",
+      vim.log.levels.WARN
+    )
   else
-    vim.notify("Failed to set colorscheme: " .. theme_name, vim.log.levels.ERROR)
+    -- No cumulus.dotfiles: persist purely in Neovim's own internal state.
+    vim.fn.mkdir(vim.fn.fnamemodify(internal_state_file, ":h"), "p")
+    vim.fn.writefile({ theme_name }, internal_state_file)
   end
 end
 

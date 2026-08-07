@@ -25,38 +25,111 @@ map("n", "]e", function() vim.diagnostic.jump({ count = 1, severity = vim.diagno
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename Symbol" })
 
--- Code & Build Tool Keymaps (<leader>c*) (Story 4.1 & Story 24.2)
-map("n", "<leader>cm", function()
-  require("cumulus.util.maven").run_maven_goal()
-end, { desc = "Maven: Select Goal" })
+-- Per-language <leader>c* subgroups (Story 34.1): build/lint/format commands
+-- for a given language stack only appear as buffer-local keymaps while
+-- editing a matching filetype, so <leader>c no longer mixes e.g. Maven
+-- keymaps into a Python or Terraform buffer's popup. See lang-keymaps.lua.
+local lang_keymaps = require("cumulus.core.lang-keymaps")
 
-map("n", "<leader>cg", function()
-  require("cumulus.util.gradle").run_gradle_task()
-end, { desc = "Gradle: Select Task" })
+lang_keymaps.register({
+  filetypes = { "java", "kotlin", "groovy" },
+  group = "<leader>cj",
+  label = "java/jvm build",
+  icon = "󰬷 ",
+  keys = {
+    {
+      "<leader>cjm",
+      function()
+        require("cumulus.util.maven").run_maven_goal()
+      end,
+      "Maven: Select Goal",
+    },
+    {
+      "<leader>cjg",
+      function()
+        require("cumulus.util.gradle").run_gradle_task()
+      end,
+      "Gradle: Select Task",
+    },
+    {
+      "<leader>cjc",
+      function()
+        local maven = require("cumulus.util.maven")
+        local gradle = require("cumulus.util.gradle")
+        if maven.find_pom() then
+          maven.run_maven_cmd(maven.get_mvn_cmd() .. " clean compile")
+        elseif gradle.find_gradle() then
+          gradle.run_gradle_cmd(gradle.get_gradle_cmd() .. " clean compile")
+        else
+          vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
+        end
+      end,
+      "Build Project (Clean Compile)",
+    },
+    {
+      "<leader>cjt",
+      function()
+        local maven = require("cumulus.util.maven")
+        local gradle = require("cumulus.util.gradle")
+        if maven.find_pom() then
+          maven.run_maven_cmd(maven.get_mvn_cmd() .. " test")
+        elseif gradle.find_gradle() then
+          gradle.run_gradle_cmd(gradle.get_gradle_cmd() .. " test")
+        else
+          vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
+        end
+      end,
+      "JVM Build: Run Tests",
+    },
+  },
+})
 
-map("n", "<leader>cc", function()
-  local maven = require("cumulus.util.maven")
-  local gradle = require("cumulus.util.gradle")
-  if maven.find_pom() then
-    maven.run_maven_cmd(maven.get_mvn_cmd() .. " clean compile")
-  elseif gradle.find_gradle() then
-    gradle.run_gradle_cmd(gradle.get_gradle_cmd() .. " clean compile")
-  else
-    vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
-  end
-end, { desc = "Build Project (Clean Compile)" })
+lang_keymaps.register({
+  filetypes = { "terraform", "terraform-vars", "hcl" },
+  group = "<leader>ct",
+  label = "terraform/opentofu",
+  icon = "󱁢 ",
+  keys = {
+    { "<leader>ctv", "<cmd>!terraform validate<cr>", "Terraform: Validate" },
+    { "<leader>ctp", "<cmd>!terraform plan<cr>", "Terraform: Plan" },
+    { "<leader>ctf", "<cmd>!terraform fmt<cr>", "Terraform: Format" },
+  },
+})
 
-map("n", "<leader>ct", function()
-  local maven = require("cumulus.util.maven")
-  local gradle = require("cumulus.util.gradle")
-  if maven.find_pom() then
-    maven.run_maven_cmd(maven.get_mvn_cmd() .. " test")
-  elseif gradle.find_gradle() then
-    gradle.run_gradle_cmd(gradle.get_gradle_cmd() .. " test")
-  else
-    vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
-  end
-end, { desc = "JVM Build: Run Tests" })
+lang_keymaps.register({
+  filetypes = { "yaml.ansible", "ansible" },
+  group = "<leader>cy",
+  label = "ansible",
+  icon = "󰚰 ",
+  keys = {
+    { "<leader>cya", "<cmd>!ansible-lint %<cr>", "Ansible: Lint Playbook" },
+    { "<leader>cys", "<cmd>!ansible-playbook --syntax-check %<cr>", "Ansible: Syntax Check" },
+  },
+})
+
+lang_keymaps.register({
+  filetypes = { "dockerfile" },
+  group = "<leader>cd",
+  label = "docker",
+  icon = "󰡨 ",
+  keys = {
+    { "<leader>cdb", "<cmd>!docker build -t %:h:t .<cr>", "Docker: Build Image" },
+    { "<leader>cdl", "<cmd>!hadolint %<cr>", "Docker: Lint Dockerfile" },
+  },
+})
+
+lang_keymaps.register({
+  filetypes = { "helm" },
+  group = "<leader>ck",
+  label = "helm/k8s",
+  icon = "󱃾 ",
+  keys = {
+    { "<leader>ckl", "<cmd>!helm lint %:h<cr>", "Helm: Lint Chart" },
+    { "<leader>ckt", "<cmd>!helm template %:h<cr>", "Helm: Render Template" },
+  },
+})
+
+lang_keymaps.setup()
 
 -- Session & Quit Keymaps (Story 10.1 & Story 29.1)
 map("n", "<leader>qq", "<cmd>confirm qa<cr>", { desc = "Quit Neovim (Confirm)" })
