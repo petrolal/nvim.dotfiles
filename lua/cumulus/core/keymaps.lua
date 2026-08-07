@@ -25,6 +25,38 @@ map("n", "]e", function() vim.diagnostic.jump({ count = 1, severity = vim.diagno
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename Symbol" })
 
+-- LazyVim-style global code group keymaps (Story 34.2)
+map("n", "<leader>cd", function() vim.diagnostic.open_float() end, { desc = "Line Diagnostics" })
+map({ "n", "x" }, "<leader>cf", function() require("cumulus.util.format").format({ force = true }) end, { desc = "Format" })
+map({ "n", "x" }, "<leader>cF", function()
+  require("conform").format({ formatters = { "injected" }, timeout_ms = 3000 })
+end, { desc = "Format Injected Langs" })
+map({ "n", "x" }, "<leader>cc", function() vim.lsp.codelens.run() end, { desc = "Run Codelens" })
+map("n", "<leader>cC", function() vim.lsp.codelens.refresh() end, { desc = "Refresh & Display Codelens" })
+map("n", "<leader>co", function()
+  vim.lsp.buf.code_action({
+    context = { only = { "source.organizeImports" }, diagnostics = {} },
+    apply = true,
+  })
+end, { desc = "Organize Imports" })
+map("n", "<leader>cA", function()
+  vim.lsp.buf.code_action({
+    context = { only = { "source" }, diagnostics = {} },
+  })
+end, { desc = "Source Action" })
+map("n", "<leader>cR", function()
+  local old_name = vim.api.nvim_buf_get_name(0)
+  vim.ui.input({ prompt = "New file name: ", default = vim.fn.fnamemodify(old_name, ":t") }, function(new_name)
+    if not new_name or new_name == "" then
+      return
+    end
+    local new_path = vim.fn.fnamemodify(old_name, ":h") .. "/" .. new_name
+    vim.lsp.util.rename(old_name, new_path)
+    vim.cmd("edit " .. vim.fn.fnameescape(new_path))
+  end)
+end, { desc = "Rename File" })
+map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
+
 -- Per-language <leader>c* subgroups (Story 34.1): build/lint/format commands
 -- for a given language stack only appear as buffer-local keymaps while
 -- editing a matching filetype, so <leader>c no longer mixes e.g. Maven
@@ -109,12 +141,12 @@ lang_keymaps.register({
 
 lang_keymaps.register({
   filetypes = { "dockerfile" },
-  group = "<leader>cd",
+  group = "<leader>cD",
   label = "docker",
   icon = "󰡨 ",
   keys = {
-    { "<leader>cdb", "<cmd>!docker build -t %:h:t .<cr>", "Docker: Build Image" },
-    { "<leader>cdl", "<cmd>!hadolint %<cr>", "Docker: Lint Dockerfile" },
+    { "<leader>cDb", "<cmd>!docker build -t %:h:t .<cr>", "Docker: Build Image" },
+    { "<leader>cDl", "<cmd>!hadolint %<cr>", "Docker: Lint Dockerfile" },
   },
 })
 
@@ -139,6 +171,14 @@ map("n", "<leader>qQ", "<cmd>qa!<cr>", { desc = "Force Quit Neovim (No Save)" })
 map("n", "<leader>ut", function()
   require("cumulus.theme").select_theme()
 end, { desc = "Select Cloud Theme (AWS/Azure/GCP/OCI)" })
+
+-- Autoformat toggle (Story 34.2, mirrors LazyVim's <leader>uf/<leader>uF)
+map("n", "<leader>uf", function()
+  require("cumulus.util.format").toggle(true)
+end, { desc = "Toggle Autoformat (Buffer)" })
+map("n", "<leader>uF", function()
+  require("cumulus.util.format").toggle(false)
+end, { desc = "Toggle Autoformat (Global)" })
 
 -- Universal File Operations: Save, Save All, Save As (Epic 33)
 local function save_current_file()

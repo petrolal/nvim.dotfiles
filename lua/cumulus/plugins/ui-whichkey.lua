@@ -33,7 +33,9 @@ return {
         { "<leader>b", group = "buffer", icon = "󰓩 " },
       })
       -- Per-language <leader>c* subgroups (Maven/Gradle, Terraform,
-      -- Ansible, Docker, Helm...). These are registered with buffer = true,
+      -- Ansible, Docker (<leader>cD to avoid the global LazyVim-style
+      -- <leader>cd Line Diagnostics keymap), Helm...). These are
+      -- registered with buffer = true,
       -- so which-key only surfaces them while the current buffer's
       -- filetype actually owns matching buffer-local keymaps -- see
       -- lua/cumulus/core/lang-keymaps.lua.

@@ -15,12 +15,17 @@ return {
         sh = { "shfmt" },
         bash = { "shfmt" },
       },
-      format_on_save = {
-        timeout_ms = 3000,
-        async = false,
-        quiet = false,
-        lsp_fallback = true,
-      },
+      format_on_save = function(bufnr)
+        if not require("cumulus.util.format").enabled(bufnr) then
+          return
+        end
+        return {
+          timeout_ms = 3000,
+          async = false,
+          quiet = false,
+          lsp_fallback = true,
+        }
+      end,
     },
   },
 }
