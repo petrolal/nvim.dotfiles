@@ -1,11 +1,11 @@
 -- Autoformat toggle helper (Story 34.2)
 --
--- Mirrors LazyVim's `LazyVim.format`/`<leader>uf`/`<leader>uF` behaviour:
--- a global `vim.g.autoformat` flag and a per-buffer `vim.b.autoformat`
--- override let users disable format-on-save globally or just for the
--- current buffer, without touching conform.nvim's `formatters_by_ft`
--- configuration. `tools-formatting.lua`'s `format_on_save` callback
--- consults `enabled()` before running so the toggle actually takes effect.
+-- Provides a global `vim.g.autoformat` flag and a per-buffer
+-- `vim.b.autoformat` override so users can disable format-on-save
+-- globally or just for the current buffer, without touching
+-- conform.nvim's `formatters_by_ft` configuration.
+-- `tools-formatting.lua`'s `format_on_save` callback consults
+-- `enabled()` before running so the toggle actually takes effect.
 
 local M = {}
 

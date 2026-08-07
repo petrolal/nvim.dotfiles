@@ -25,7 +25,8 @@ map("n", "]e", function() vim.diagnostic.jump({ count = 1, severity = vim.diagno
 map("n", "<leader>ca", function() vim.lsp.buf.code_action() end, { desc = "Code Action" })
 map("n", "<leader>cr", function() vim.lsp.buf.rename() end, { desc = "Rename Symbol" })
 
--- LazyVim-style global code group keymaps (Story 34.2)
+-- Global code group keymaps: format, diagnostics, codelens, organize
+-- imports, source action, rename file, lsp info (Story 34.2)
 map("n", "<leader>cd", function() vim.diagnostic.open_float() end, { desc = "Line Diagnostics" })
 map({ "n", "x" }, "<leader>cf", function() require("cumulus.util.format").format({ force = true }) end, { desc = "Format" })
 map({ "n", "x" }, "<leader>cF", function()
@@ -172,7 +173,8 @@ map("n", "<leader>ut", function()
   require("cumulus.theme").select_theme()
 end, { desc = "Select Cloud Theme (AWS/Azure/GCP/OCI)" })
 
--- Autoformat toggle (Story 34.2, mirrors LazyVim's <leader>uf/<leader>uF)
+-- Autoformat toggle (Story 34.2): <leader>uf toggles for the current
+-- buffer only, <leader>uF toggles the global default
 map("n", "<leader>uf", function()
   require("cumulus.util.format").toggle(true)
 end, { desc = "Toggle Autoformat (Buffer)" })
