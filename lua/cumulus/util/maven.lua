@@ -104,11 +104,17 @@ function M.sync_dependencies()
   end)
   if ok then
     local handle = handle_or_err
-    timer:start(
-      SYNC_TIMEOUT_MS,
-      0,
-      vim.schedule_wrap(function()
-        timed_out = true
+    timer:start(SYNC_TIMEOUT_MS, 0, function()
+      -- Set the flag and kill the process synchronously, right here in the
+      -- raw (unscheduled) timer callback -- both are libuv-level operations
+      -- safe outside the main loop. Deferring `timed_out = true` itself via
+      -- vim.schedule_wrap would leave a race window where the process's own
+      -- (also unscheduled) exit callback could see `timed_out == false` and
+      -- report success/failure normally right before this timeout branch
+      -- also runs, producing two contradictory notifications.
+      timed_out = true
+      pcall(handle.kill, handle, "sigterm")
+      vim.schedule(function()
         -- Don't wait for the exit callback to fire before unhiding the
         -- gated keymaps: a killed process is not guaranteed to actually
         -- close its stdout/stderr pipes promptly (e.g. an orphaned
@@ -119,9 +125,8 @@ function M.sync_dependencies()
         -- ever actually observed to take effect.
         sync_state.mark_ready()
         vim.notify("Maven: dependency sync timed out after " .. (SYNC_TIMEOUT_MS / 1000) .. "s", vim.log.levels.ERROR)
-        pcall(handle.kill, handle, "sigterm")
       end)
-    )
+    end)
   else
     timer:close()
     sync_state.mark_ready()

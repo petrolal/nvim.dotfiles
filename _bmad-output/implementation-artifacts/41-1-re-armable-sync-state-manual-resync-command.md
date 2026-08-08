@@ -86,12 +86,20 @@ Claude Sonnet 5 (claude-sonnet-5)
 - `nvim --headless "+Lazy check" +qa` passed with no output/errors after all three edits.
 - AC #2's transient "hides again while resync is in flight" behavior is implemented (`reset()` unconditionally sets `M.ready = false` before `run()` dispatches to `maven.sync_dependencies()`/`gradle.sync_dependencies()`) but could only be indirectly verified in this environment, since no real `mvn`/`gradle` binary is installed here — sync failure is synchronous (ENOENT), so the "hidden" window collapses to effectively zero wall-clock time in this sandbox. The logic path is identical to the real async-success/failure path already exercised by the original (pre-Story-41.1) sync, which was not itself changed.
 
+### Post-Implementation Review Fix (2026-08-08)
+
+- **Found:** `apply()` in `lang-keymaps.lua` only ever *adds* keymaps via `vim.keymap.set` — it never removes them when a `ready_gate` stack's gate flips back to `false`. So once `<leader>cjS` is bound to a buffer (after the first sync), it stays fully pressable even while `reset()` has set `ready = false` — only the which-key *popup* hides it, not the actual binding. Pressing it twice in quick succession triggered two independent `reset()`+`run()` calls, each spawning its own uncoordinated `mvn`/`gradle` process; whichever finished or timed out first won the idempotent `mark_ready()` race while the other kept running in the background.
+- **Fixed:** added an `M.syncing` guard to `build-sync-state.lua`: `M.run()` no-ops if a sync is already in flight; `mark_ready()` (the single funnel point for every completion path — success, failure, timeout, nothing-to-sync) always clears it first, before its own ready-guard check, so it can never get stuck `true`.
+- **Verified:** double-calling `reset()`+`run()` back-to-back against a real spawned process now produces exactly one "syncing..." notification and one completion notification, not two.
+- This also satisfies Story 41.3's originally-planned Task 1 (an in-flight guard, motivated there by `BufWritePost` re-triggering) ahead of schedule — when implementing 41.3, this guard already exists in `build-sync-state.lua` and does not need to be re-added.
+
 ### File List
 
-- `lua/cumulus/util/build-sync-state.lua` (modified — added `M.reset()`, `M.run()`)
+- `lua/cumulus/util/build-sync-state.lua` (modified — added `M.reset()`, `M.run()`, `M.syncing` guard)
 - `lua/cumulus/core/autocmds.lua` (modified — `build_sync` `VimEnter` callback now delegates to `build-sync-state.run()`)
 - `lua/cumulus/core/keymaps.lua` (modified — added `<leader>cjS` resync keymap to the `<leader>cj` stack)
 
 ## Change Log
 
 - 2026-08-08: Implemented Story 41.1 (Tasks 1-4 complete) — re-armable sync state via `M.reset()`/`M.run()`, manual `<leader>cjS` resync keymap. Status → review.
+- 2026-08-08: Post-review fix — added `M.syncing` guard to `build-sync-state.lua` to prevent a double-press of `<leader>cjS` from spawning two overlapping sync processes (the keymap itself stays bound/pressable through a resync since `apply()` never unsets keymaps, only the which-key popup hides).

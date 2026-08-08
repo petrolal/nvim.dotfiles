@@ -12,12 +12,22 @@ local M = {}
 
 M.ready = false
 
+-- True while a sync spawned by run() is in flight. apply() in
+-- lang-keymaps.lua only ever ADDS keymaps, never removes them, so a
+-- ready_gate keymap already bound to a buffer (e.g. <leader>cjS itself)
+-- stays pressable even while `ready == false` -- only the which-key popup
+-- hides it. Without this guard, pressing it twice in quick succession would
+-- spawn two independent, uncoordinated sync processes.
+M.syncing = false
+
 local listeners = {}
 
 --- Mark the sync as finished (success, failure, or "nothing to sync") and
 --- fire every listener registered via on_ready(). Safe to call more than
---- once -- only the first call has any effect.
+--- once -- only the first call fires listeners, but syncing is always
+--- cleared so a stuck M.syncing flag can never outlive its sync attempt.
 function M.mark_ready()
+  M.syncing = false
   if M.ready then
     return
   end
@@ -49,8 +59,14 @@ end
 --- Detect the project's build tool and (re)run its dependency sync, or mark
 --- ready immediately if there's nothing to sync. Single source of truth for
 --- both the one-time VimEnter sync (autocmds.lua) and the manual resync
---- keymap, so the branch only lives in one place.
+--- keymap, so the branch only lives in one place. No-ops while a sync is
+--- already in flight (see M.syncing above) instead of spawning a second,
+--- overlapping mvn/gradle process.
 function M.run()
+  if M.syncing then
+    return
+  end
+  M.syncing = true
   local maven = require("cumulus.util.maven")
   local gradle = require("cumulus.util.gradle")
   if maven.find_pom() then
