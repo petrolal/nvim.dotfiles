@@ -27,6 +27,51 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+-- Auto-open README.md once when Neovim is started on a project directory
+-- (e.g. `nvim .`), so the project's landing doc is visible instead of a
+-- blank "[No Name]" buffer. If there's no README, that blank buffer is left
+-- alone -- it's already what shows up by default.
+--
+-- Snacks' netrw-replacement explorer opens as a *floating* picker on top of
+-- that plain background window/buffer rather than replacing it, so editing
+-- the README into the background window (instead of `:edit`-ing in the
+-- window that's current when this fires, or opening a new tab) shows the
+-- README and keeps the explorer float visible at the same time, with no
+-- extra tab and no leftover blank buffer.
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = augroup("open_readme"),
+  once = true,
+  callback = function()
+    local dir = nil
+    for _, arg in ipairs(vim.fn.argv() --[[@as string[] ]]) do
+      if vim.fn.isdirectory(arg) == 1 then
+        dir = vim.fn.fnamemodify(arg, ":p")
+        break
+      end
+    end
+    if not dir then
+      return
+    end
+
+    local matches = vim.fn.globpath(dir, "[Rr][Ee][Aa][Dd][Mm][Ee].md", false, true)
+    if #matches == 0 then
+      return
+    end
+
+    vim.schedule(function()
+      for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].buftype == "" then
+          vim.api.nvim_win_call(win, function()
+            vim.cmd.edit(vim.fn.fnameescape(matches[1]))
+          end)
+          break
+        end
+      end
+    end)
+  end,
+})
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
