@@ -79,14 +79,20 @@ function M.sync_dependencies()
   local ok, handle_or_err = pcall(vim.system, { base_cmd, "-q", "dependency:resolve" }, { text = true }, function(result)
     timer:stop()
     timer:close()
+    if timed_out then
+      -- The timeout timer below already called mark_ready() and notified
+      -- the user -- don't fire a second, possibly-contradictory
+      -- notification if the killed process's exit callback eventually
+      -- shows up late (e.g. a forked, non-exec'd grandchild kept the
+      -- stdout/stderr pipes open after the direct child was killed).
+      return
+    end
     vim.schedule(function()
       -- The java/kotlin/maven-related keymaps (lang-keymaps.lua) stay
-      -- hidden until sync finishes -- mark ready on success, failure, and
-      -- timeout so a broken/offline sync doesn't hide them forever.
+      -- hidden until sync finishes -- mark ready on both success and
+      -- failure so a broken/offline sync doesn't hide them forever.
       sync_state.mark_ready()
-      if timed_out then
-        vim.notify("Maven: dependency sync timed out after " .. (SYNC_TIMEOUT_MS / 1000) .. "s", vim.log.levels.ERROR)
-      elseif result.code == 0 then
+      if result.code == 0 then
         vim.notify("Maven: dependencies synced", vim.log.levels.INFO)
       else
         local detail = (result.stderr ~= "" and result.stderr)
@@ -103,6 +109,16 @@ function M.sync_dependencies()
       0,
       vim.schedule_wrap(function()
         timed_out = true
+        -- Don't wait for the exit callback to fire before unhiding the
+        -- gated keymaps: a killed process is not guaranteed to actually
+        -- close its stdout/stderr pipes promptly (e.g. an orphaned
+        -- grandchild process can keep them open indefinitely), and that
+        -- callback is what the exit-callback branch above depends on. Mark
+        -- ready and notify here, unconditionally, so a timeout always
+        -- resolves on schedule regardless of whether the kill signal is
+        -- ever actually observed to take effect.
+        sync_state.mark_ready()
+        vim.notify("Maven: dependency sync timed out after " .. (SYNC_TIMEOUT_MS / 1000) .. "s", vim.log.levels.ERROR)
         pcall(handle.kill, handle, "sigterm")
       end)
     )
