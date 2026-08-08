@@ -56,6 +56,34 @@ function M.run_maven_cmd(cmd)
   vim.cmd("startinsert")
 end
 
+function M.sync_dependencies()
+  if not M.find_pom() then
+    return
+  end
+
+  local base_cmd = M.get_mvn_cmd()
+  vim.notify("Maven: syncing dependencies...", vim.log.levels.INFO)
+  -- vim.system() throws synchronously (not via the callback) when the
+  -- binary doesn't exist at all (ENOENT) -- e.g. no mvnw wrapper and mvn
+  -- isn't on $PATH. pcall it so that shows up as a notification instead of
+  -- an uncaught error breaking whatever autocmd triggered this.
+  local ok, err = pcall(vim.system, { base_cmd, "-q", "dependency:resolve" }, { text = true }, function(result)
+    vim.schedule(function()
+      if result.code == 0 then
+        vim.notify("Maven: dependencies synced", vim.log.levels.INFO)
+      else
+        local detail = (result.stderr ~= "" and result.stderr)
+          or (result.stdout ~= "" and result.stdout)
+          or ("exit code " .. result.code)
+        vim.notify("Maven: dependency sync failed\n" .. detail, vim.log.levels.ERROR)
+      end
+    end)
+  end)
+  if not ok then
+    vim.notify("Maven: dependency sync failed to start (" .. base_cmd .. " not found)\n" .. tostring(err), vim.log.levels.ERROR)
+  end
+end
+
 function M.get_maven_goals()
   local cwd = vim.fn.getcwd()
   local pom_path = vim.fn.findfile("pom.xml", cwd .. ";")

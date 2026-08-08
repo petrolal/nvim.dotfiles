@@ -64,9 +64,49 @@ vim.api.nvim_create_autocmd("VimEnter", {
         if vim.bo[buf].buftype == "" then
           vim.api.nvim_win_call(win, function()
             vim.cmd.edit(vim.fn.fnameescape(matches[1]))
+            -- `:edit` on an already-loaded buffer keeps its last cursor
+            -- position; force it back to the top so the README always
+            -- opens at line 1, not wherever it was last left off.
+            vim.api.nvim_win_set_cursor(win, { 1, 0 })
           end)
           break
         end
+      end
+
+      -- `nvim_win_call` above never moves focus (it runs the callback in
+      -- the target window's context and restores focus immediately after),
+      -- but explicitly refocusing the explorer here removes any dependency
+      -- on that implicit behavior and any ordering with Snacks' own
+      -- explorer-open scheduling -- land back on the explorer as directly
+      -- as possible instead of leaving focus sitting in the README window.
+      local ok, picker_mod = pcall(require, "snacks.picker")
+      if ok then
+        local explorer = picker_mod.get({ source = "explorer" })[1]
+        if explorer then
+          explorer:focus()
+        end
+      end
+    end)
+  end,
+})
+
+-- Sync Maven/Gradle dependencies once per session, at startup -- mirrors
+-- the background "Syncing project..." step IDEs run automatically on open.
+-- Runs on VimEnter regardless of which (if any) file gets opened first, so
+-- it doesn't depend on happening to open a .java/.kt/.groovy/pom.xml/
+-- build.gradle buffer -- it just checks whether the project has a pom.xml
+-- or build.gradle(.kts) at all and syncs if so.
+vim.api.nvim_create_autocmd("VimEnter", {
+  group = augroup("build_sync"),
+  once = true,
+  callback = function()
+    vim.schedule(function()
+      local maven = require("cumulus.util.maven")
+      local gradle = require("cumulus.util.gradle")
+      if maven.find_pom() then
+        maven.sync_dependencies()
+      elseif gradle.find_gradle() then
+        gradle.sync_dependencies()
       end
     end)
   end,

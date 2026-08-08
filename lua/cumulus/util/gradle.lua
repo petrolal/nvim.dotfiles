@@ -60,6 +60,34 @@ function M.run_gradle_cmd(cmd)
   vim.cmd("startinsert")
 end
 
+function M.sync_dependencies()
+  if not M.find_gradle() then
+    return
+  end
+
+  local base_cmd = M.get_gradle_cmd()
+  vim.notify("Gradle: syncing dependencies...", vim.log.levels.INFO)
+  -- vim.system() throws synchronously (not via the callback) when the
+  -- binary doesn't exist at all (ENOENT) -- e.g. no gradlew wrapper and
+  -- gradle isn't on $PATH. pcall it so that shows up as a notification
+  -- instead of an uncaught error breaking whatever autocmd triggered this.
+  local ok, err = pcall(vim.system, { base_cmd, "-q", "dependencies" }, { text = true }, function(result)
+    vim.schedule(function()
+      if result.code == 0 then
+        vim.notify("Gradle: dependencies synced", vim.log.levels.INFO)
+      else
+        local detail = (result.stderr ~= "" and result.stderr)
+          or (result.stdout ~= "" and result.stdout)
+          or ("exit code " .. result.code)
+        vim.notify("Gradle: dependency sync failed\n" .. detail, vim.log.levels.ERROR)
+      end
+    end)
+  end)
+  if not ok then
+    vim.notify("Gradle: dependency sync failed to start (" .. base_cmd .. " not found)\n" .. tostring(err), vim.log.levels.ERROR)
+  end
+end
+
 function M.get_gradle_tasks()
   local base_cmd = M.get_gradle_cmd()
   local cmd = base_cmd .. " tasks --all"
