@@ -16,7 +16,7 @@ so that Cumulus mirrors IntelliJ's "auto-reload changed Maven/Gradle projects" b
 
 ## Acceptance Criteria
 
-1. **Given** a `pom.xml`, `build.gradle`, or `build.gradle.kts` buffer, **when** it is saved (`BufWritePost`), **then** the resync flow (reset + re-run, from Story 41.1) is invoked automatically — no manual `<leader>cjS` press required.
+1. **Given** a `pom.xml`, `build.gradle`, `build.gradle.kts`, or `gradle/libs.versions.toml` buffer, **when** it is saved (`BufWritePost`), **then** the resync flow (reset + re-run, from Story 41.1) is invoked automatically — no manual `<leader>cjS` press required. (`gradle/libs.versions.toml` is Gradle's version catalog — dependency versions declared there affect resolution exactly like `build.gradle(.kts)` does.)
 2. **Given** a sync triggered by a save is already in flight, **when** the same (or another) build file is saved again before that sync finishes, **then** a second, overlapping `mvn`/`gradle` process is **not** spawned — the in-flight sync is left to finish rather than duplicated.
 3. **Given** the auto-triggered resync completes, **when** `mark_ready()` fires, **then** the same notification/keymap-refresh behavior as any other sync applies (no special-casing needed beyond what Stories 41.1/41.2 already provide).
 
@@ -91,3 +91,4 @@ Claude Sonnet 5 (claude-sonnet-5)
 ## Change Log
 
 - 2026-08-08: Implemented Story 41.3 (Tasks 1-3 complete; Task 1 was pre-satisfied) — `BufWritePost` autocmd auto-resyncs on build file save. Status → review.
+- 2026-08-08: Extended the `BufWritePost` pattern to also cover `gradle/libs.versions.toml` (Gradle's version catalog file) per user request. Used `"*/gradle/libs.versions.toml"` rather than a bare filename, since the other three patterns are extension-less/bare and match by tail regardless of directory, but this one contains a `/` and needs the leading `*` to match at any project root (autocmd pattern wildcards cross `/` boundaries, unlike shell globs). Verified end-to-end: saving `gradle/libs.versions.toml` after the initial sync triggers exactly one resync.

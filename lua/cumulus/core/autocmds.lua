@@ -114,7 +114,12 @@ vim.api.nvim_create_autocmd("VimEnter", {
 -- already in flight is a no-op, not a second process.
 vim.api.nvim_create_autocmd("BufWritePost", {
   group = augroup("build_sync_on_save"),
-  pattern = { "pom.xml", "build.gradle", "build.gradle.kts" },
+  -- The first three are bare filenames -- Neovim matches those against just
+  -- the tail, regardless of directory. The version catalog needs a leading
+  -- "*/" since it contains a path separator: unlike shell globs, "*" in
+  -- autocmd patterns crosses "/" boundaries, so "*/gradle/libs.versions.toml"
+  -- matches that file at any project root, not just one directory up.
+  pattern = { "pom.xml", "build.gradle", "build.gradle.kts", "*/gradle/libs.versions.toml" },
   callback = function()
     local sync_state = require("cumulus.util.build-sync-state")
     sync_state.reset()
