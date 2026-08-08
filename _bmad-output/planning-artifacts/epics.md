@@ -1142,6 +1142,100 @@ So that symbol navigation is fast, visually interactive on multiple targets, and
 - **When** pressing `gd`, `gD`, `gi`, or `gr`,
 - **Then** smart fallbacks trigger (`pcall(vim.cmd, "normal! gd")` for `gd`/`gD`/`gi`, and `Snacks.picker.grep_word()` for `gr`), ensuring zero crash exceptions.
 
+---
+
+## Epic 37: JVM (Java & Kotlin) Tooling Readiness & Debug Adapter Integration
+
+Enhance Java and Kotlin IDE integration by wiring JDTLS debug/test bundles, dynamic JDK 21 detection, and Treesitter syntax highlighting.
+
+### Story 37.1: Java DAP Debug & Test Bundle Wiring & Dynamic JDK Resolution
+
+As a Java Developer,  
+I want `java-debug-adapter` and `vscode-java-test` jar bundles loaded in `ftplugin/java.lua` and dynamic JDK 21 path resolution in `lsp-java.lua`,  
+So that step-debugging, unit testing, and SDKMAN JDK setups work out-of-the-box for Java.
+
+**Acceptance Criteria:**
+- **Given** a Java buffer opened in Neovim,
+- **When** JDTLS attaches,
+- **Then** `init_options.bundles` loads `java-debug-adapter` and `vscode-java-test` jars from Mason, and `jdtls.setup_dap()` initializes debugging and test runner support.
+- **Given** Java 21 installed via SDKMAN, OpenJDK, or standard Linux paths,
+- **When** loading `lsp-java.lua`,
+- **Then** `java21_path` is dynamically resolved rather than hardcoded.
+
+### Story 37.2: Java & Kotlin Treesitter Parser Integration
+
+As a Developer,  
+I want `"java"` and `"kotlin"` added to `opts.ensure_installed` for `nvim-treesitter`,  
+So that AST-based syntax highlighting, folding, and textobjects work automatically for Java and Kotlin files.
+
+**Acceptance Criteria:**
+- **Given** a `.java` or `.kt` buffer,
+- **When** opening the file in Neovim,
+- **Then** `nvim-treesitter` automatically installs and loads `java` and `kotlin` parsers.
+
+---
+
+## Epic 38: Full Production Java & Kotlin IDE Productivity Suite
+
+Deliver enterprise-grade Java & Kotlin IDE workflows including in-buffer test method/class execution, AST refactorings, package boilerplate generation, live Kotlin linting, and microservice application launchers.
+
+### Story 38.1: In-Buffer JDTLS Unit Test Runner Keymaps
+
+As a Developer,  
+I want `<leader>cjtm` (test method), `<leader>cjtc` (test class), and `<leader>cjtp` (pick test) keymaps bound to native `nvim-jdtls` test runner APIs,  
+So that I can execute individual unit tests instantly with zero build overhead.
+
+**Acceptance Criteria:**
+- **Given** a Java test file,
+- **When** pressing `<leader>cjtm`, `<leader>cjtc`, or `<leader>cjtp`,
+- **Then** JDTLS test runner executes the target method or class directly with in-buffer test results.
+
+### Story 38.2: Java AST Refactoring Keymaps Suite
+
+As a Java Developer,  
+I want `<leader>cxv` (extract variable), `<leader>cxc` (extract constant), and visual mode `<leader>cxm` (extract method) integrated via JDTLS,  
+So that I can refactor Java code structures safely via AST transformations.
+
+**Acceptance Criteria:**
+- **Given** a Java buffer or visual selection,
+- **When** pressing `<leader>cxv`, `<leader>cxc`, or visual `<leader>cxm`,
+- **Then** JDTLS extracts variables, constants, or methods with interactive naming prompts.
+
+### Story 38.3: Automatic Java Class & Package Header Boilerplate Auto-Insertion
+
+As a Java Developer,  
+I want new `.java` files under `src/main/java` or `src/test/java` auto-populated with package declarations and class headers,  
+So that creating Java files requires zero manual package declaration boilerplate.
+
+**Acceptance Criteria:**
+- **Given** a newly created `.java` file in a package path,
+- **When** opened for editing,
+- **Then** an autocmd automatically computes the package name and inserts `package ...;` and `public class ... {}`.
+
+### Story 38.4: Live Diagnostic Linting for Kotlin (`ktlint`)
+
+As a Kotlin Developer,  
+I want `kotlin = { "ktlint" }` registered in `nvim-lint`,  
+So that Kotlin formatting and style errors display as real-time diagnostic squigglies while editing.
+
+**Acceptance Criteria:**
+- **Given** a `.kt` buffer with formatting issues,
+- **When** editing or saving the buffer,
+- **Then** `nvim-lint` triggers `ktlint` and displays diagnostic squigglies inline.
+
+### Story 38.5: Spring Boot & Quarkus Microservice Launcher Keymap
+
+As a DevOps / JVM Engineer,  
+I want `<leader>cjs` bound to launch Spring Boot or Quarkus applications via Maven wrapper or Gradle wrapper,  
+So that microservices can be launched with a single key combination.
+
+**Acceptance Criteria:**
+- **Given** a Maven or Gradle JVM project,
+- **When** pressing `<leader>cjs`,
+- **Then** `./mvnw spring-boot:run` / `./gradlew bootRun` / `./mvnw quarkus:dev` initiates in a terminal split.
+
+
+
 
 
 

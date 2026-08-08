@@ -33,7 +33,8 @@ function M.setup()
       pattern = stack.filetypes,
       callback = function(args)
         for _, k in ipairs(stack.keys) do
-          vim.keymap.set("n", k[1], k[2], { buffer = args.buf, desc = k[3] })
+          local mode = k.mode or "n"
+          vim.keymap.set(mode, k[1], k[2], { buffer = args.buf, desc = k[3] })
         end
       end,
     })

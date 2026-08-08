@@ -1,5 +1,14 @@
 return {
   {
+    "nvim-treesitter/nvim-treesitter",
+    opts = function(_, opts)
+      if type(opts.ensure_installed) == "table" then
+        vim.list_extend(opts.ensure_installed, { "java" })
+      end
+    end,
+  },
+
+  {
     "mfussenegger/nvim-jdtls",
     ft = { "java" },
     config = function(_, opts)
@@ -36,9 +45,26 @@ return {
         return root or vim.fs.dirname(fname) or vim.fn.getcwd()
       end
 
-      local java21_path = "/usr/lib/jvm/java-21-openjdk-amd64"
+      local function find_java21_home()
+        local patterns = {
+          "/usr/lib/jvm/java-21-openjdk*",
+          "/usr/lib/jvm/java-21*",
+          "/usr/lib/jvm/jdk-21*",
+          vim.fn.expand("~/.sdkman/candidates/java/21*"),
+          "/usr/lib/jvm/default-java",
+        }
+        for _, pat in ipairs(patterns) do
+          local candidates = vim.fn.glob(pat, false, true)
+          if #candidates > 0 and vim.fn.isdirectory(candidates[1]) == 1 then
+            return candidates[1]
+          end
+        end
+        return nil
+      end
+
+      local java21_path = find_java21_home()
       local runtimes = {}
-      if vim.fn.isdirectory(java21_path) == 1 then
+      if java21_path then
         table.insert(runtimes, {
           name = "JavaSE-21",
           path = java21_path,

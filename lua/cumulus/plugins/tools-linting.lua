@@ -11,6 +11,7 @@ return {
         tf = { "tflint" },
         yaml = { "cfn_lint", "ansible_lint" },
         dockerfile = { "hadolint" },
+        kotlin = { "ktlint" },
       }
 
       local lint_augroup = vim.api.nvim_create_augroup("cumulus_lint", { clear = true })

@@ -112,7 +112,80 @@ lang_keymaps.register({
           vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
         end
       end,
-      "JVM Build: Run Tests",
+      "JVM Build: Run All Tests",
+    },
+    {
+      "<leader>cjtm",
+      function()
+        local ok, jdtls = pcall(require, "jdtls")
+        if ok then
+          jdtls.test_nearest_method()
+        else
+          vim.notify("jdtls is not loaded", vim.log.levels.WARN)
+        end
+      end,
+      "JDTLS: Run Nearest Test Method",
+    },
+    {
+      "<leader>cjtc",
+      function()
+        local ok, jdtls = pcall(require, "jdtls")
+        if ok then
+          jdtls.test_class()
+        else
+          vim.notify("jdtls is not loaded", vim.log.levels.WARN)
+        end
+      end,
+      "JDTLS: Run Current Test Class",
+    },
+    {
+      "<leader>cjtp",
+      function()
+        local ok, jdtls = pcall(require, "jdtls")
+        if ok then
+          jdtls.pick_test()
+        else
+          vim.notify("jdtls is not loaded", vim.log.levels.WARN)
+        end
+      end,
+      "JDTLS: Pick Test",
+    },
+    {
+      "<leader>cxv",
+      function()
+        local ok, jdtls = pcall(require, "jdtls")
+        if ok then
+          jdtls.extract_variable()
+        else
+          vim.notify("jdtls is not loaded", vim.log.levels.WARN)
+        end
+      end,
+      "JDTLS: Extract Variable",
+    },
+    {
+      "<leader>cxc",
+      function()
+        local ok, jdtls = pcall(require, "jdtls")
+        if ok then
+          jdtls.extract_constant()
+        else
+          vim.notify("jdtls is not loaded", vim.log.levels.WARN)
+        end
+      end,
+      "JDTLS: Extract Constant",
+    },
+    {
+      "<leader>cxm",
+      function()
+        local ok, jdtls = pcall(require, "jdtls")
+        if ok then
+          jdtls.extract_method(true)
+        else
+          vim.notify("jdtls is not loaded", vim.log.levels.WARN)
+        end
+      end,
+      "JDTLS: Extract Method",
+      mode = "v",
     },
   },
 })
