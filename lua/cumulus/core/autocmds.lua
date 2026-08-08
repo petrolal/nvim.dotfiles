@@ -106,6 +106,22 @@ vim.api.nvim_create_autocmd("VimEnter", {
   end,
 })
 
+-- Re-sync Maven/Gradle dependencies whenever the project's build file is
+-- saved -- mirrors IntelliJ's "auto-reload changed Maven/Gradle projects"
+-- behavior instead of requiring a full Neovim restart to pick up new
+-- dependencies. build-sync-state.lua's M.syncing guard (see M.run()) makes
+-- this safe against overlapping saves -- a save that lands while a sync is
+-- already in flight is a no-op, not a second process.
+vim.api.nvim_create_autocmd("BufWritePost", {
+  group = augroup("build_sync_on_save"),
+  pattern = { "pom.xml", "build.gradle", "build.gradle.kts" },
+  callback = function()
+    local sync_state = require("cumulus.util.build-sync-state")
+    sync_state.reset()
+    sync_state.run()
+  end,
+})
+
 -- Highlight on yank
 vim.api.nvim_create_autocmd("TextYankPost", {
   group = augroup("highlight_yank"),
