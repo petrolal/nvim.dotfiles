@@ -65,10 +65,18 @@ map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
 local lang_keymaps = require("cumulus.core.lang-keymaps")
 
 lang_keymaps.register({
-  filetypes = { "java", "kotlin", "groovy" },
+  filetypes = { "java", "kotlin", "groovy", "xml" },
+  condition = function()
+    local maven = require("cumulus.util.maven")
+    local gradle = require("cumulus.util.gradle")
+    return maven.find_pom() or gradle.find_gradle()
+  end,
   group = "<leader>cj",
   label = "java/jvm build",
   icon = "󰬷 ",
+  subgroups = {
+    { group = "<leader>cjt", label = "test runner", icon = "󰙨 " },
+  },
   keys = {
     {
       "<leader>cjm",
@@ -100,7 +108,7 @@ lang_keymaps.register({
       "Build Project (Clean Compile)",
     },
     {
-      "<leader>cjt",
+      "<leader>cjta",
       function()
         local maven = require("cumulus.util.maven")
         local gradle = require("cumulus.util.gradle")
@@ -150,6 +158,57 @@ lang_keymaps.register({
       end,
       "JDTLS: Pick Test",
     },
+    {
+      "<leader>cjs",
+      function()
+        local maven = require("cumulus.util.maven")
+        local gradle = require("cumulus.util.gradle")
+        if maven.find_pom() then
+          local pom_path = vim.fn.findfile("pom.xml", vim.fn.getcwd() .. ";")
+          local pom_content = pom_path ~= "" and table.concat(vim.fn.readfile(pom_path), "\n") or ""
+          if pom_content:match("quarkus%-maven%-plugin") then
+            maven.run_maven_cmd(maven.get_mvn_cmd() .. " quarkus:dev")
+          else
+            maven.run_maven_cmd(maven.get_mvn_cmd() .. " spring-boot:run")
+          end
+        elseif gradle.find_gradle() then
+          local gradle_file = vim.fn.findfile("build.gradle", vim.fn.getcwd() .. ";")
+          local gradle_kts = vim.fn.findfile("build.gradle.kts", vim.fn.getcwd() .. ";")
+          local g_path = gradle_file ~= "" and gradle_file or gradle_kts
+          local g_content = g_path ~= "" and table.concat(vim.fn.readfile(g_path), "\n") or ""
+          if g_content:match("quarkus") then
+            gradle.run_gradle_cmd(gradle.get_gradle_cmd() .. " quarkusDev")
+          else
+            gradle.run_gradle_cmd(gradle.get_gradle_cmd() .. " bootRun")
+          end
+        else
+          vim.notify("No pom.xml or build.gradle found in project", vim.log.levels.WARN)
+        end
+      end,
+      "JVM: Run Spring Boot / Quarkus App",
+    },
+    {
+      "<leader>cjr",
+      function()
+        vim.cmd("update")
+        Snacks.terminal("groovy " .. vim.fn.shellescape(vim.fn.expand("%:p")))
+      end,
+      "Groovy: Run Script",
+    },
+  },
+})
+
+lang_keymaps.register({
+  filetypes = { "java", "kotlin", "groovy" },
+  condition = function()
+    local maven = require("cumulus.util.maven")
+    local gradle = require("cumulus.util.gradle")
+    return maven.find_pom() or gradle.find_gradle()
+  end,
+  group = "<leader>cx",
+  label = "java refactor",
+  icon = "󰨞 ",
+  keys = {
     {
       "<leader>cxv",
       function()

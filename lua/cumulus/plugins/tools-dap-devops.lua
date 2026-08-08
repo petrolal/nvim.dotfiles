@@ -1,24 +1,6 @@
--- Cumulus Universal DAP Platform & Keymap Suite (Epic 12 - Story 12.1, 12.2, 12.3)
+-- Cumulus Central DAP Keymap Suite (Epic 12 - Story 12.3, Epic 39 - Story 39.1)
 
 return {
-  {
-    "leoluz/nvim-dap-go",
-    ft = "go",
-    dependencies = { "mfussenegger/nvim-dap" },
-    config = function()
-      require("dap-go").setup()
-    end,
-  },
-
-  {
-    "mfussenegger/nvim-dap-python",
-    ft = "python",
-    dependencies = { "mfussenegger/nvim-dap" },
-    config = function()
-      require("dap-python").setup("python3")
-    end,
-  },
-
   {
     "mfussenegger/nvim-dap",
     keys = {

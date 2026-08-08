@@ -1,4 +1,4 @@
--- Cumulus Multi-Language DevOps LSP Stack (Epic 11 - Story 11.1 & 11.2)
+-- Cumulus DevOps Data & Markup LSP Stack (Epic 11 - Story 11.2, Epic 39 - Story 39.1)
 
 return {
   {
@@ -6,13 +6,6 @@ return {
     opts = function(_, opts)
       if type(opts.ensure_installed) == "table" then
         vim.list_extend(opts.ensure_installed, {
-          "go",
-          "gomod",
-          "gowork",
-          "gotmpl",
-          "python",
-          "javascript",
-          "typescript",
           "json",
           "xml",
           "bash",
@@ -25,19 +18,6 @@ return {
     "neovim/nvim-lspconfig",
     opts = {
       servers = {
-        gopls = {
-          settings = {
-            gopls = {
-              gofumpt = true,
-              analyses = {
-                unusedparams = true,
-              },
-              staticcheck = true,
-            },
-          },
-        },
-        pyright = {},
-        ts_ls = {},
         jsonls = {},
         lemminx = {},
         bashls = {

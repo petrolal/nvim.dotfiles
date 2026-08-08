@@ -1,4 +1,4 @@
--- Cumulus Mason Package Management (AR2, Epic 3, Epic 11 & Epic 12)
+-- Cumulus Mason Package Management (AR2, Epic 3, Epic 11, Epic 12, Epic 39, Epic 40)
 
 -- NOTE: plain mason.nvim's setup() has no "ensure_installed" option -- that
 -- field is only understood by the separate mason-tool-installer.nvim
@@ -15,11 +15,6 @@ local ensure_installed = {
   "dockerfile-language-server",
   "hadolint",
   "helm-ls",
-  "gopls",
-  "delve",
-  "pyright",
-  "debugpy",
-  "typescript-language-server",
   "json-lsp",
   "lemminx",
   "bash-language-server",
@@ -32,6 +27,10 @@ local ensure_installed = {
   "kotlin-language-server",
   "kotlin-debug-adapter",
   "ktlint",
+  "groovy-language-server",
+  "npm-groovy-lint",
+  "superhtml",
+  "taplo",
 }
 
 return {

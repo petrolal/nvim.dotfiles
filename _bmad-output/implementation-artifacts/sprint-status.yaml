@@ -231,10 +231,20 @@ development_status:
   37-2-java-kotlin-treesitter-parser-integration: review
   epic-37-retrospective: optional
 
-  epic-38: in-progress
+  epic-38: done
   38-1-in-buffer-jdtls-unit-test-runner-keymaps: review
   38-2-java-ast-refactoring-keymaps-suite: review
   38-3-automatic-java-class-package-header-boilerplate-auto-insertion: review
   38-4-live-diagnostic-linting-for-kotlin-ktlint: review
-  38-5-spring-boot-quarkus-microservice-launcher-keymap: ready-for-dev
+  38-5-spring-boot-quarkus-microservice-launcher-keymap: review
   epic-38-retrospective: optional
+
+  epic-39: done
+  39-1-removal-of-go-python-and-js-ts-lsp-dap-and-formatting-dependencies: review
+  epic-39-retrospective: optional
+
+  epic-40: done
+  40-1-groovy-full-stack-integration-lsp-linter-formatter-treesitter-runner: review
+  40-2-html-language-stack-integration-lsp-formatter-treesitter: review
+  40-3-toml-language-stack-integration-taplo-lsp-formatter-treesitter: review
+  epic-40-retrospective: optional

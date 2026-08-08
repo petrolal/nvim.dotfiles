@@ -1234,6 +1234,63 @@ So that microservices can be launched with a single key combination.
 - **When** pressing `<leader>cjs`,
 - **Then** `./mvnw spring-boot:run` / `./gradlew bootRun` / `./mvnw quarkus:dev` initiates in a terminal split.
 
+---
+
+## Epic 39: JVM & Cloud Focused Refactoring (Go, Python, JS/TS Removal)
+
+Refactor Cumulus Neovim to focus strictly on JVM (Java, Kotlin, Groovy) and Cloud/IaC engineering, removing Go, Python, and JS/TS/Node.js language servers, debug adapters, and formatters.
+
+### Story 39.1: Removal of Go, Python, and JS/TS LSP, DAP, and Formatting Dependencies
+
+As a Lead Developer,  
+I want Go (`gopls`, `delve`), Python (`pyright`, `debugpy`, `ruff`), and JS/TS (`typescript-language-server`, `vscode-js-debug`) removed from Mason, LSP, DAP, and formatting configurations,  
+So that Cumulus Neovim is lightweight and tightly focused on JVM and Cloud workloads.
+
+**Acceptance Criteria:**
+- **Given** Cumulus Neovim startup,
+- **When** Mason and LSP plugins load,
+- **Then** no Go, Python, or JS/TS LSP servers, DAP adapters, or formatters are installed or registered.
+
+---
+
+## Epic 40: HTML, TOML, and Full Groovy Language Suite Integration
+
+Integrate full language support for Groovy, HTML, and TOML including LSP, diagnostic linting, code formatting, Treesitter parsers, and script execution.
+
+### Story 40.1: Groovy Full Stack Integration (LSP, Linter, Formatter, Treesitter & Runner)
+
+As a JVM & DevOps Engineer,  
+I want Groovy LSP (`groovyls`), `npm-groovy-lint` linter/formatter, `"groovy"` Treesitter parser, and `<leader>cjr` Groovy script runner integrated,  
+So that editing Jenkinsfiles, Gradle scripts, and Groovy classes has full IDE capabilities.
+
+**Acceptance Criteria:**
+- **Given** a `.groovy` or `Jenkinsfile` buffer,
+- **When** opening or editing the file,
+- **Then** Groovy LSP attaches, `npm-groovy-lint` provides diagnostic linting & formatting, Treesitter highlights syntax, and `<leader>cjr` executes the Groovy script.
+
+### Story 40.2: HTML Language Stack Integration (LSP, Formatter, Treesitter)
+
+As a Web / Cloud Developer,  
+I want HTML LSP (`html`), HTML formatting in `conform.nvim`, and `"html"` Treesitter parser registered,  
+So that HTML documents have full autocompletion, formatting, and syntax highlighting.
+
+**Acceptance Criteria:**
+- **Given** an `.html` buffer,
+- **When** editing or saving the file,
+- **Then** HTML LSP attaches, `conform.nvim` formats HTML on save, and `html` Treesitter parser provides highlighting.
+
+### Story 40.3: TOML Language Stack Integration (Taplo LSP, Formatter, Treesitter)
+
+As a Cloud Developer,  
+I want TOML LSP (`taplo`), TOML formatting in `conform.nvim`, and `"toml"` Treesitter parser registered,  
+So that TOML configuration files (Cargo, Pipfile, Pyproject, custom configs) have LSP schema validation and formatting.
+
+**Acceptance Criteria:**
+- **Given** a `.toml` buffer,
+- **When** editing or saving the file,
+- **Then** `taplo` LSP attaches with schema validation, formatting runs on save, and `toml` Treesitter parser is installed.
+
+
 
 
 

@@ -1,4 +1,4 @@
--- Cumulus Document Formatting Specs (Story 3.1 & FR3)
+-- Cumulus Document Formatting Specs (Story 3.1, FR3, Story 40.1, 40.2, 40.3)
 
 return {
   {
@@ -10,7 +10,9 @@ return {
         hcl = { "terraform_fmt" },
         kotlin = { "ktlint" },
         java = { "google-java-format" },
-        python = { "ruff_format", "ruff_organize_imports" },
+        groovy = { "npm-groovy-lint" },
+        html = { "superhtml" },
+        toml = { "taplo" },
         lua = { "stylua" },
         sh = { "shfmt" },
         bash = { "shfmt" },

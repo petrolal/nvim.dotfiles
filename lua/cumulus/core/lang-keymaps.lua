@@ -27,17 +27,49 @@ end
 local augroup = vim.api.nvim_create_augroup("cumulus_lang_keymaps", { clear = true })
 
 function M.setup()
-  for _, stack in ipairs(stacks) do
-    vim.api.nvim_create_autocmd("FileType", {
-      group = augroup,
-      pattern = stack.filetypes,
-      callback = function(args)
+  local function apply(buf)
+    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
+      return
+    end
+    local ft = vim.bo[buf].filetype
+
+    for _, stack in ipairs(stacks) do
+      local matches_ft = false
+      if stack.filetypes then
+        for _, pattern_ft in ipairs(stack.filetypes) do
+          if pattern_ft == ft then
+            matches_ft = true
+            break
+          end
+        end
+      end
+
+      local matches_cond = false
+      if stack.condition and type(stack.condition) == "function" then
+        local ok, res = pcall(stack.condition, buf)
+        if ok and res then
+          matches_cond = true
+        end
+      end
+
+      if matches_ft or matches_cond then
         for _, k in ipairs(stack.keys) do
           local mode = k.mode or "n"
-          vim.keymap.set(mode, k[1], k[2], { buffer = args.buf, desc = k[3] })
+          vim.keymap.set(mode, k[1], k[2], { buffer = buf, desc = k[3] })
         end
-      end,
-    })
+      end
+    end
+  end
+
+  vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
+    group = augroup,
+    callback = function(args)
+      apply(args.buf)
+    end,
+  })
+
+  for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+    apply(buf)
   end
 end
 
@@ -52,8 +84,16 @@ function M.whichkey_spec()
       stack.group,
       group = stack.label,
       icon = stack.icon,
-      buffer = true,
     })
+    if stack.subgroups then
+      for _, sub in ipairs(stack.subgroups) do
+        table.insert(spec, {
+          sub.group,
+          group = sub.label,
+          icon = sub.icon,
+        })
+      end
+    end
   end
   return spec
 end

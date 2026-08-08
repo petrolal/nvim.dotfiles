@@ -24,8 +24,8 @@ function M.check()
     { name = "fd", desc = "fd (optional high-speed file finder)", level = "info" },
     { name = "git", desc = "git (required for version control & git_files picker)", level = "warn" },
     { name = "npm", desc = "npm (required for markdown-preview.nvim build)", level = "info" },
-    { name = "node", desc = "node (required for markdown-preview & JS LSP servers)", level = "info" },
-    { name = "python3", desc = "python3 (required for pynvim & BMad scripts)", level = "info" },
+    { name = "node", desc = "node (required for markdown-preview & npm-based DevOps LSP servers)", level = "info" },
+    { name = "python3", desc = "python3 (required for pynvim, ansible-lint, cfn-lint & BMad scripts)", level = "info" },
   }
 
   for _, b in ipairs(binaries) do
