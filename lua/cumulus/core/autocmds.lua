@@ -107,6 +107,11 @@ vim.api.nvim_create_autocmd("VimEnter", {
         maven.sync_dependencies()
       elseif gradle.find_gradle() then
         gradle.sync_dependencies()
+      else
+        -- Nothing to sync -- don't leave the gated java/kotlin/maven
+        -- keymaps (lang-keymaps.lua) hidden forever waiting on a sync
+        -- that will never run.
+        require("cumulus.util.build-sync-state").mark_ready()
       end
     end)
   end,

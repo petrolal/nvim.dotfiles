@@ -61,6 +61,8 @@ function M.run_gradle_cmd(cmd)
 end
 
 function M.sync_dependencies()
+  local sync_state = require("cumulus.util.build-sync-state")
+
   if not M.find_gradle() then
     return
   end
@@ -73,6 +75,10 @@ function M.sync_dependencies()
   -- instead of an uncaught error breaking whatever autocmd triggered this.
   local ok, err = pcall(vim.system, { base_cmd, "-q", "dependencies" }, { text = true }, function(result)
     vim.schedule(function()
+      -- The java/kotlin/maven-related keymaps (lang-keymaps.lua) stay
+      -- hidden until sync finishes -- mark ready on both success and
+      -- failure so a broken/offline sync doesn't hide them forever.
+      sync_state.mark_ready()
       if result.code == 0 then
         vim.notify("Gradle: dependencies synced", vim.log.levels.INFO)
       else
@@ -84,6 +90,7 @@ function M.sync_dependencies()
     end)
   end)
   if not ok then
+    sync_state.mark_ready()
     vim.notify("Gradle: dependency sync failed to start (" .. base_cmd .. " not found)\n" .. tostring(err), vim.log.levels.ERROR)
   end
 end

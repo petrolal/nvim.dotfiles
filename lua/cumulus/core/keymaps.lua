@@ -73,6 +73,7 @@ local lang_keymaps = require("cumulus.core.lang-keymaps")
 
 lang_keymaps.register({
   filetypes = { "java", "kotlin", "groovy", "xml" },
+  ready_gate = true,
   condition = function()
     local maven = require("cumulus.util.maven")
     local gradle = require("cumulus.util.gradle")
@@ -207,6 +208,7 @@ lang_keymaps.register({
 
 lang_keymaps.register({
   filetypes = { "java", "kotlin", "groovy" },
+  ready_gate = true,
   condition = function()
     local maven = require("cumulus.util.maven")
     local gradle = require("cumulus.util.gradle")

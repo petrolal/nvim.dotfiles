@@ -27,6 +27,8 @@ end
 local augroup = vim.api.nvim_create_augroup("cumulus_lang_keymaps", { clear = true })
 
 function M.setup()
+  local sync_state = require("cumulus.util.build-sync-state")
+
   local function apply(buf)
     if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
       return
@@ -34,28 +36,33 @@ function M.setup()
     local ft = vim.bo[buf].filetype
 
     for _, stack in ipairs(stacks) do
-      local matches_ft = false
-      if stack.filetypes then
-        for _, pattern_ft in ipairs(stack.filetypes) do
-          if pattern_ft == ft then
-            matches_ft = true
-            break
+      -- Stacks marked ready_gate (java/kotlin/maven build & refactor)
+      -- stay hidden until the one-time Maven/Gradle dependency sync
+      -- finishes -- see lua/cumulus/util/build-sync-state.lua.
+      if not (stack.ready_gate and not sync_state.ready) then
+        local matches_ft = false
+        if stack.filetypes then
+          for _, pattern_ft in ipairs(stack.filetypes) do
+            if pattern_ft == ft then
+              matches_ft = true
+              break
+            end
           end
         end
-      end
 
-      local matches_cond = false
-      if stack.condition and type(stack.condition) == "function" then
-        local ok, res = pcall(stack.condition, buf)
-        if ok and res then
-          matches_cond = true
+        local matches_cond = false
+        if stack.condition and type(stack.condition) == "function" then
+          local ok, res = pcall(stack.condition, buf)
+          if ok and res then
+            matches_cond = true
+          end
         end
-      end
 
-      if matches_ft or matches_cond then
-        for _, k in ipairs(stack.keys) do
-          local mode = k.mode or "n"
-          vim.keymap.set(mode, k[1], k[2], { buffer = buf, desc = k[3] })
+        if matches_ft or matches_cond then
+          for _, k in ipairs(stack.keys) do
+            local mode = k.mode or "n"
+            vim.keymap.set(mode, k[1], k[2], { buffer = buf, desc = k[3] })
+          end
         end
       end
     end
@@ -71,6 +78,22 @@ function M.setup()
   for _, buf in ipairs(vim.api.nvim_list_bufs()) do
     apply(buf)
   end
+
+  -- Once sync finishes, re-apply to every already-open buffer so gated
+  -- keymaps show up immediately -- no need to leave/re-enter the buffer.
+  -- Also explicitly clear which-key's per-buffer keymap cache: it only
+  -- invalidates on LspAttach/BufReadPost/BufEnter/RecordingEnter, none of
+  -- which fire just because we called vim.keymap.set() out of band here,
+  -- so without this the popup could still show the pre-sync state.
+  sync_state.on_ready(function()
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+      apply(buf)
+    end
+    local ok, wk_buf = pcall(require, "which-key.buf")
+    if ok then
+      wk_buf.clear()
+    end
+  end)
 end
 
 -- Which-key group specs for all registered stacks, so the popup shows a
