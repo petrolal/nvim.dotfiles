@@ -203,6 +203,15 @@ lang_keymaps.register({
       end,
       "Groovy: Run Script",
     },
+    {
+      "<leader>cjS",
+      function()
+        local sync_state = require("cumulus.util.build-sync-state")
+        sync_state.reset()
+        sync_state.run()
+      end,
+      "Maven/Gradle: Resync Dependencies",
+    },
   },
 })
 

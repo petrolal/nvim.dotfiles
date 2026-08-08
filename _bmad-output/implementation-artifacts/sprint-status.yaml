@@ -248,3 +248,11 @@ development_status:
   40-2-html-language-stack-integration-lsp-formatter-treesitter: review
   40-3-toml-language-stack-integration-taplo-lsp-formatter-treesitter: review
   epic-40-retrospective: optional
+
+  epic-41: in-progress
+  41-1-re-armable-sync-state-manual-resync-command: review
+  41-2-sync-timeout-cancellation-safeguard: review
+  41-3-auto-resync-on-build-file-save: ready-for-dev
+  41-4-sync-progress-notification-failure-diagnostics: ready-for-dev
+  41-5-ready-gate-consistency-with-build-file-presence: ready-for-dev
+  epic-41-retrospective: optional

@@ -1290,6 +1290,75 @@ So that TOML configuration files (Cargo, Pipfile, Pyproject, custom configs) hav
 - **When** editing or saving the file,
 - **Then** `taplo` LSP attaches with schema validation, formatting runs on save, and `toml` Treesitter parser is installed.
 
+---
+
+## Epic 41: Maven/Gradle Sync Lifecycle Hardening
+
+Harden the one-time Maven/Gradle dependency sync that gates the `<leader>cj`/`<leader>cx` JVM build keymaps (`lua/cumulus/core/autocmds.lua`, `lua/cumulus/util/build-sync-state.lua`, `lua/cumulus/util/maven.lua`, `lua/cumulus/util/gradle.lua`) so it behaves like an IDE's background project sync — cancellable, re-triggerable, and resilient to failure — instead of a single un-recoverable one-shot call fired at `VimEnter`.
+
+### Story 41.1: Re-armable Sync State & Manual Resync Command
+
+As a JVM developer,
+I want to manually re-trigger the Maven/Gradle dependency sync after it has already completed once,
+So that I can recover from a failed or stale sync, or pick up newly added dependencies, without restarting Neovim.
+
+**Acceptance Criteria:**
+- **Given** `build-sync-state.ready` is already `true` from an earlier sync,
+- **When** a user invokes a resync command/keymap,
+- **Then** `build-sync-state.lua` resets `ready` to `false`, re-arms its `on_ready` listener list, re-runs `maven.sync_dependencies()` / `gradle.sync_dependencies()`, and re-fires every registered `on_ready` listener again once the new sync completes.
+
+---
+
+### Story 41.2: Sync Timeout & Cancellation Safeguard
+
+As a JVM developer working offline or behind a slow network,
+I want the Maven/Gradle dependency sync to time out instead of hanging forever,
+So that the gated `<leader>cj` / `<leader>cx` keymaps never stay hidden indefinitely because of a stuck `mvn`/`gradle` process.
+
+**Acceptance Criteria:**
+- **Given** `mvn -q dependency:resolve` or `gradle -q dependencies` does not exit within a configured timeout,
+- **When** the timeout elapses,
+- **Then** the spawned process is terminated, `sync_state.mark_ready()` fires with a failure notification, and the user is told the sync timed out (not just generically failed).
+
+---
+
+### Story 41.3: Auto-Resync on Build File Save
+
+As a JVM developer,
+I want editing and saving `pom.xml` or `build.gradle(.kts)` to automatically re-trigger the dependency sync,
+So that Cumulus mirrors IntelliJ's "auto-reload changed Maven/Gradle projects" behavior instead of requiring a full restart to pick up new dependencies.
+
+**Acceptance Criteria:**
+- **Given** a `pom.xml` or `build.gradle(.kts)` buffer,
+- **When** it is saved (`BufWritePost`),
+- **Then** the resync flow from Story 41.1 is invoked automatically.
+
+---
+
+### Story 41.4: Sync Progress Notification & Failure Diagnostics
+
+As a JVM developer,
+I want a persistent, updating notification while the dependency sync is running, and surfaced errors when internal sync callbacks fail,
+So that a hung or errored sync is distinguishable from a silently succeeding one.
+
+**Acceptance Criteria:**
+- **Given** a sync is in progress,
+- **When** it is still running after the initial "syncing..." notification,
+- **Then** the notification reflects an in-progress state until completion/timeout, and any error raised inside `sync_state.mark_ready()`'s listener callbacks is surfaced via `vim.notify` (WARN) instead of being silently swallowed by `pcall`.
+
+---
+
+### Story 41.5: Ready-Gate Consistency with Build File Presence
+
+As a JVM developer,
+I want `<leader>cj` / `<leader>cx` to require both a matching filetype AND an actual `pom.xml` / `build.gradle(.kts)` in the project,
+So that these Maven/Gradle-only build commands don't appear in every `.java`/`.kotlin`/`.groovy`/`.xml` buffer regardless of whether the project is a Maven/Gradle project at all.
+
+**Acceptance Criteria:**
+- **Given** `lang-keymaps.lua`'s `apply()` currently registers a stack's keys when `matches_ft or matches_cond` is true (an OR), which means a filetype match alone (`java`/`kotlin`/`groovy`/`xml`) is always sufficient regardless of `stack.condition`'s result, since these stacks always declare `filetypes`,
+- **When** a `java`/`kotlin`/`groovy`/`xml` buffer is opened in a project that has no `pom.xml` or `build.gradle(.kts)` at all,
+- **Then** `<leader>cj` / `<leader>cx` must not appear for that buffer — filetype match and the `condition` (build-file presence) check must both hold (AND, not OR) for these two `ready_gate` stacks specifically, without breaking stacks that intentionally rely on OR/condition-only matching for non-filetype triggers.
+
 
 
 

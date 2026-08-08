@@ -37,4 +37,32 @@ function M.on_ready(cb)
   end
 end
 
+--- Re-arm the state for a manual resync (see keymaps.lua's <leader>cjS).
+--- Deliberately does NOT touch `listeners` -- mark_ready() iterates that
+--- table without draining it, so every callback already registered via
+--- on_ready() (e.g. lang-keymaps.lua's which-key refresh) fires again on
+--- the next mark_ready() with no need to re-register.
+function M.reset()
+  M.ready = false
+end
+
+--- Detect the project's build tool and (re)run its dependency sync, or mark
+--- ready immediately if there's nothing to sync. Single source of truth for
+--- both the one-time VimEnter sync (autocmds.lua) and the manual resync
+--- keymap, so the branch only lives in one place.
+function M.run()
+  local maven = require("cumulus.util.maven")
+  local gradle = require("cumulus.util.gradle")
+  if maven.find_pom() then
+    maven.sync_dependencies()
+  elseif gradle.find_gradle() then
+    gradle.sync_dependencies()
+  else
+    -- Nothing to sync -- don't leave the gated java/kotlin/maven keymaps
+    -- (lang-keymaps.lua) hidden forever waiting on a sync that will never
+    -- run.
+    M.mark_ready()
+  end
+end
+
 return M

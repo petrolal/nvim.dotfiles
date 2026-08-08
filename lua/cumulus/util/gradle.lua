@@ -60,6 +60,11 @@ function M.run_gradle_cmd(cmd)
   vim.cmd("startinsert")
 end
 
+-- Cold local-repo/offline-mirror resolution can legitimately take a while,
+-- but a stuck gradle process (hung proxy auth, dead network) must not hide
+-- the gated java/kotlin/maven keymaps (lang-keymaps.lua) forever.
+local SYNC_TIMEOUT_MS = 120000
+
 function M.sync_dependencies()
   local sync_state = require("cumulus.util.build-sync-state")
 
@@ -69,17 +74,23 @@ function M.sync_dependencies()
 
   local base_cmd = M.get_gradle_cmd()
   vim.notify("Gradle: syncing dependencies...", vim.log.levels.INFO)
+  local timed_out = false
+  local timer = (vim.uv or vim.loop).new_timer()
   -- vim.system() throws synchronously (not via the callback) when the
   -- binary doesn't exist at all (ENOENT) -- e.g. no gradlew wrapper and
   -- gradle isn't on $PATH. pcall it so that shows up as a notification
   -- instead of an uncaught error breaking whatever autocmd triggered this.
-  local ok, err = pcall(vim.system, { base_cmd, "-q", "dependencies" }, { text = true }, function(result)
+  local ok, handle_or_err = pcall(vim.system, { base_cmd, "-q", "dependencies" }, { text = true }, function(result)
+    timer:stop()
+    timer:close()
     vim.schedule(function()
       -- The java/kotlin/maven-related keymaps (lang-keymaps.lua) stay
-      -- hidden until sync finishes -- mark ready on both success and
-      -- failure so a broken/offline sync doesn't hide them forever.
+      -- hidden until sync finishes -- mark ready on success, failure, and
+      -- timeout so a broken/offline sync doesn't hide them forever.
       sync_state.mark_ready()
-      if result.code == 0 then
+      if timed_out then
+        vim.notify("Gradle: dependency sync timed out after " .. (SYNC_TIMEOUT_MS / 1000) .. "s", vim.log.levels.ERROR)
+      elseif result.code == 0 then
         vim.notify("Gradle: dependencies synced", vim.log.levels.INFO)
       else
         local detail = (result.stderr ~= "" and result.stderr)
@@ -89,9 +100,23 @@ function M.sync_dependencies()
       end
     end)
   end)
-  if not ok then
+  if ok then
+    local handle = handle_or_err
+    timer:start(
+      SYNC_TIMEOUT_MS,
+      0,
+      vim.schedule_wrap(function()
+        timed_out = true
+        pcall(handle.kill, handle, "sigterm")
+      end)
+    )
+  else
+    timer:close()
     sync_state.mark_ready()
-    vim.notify("Gradle: dependency sync failed to start (" .. base_cmd .. " not found)\n" .. tostring(err), vim.log.levels.ERROR)
+    vim.notify(
+      "Gradle: dependency sync failed to start (" .. base_cmd .. " not found)\n" .. tostring(handle_or_err),
+      vim.log.levels.ERROR
+    )
   end
 end
 

@@ -6,7 +6,7 @@ local banner = [[
 ╚██████╗╚█████╔╝██║ ╚═╝ ██║╚██████╔╝███████╗██║██║███████║
  ╚═════╝ ╚════╝ ╚═╝     ╚═╝ ╚═════╝ ╚══════╝╚═╝╚═╝╚══════╝
 
-    		☁ A VIM Distro for Cloud-first Developers.
+    	☁ A VIM Distro for Cloud-first JVM Developers.
 ]]
 
 return {
