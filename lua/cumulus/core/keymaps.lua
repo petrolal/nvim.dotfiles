@@ -56,7 +56,14 @@ map("n", "<leader>cR", function()
     vim.cmd("edit " .. vim.fn.fnameescape(new_path))
   end)
 end, { desc = "Rename File" })
-map("n", "<leader>cl", "<cmd>LspInfo<cr>", { desc = "Lsp Info" })
+-- `:LspInfo` (nvim-lspconfig) is a dead command on Neovim 0.11+: its
+-- plugin/lspconfig.lua skips defining LspInfo/LspStart/LspStop entirely
+-- once Neovim's own native `:lsp` command exists (see
+-- `vim.fn.exists(':lsp')` check in nvim-lspconfig's plugin file). That
+-- native `:lsp` only has enable/disable/restart/stop subcommands, no info
+-- view, so `:checkhealth vim.lsp` is the actual replacement -- it lists
+-- active clients, capabilities, and file-watcher status.
+map("n", "<leader>cl", "<cmd>checkhealth vim.lsp<cr>", { desc = "Lsp Info" })
 
 -- Per-language <leader>c* subgroups (Story 34.1): build/lint/format commands
 -- for a given language stack only appear as buffer-local keymaps while

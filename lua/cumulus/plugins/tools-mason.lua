@@ -36,12 +36,25 @@ local ensure_installed = {
 return {
   {
     "williamboman/mason.nvim",
+    lazy = false,
     opts = {},
   },
   {
     "WhoIsSethDaniel/mason-tool-installer.nvim",
+    -- NOTE: must load eagerly, not on an event like BufReadPre/BufNewFile.
+    -- mason-tool-installer's actual auto-install trigger isn't its opts --
+    -- it's a `VimEnter` autocmd registered by its own
+    -- `plugin/mason-tool-installer.lua`, which only gets sourced once
+    -- lazy.nvim loads the plugin. VimEnter fires exactly once, at Neovim
+    -- startup; if this plugin were still event-gated on the first buffer
+    -- read, that read can easily happen at or after VimEnter (e.g. `nvim .`
+    -- with no file arg), so the plugin loads too late for its own VimEnter
+    -- hook to ever fire -- `ensure_installed` (jdtls, kotlin-language-server,
+    -- groovy-language-server, etc.) then silently never gets auto-installed,
+    -- and every LSP relying on it shows "No active clients" forever until
+    -- someone thinks to run `:MasonToolsInstall` by hand.
+    lazy = false,
     dependencies = { "williamboman/mason.nvim" },
-    event = { "BufReadPre", "BufNewFile" },
     opts = {
       ensure_installed = ensure_installed,
       auto_update = false,

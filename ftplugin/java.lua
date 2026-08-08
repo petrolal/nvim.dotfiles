@@ -50,6 +50,8 @@ local config = {
     if opts.on_attach then
       opts.on_attach(client, bufnr)
     end
+    -- Attach notification is handled generically for every LSP client
+    -- (including jdtls) by the LspAttach autocmd in lsp-core.lua.
   end,
 }
 
